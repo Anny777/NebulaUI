@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+body{
+    margin: 0px;
+}
+
+td.bl {
+    border-left: 5px dotted gray;
+    vertical-align: top;
+    text-align: center;
+}
+
+td.bt {
+    border-top: 5px dotted gray;
+    vertical-align: top;
+    text-align: center;
+}
+
+td.br {
+    border-right: 5px dotted gray;
+    vertical-align: top;
+    text-align: center;
+}
+
+td.bb {
+    border-bottom: 5px dotted gray;
+    vertical-align: top;
+    text-align: center;
+}
