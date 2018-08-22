@@ -27,3 +27,15 @@ td.bb {
     vertical-align: top;
     text-align: center;
 }
+
+.mainBlock{
+    width: 400px; 
+    background-color: lightblue; 
+    display: inline-block;
+    vertical-align: top; 
+    margin: 15px 15px 0px 15px;
+}
+
+.dishBlock{
+    margin: 0px 0px 0px 5px;
+}

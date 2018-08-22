@@ -24,6 +24,10 @@ import { FormsModule } from '@angular/forms';
 import { OrderlistComponent } from './orderlist/orderlist.component';
 import { DataService } from './services/data.service';
 import { OpenOrderComponent } from './open-order/open-order.component';
+import {NgPipesModule} from 'ngx-pipes';
+import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
+import { GroupByPipe } from './filter-pipe/groupBy-pipe';
+import { CookingComponent } from './cooking/cooking.component';
 
 
 // определение маршрутов
@@ -51,8 +55,10 @@ const appRoutes: Routes = [
     TableComponent,
     DishListComponent,
     FilterPipeComponent,
+    GroupByPipe,
     OrderlistComponent,
     OpenOrderComponent,
+    CookingComponent,
     SignInComponent
   ],
   imports: [
@@ -62,7 +68,9 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, 
     MatButtonModule, 
     MatCheckboxModule,
-    FormsModule
+    FormsModule,
+    NgPipesModule,
+    Ng2FilterPipeModule
   ],
   providers: [TableService, ListDishService, DataService],
   bootstrap: [AppComponent]

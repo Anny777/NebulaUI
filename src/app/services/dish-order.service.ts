@@ -15,6 +15,7 @@ export class ListDishService {
 
   @Output() OnDishCancelReq = new EventEmitter<boolean>();
   @Output() OnDishDelete = new EventEmitter<boolean>();
+  @Output() OnArrayUpdated = new EventEmitter<OrderViewModel[]>();
 
   arrOrders: Array<OrderViewModel> = [];
 
@@ -27,7 +28,6 @@ export class ListDishService {
   }
 
   public respon(arrayOrders: any) {
-    debugger;
     if (this.arrOrders.length == 0) {
       this.arrOrders = arrayOrders;
       return;
@@ -55,7 +55,6 @@ export class ListDishService {
           }
           // Если равны, то проверяем статусы, вдруг они являются готовыми
           else {
-            debugger;
             console.log("Блюда всё те же, проверяю статус: ");
             switch (comeElement.State) {
               case DishState.Ready:
@@ -77,11 +76,11 @@ export class ListDishService {
         }
       }
       else {
-        debugger;
         console.log("Такого заказа нет, нужно добавить: ");
         this.arrOrders.push(arrayOrders[i]);
         this.OnDishInWork.emit();
       }
+    this.OnArrayUpdated.emit(this.arrOrders);
     }
   }
 

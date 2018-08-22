@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ListDishService } from '../services/dish-order.service';
 
 @Component({
   selector: 'app-bar',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private listDish: ListDishService) { }
+  
+  arrayOrders = [];
 
   ngOnInit() {
+    this.listDish.OnArrayUpdated.subscribe(r => this.responce(r));
+
+  }
+  responce(r: any) {
+    this.arrayOrders = r;
   }
 
 }
