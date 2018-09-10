@@ -21,7 +21,7 @@ export class ListDishService {
 
   constructor(private http: HttpClient) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
-    const intervalObs = interval(5000);
+    const intervalObs = interval(2000);
     intervalObs.subscribe(c => {
       this.getOpenOrder().subscribe(arrayOrders => this.respon(arrayOrders));
     });
@@ -38,7 +38,6 @@ export class ListDishService {
       var uniqOrder = this.arrOrders.map(c => c.Id).indexOf(order.Id);
       // Такой заказ имеется в массиве, нужно проверить блюда лежащие в нем
       if (~uniqOrder) {
-        console.log("Есть такие же заказы, необходимо проверить блюда в них: ");
         // Достаю имеющийся заказ
         var existingOrder = this.arrOrders[uniqOrder];
         // Нужно пройти циклом по его блюдам и сравнить CookingId
@@ -48,16 +47,15 @@ export class ListDishService {
           const comeElement = order.Dishes[j];
           // Если CookingDishId не равны между собой тогда добавляем в имеющийся заказ
           if (existElement.CookingDishId != comeElement.CookingDishId) {
-            console.log("Пришло новое блюдо в имеющийся заказ!");
             existingOrder.Dishes.push(order.Dishes[j]);
             this.arrOrders.push(existingOrder);
             this.OnDishInWork.emit();
           }
           // Если равны, то проверяем статусы, вдруг они являются готовыми
           else {
-            console.log("Блюда всё те же, проверяю статус: ");
             switch (comeElement.State) {
               case DishState.Ready:
+              existElement.State = comeElement.State;
                 this.OnDishReady.emit(order);
                 break;
               case DishState.Taken:
@@ -76,24 +74,31 @@ export class ListDishService {
         }
       }
       else {
-        console.log("Такого заказа нет, нужно добавить: ");
         this.arrOrders.push(arrayOrders[i]);
         this.OnDishInWork.emit();
       }
-    this.OnArrayUpdated.emit(this.arrOrders);
+      this.OnArrayUpdated.emit(this.arrOrders);
     }
   }
 
   public getListDishes() {
-    return this.http.get("api/WebApi/GetListDishes");
+    return this.http.get("api/dish/List");
   }
 
   public createNewOrder(param: OrderViewModel) {
-    return this.http.post("api/WebApi/Order", param);
+    return this.http.post("api/Order/New", param);
   }
 
   public getOpenOrder(): Observable<OrderViewModel> {
-    return this.http.get<OrderViewModel>("api/WebApi/GetOrders");
+    return this.http.get<OrderViewModel>("api/Order/List");
+  }
+
+  public setReady(id: number): Observable<any> {
+    console.log("Готово!"+ id);
+    return this.http.post("api/Order/SetState?id=" + id + "&dishState=3", {});
+  }
+  public setDeleted(id: number): Observable<any> {
+    return this.http.post("api/Order/SetState?id=" + id + "&dishState=1", {});
   }
 }
 
