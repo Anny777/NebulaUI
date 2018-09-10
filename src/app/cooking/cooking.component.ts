@@ -18,7 +18,7 @@ export class CookingComponent implements OnInit {
   constructor(private listDish: ListDishService) { }
 
   ngOnInit() {
-    this.arrayOrders = this.listDish.arrOrders;
+    this.arrayOrders = this.listDish.orders;
     this.listDish.OnArrayUpdated.subscribe(r => this.arrayOrders = r);
   }
 
@@ -39,7 +39,7 @@ export class CookingComponent implements OnInit {
         order.Id = element.Id;
         order.Table = element.Table;
         order.Dishes = dishes;
-        
+
         result.push(order);
       }
     }
