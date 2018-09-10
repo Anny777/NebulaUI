@@ -58,6 +58,7 @@ export class ListDishService {
           console.log('Блюда всё те же, проверяю статус: ');
             switch (comeElement.State) {
               case DishState.Ready:
+              existElement.State = comeElement.State;
                 this.OnDishReady.emit(order);
                 break;
               case DishState.Taken:
@@ -79,20 +80,29 @@ export class ListDishService {
         this.arrOrders.push(arrayOrders[i]);
         this.OnDishInWork.emit();
       }
-    this.OnArrayUpdated.emit(this.arrOrders);
+      this.OnArrayUpdated.emit(this.arrOrders);
     }
   }
 
   public getListDishes() {
-    return this.http.get(this.config.host + 'api/WebApi/GetListDishes');
+    return this.http.get(this.config.host + "api/dish/List");
   }
 
   public createNewOrder(param: OrderViewModel) {
-    return this.http.post(this.config.host + 'api/WebApi/Order', param);
+    return this.http.post(this.config.host + "api/Order/New", param);
   }
 
   public getOpenOrder(): Observable<OrderViewModel> {
-    return this.http.get<OrderViewModel>(this.config.host + 'api/WebApi/GetOrders');
+    return this.http.get<OrderViewModel>(this.config.host + "api/Order/List");
+  }
+
+  public setReady(id: number): Observable<any> {
+    console.log('Готово!' + id);
+    return this.http.post(this.config.host + 'api/Order/SetState?id=' + id + '&dishState=3', {});
+  }
+
+  public setDeleted(id: number): Observable<any> {
+    return this.http.post(this.config.host + "api/Order/SetState?id=" + id + '&dishState=1', {});
   }
 }
 

@@ -10,14 +10,10 @@ export class BarComponent implements OnInit {
 
   constructor(private listDish: ListDishService) { }
   
-  arrayOrders = [];
 
   ngOnInit() {
-    this.listDish.OnArrayUpdated.subscribe(r => this.responce(r));
 
   }
-  responce(r: any) {
-    this.arrayOrders = r;
-  }
+  
 
 }
