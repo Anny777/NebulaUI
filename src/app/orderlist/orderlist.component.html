@@ -1,22 +1,37 @@
 <div *ngIf="view">
-  Заказ:
-  <table>
-    <div *ngFor="let dishValue of groupById()">
-      {{dishValue.key.Name}}, {{dishValue.key.Price * dishValue.value.length}} руб.
+  <h2>Заказ:</h2>
+  <table class="striped">
+    <tr *ngFor="let dishValue of groupById()">
       <td>
-        <button (click)="change(false, dishValue)">-</button>
-        <button (click)="change(true, dishValue)">+</button>
+        {{dishValue.key.Name}}
       </td>
-      <td>Кол-во: {{dishValue.value.length}}</td>
+      <td style="width: 100px;">
+        {{dishValue.key.Price * dishValue.value.length}} руб.
+      </td>
+      <td style="width: 100px;">
+        <div style="cursor:pointer;" class="divIcon">
+          <mat-icon  (click)="change(false, dishValue)">remove</mat-icon>
+        </div>
+        <div class="divIcon"> {{dishValue.value.length}} </div>
+        <div style="cursor:pointer;" class="divIcon">
+          <mat-icon (click)="change(true, dishValue)">add</mat-icon>
+        </div>
+
+      </td>
       <!-- Понадобится, когда будешь делать выпадющий блок с комментами -->
       <!-- <tr *ngFor="let dish of dishValue.value">
         <td>{{dish.Name}}</td>
         <td>{{dish.Price * dishValue.value.length}} руб.</td>
       </tr> -->
-    </div>
-    <tr>Итого: {{getTotal()}} руб. </tr>
-    <tr>
-      <button (click)="sendOrder()">Отправить заказ</button>
     </tr>
+    <tr>
+      <td>
+        <strong>ИТОГО: </strong>
+      </td>
+      <td><strong>{{getTotal()}} руб. </strong></td>
+      <button mat-raised-button color="warn" (click)="sendOrder()">Заказать</button>
+      <td></td>
+    </tr>
+
   </table>
 </div>

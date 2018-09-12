@@ -1,0 +1,9 @@
+.divIcon{
+    vertical-align: top;
+    display: inline-block;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    font-size: larger;
+    text-align: center;
+}

@@ -1,13 +1,17 @@
-<table style="width: 50%; float: left;">
-<input type="text" [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
+<div style="display: inline-block; width: 49%;">
+  <h2>Меню</h2>
+<table  class="striped">
+  <mat-form-field style="width: 100%">
+    <input  matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
+  </mat-form-field>
+
   <tr *ngFor="let dish of list | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
     <td style="width: 80%">
       {{dish.Name}}
-      <br>
-      {{dish.Consist}}
+      <br> {{dish.Consist}}
     </td>
     <td>{{dish.Price}} руб.</td>
   </tr>
-</table>
-
-<app-orderlist style="float: right;" [_array] ="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>
+</table> 
+</div>
+<app-orderlist style="display: inline-block; vertical-align: top; width: 49%;" [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>

@@ -3,7 +3,7 @@ import { NgModule, Pipe } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField,  MatIconModule, MatIcon } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './hall1/hall1.component';
@@ -59,7 +59,9 @@ const appRoutes: Routes = [
     OrderlistComponent,
     OpenOrderComponent,
     CookingComponent,
-    SignInComponent
+    SignInComponent,
+    MatInput,
+    MatFormField
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     FormsModule,
     NgPipesModule,
-    Ng2FilterPipeModule
+    Ng2FilterPipeModule,
+    MatIconModule
   ],
   providers: [TableService, ListDishService, DataService],
   bootstrap: [AppComponent]
