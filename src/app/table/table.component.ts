@@ -16,7 +16,7 @@ export class TableComponent implements OnInit {
   table: any = {};
 
   message: string;
-  color: boolean;
+  busy: string;
 
   constructor(
     private tableService: TableService,
@@ -30,7 +30,7 @@ export class TableComponent implements OnInit {
   ngOnInit() {
     this.table = this.tableService.getTable(this.number);
     this.listDishService.OnArrayUpdated.subscribe(c => {
-      this.color = c.map(d => d.Table).indexOf(this.table.Number) > -1;
+      this.busy = c.map(d => d.Table).indexOf(this.table.Number) > -1 ? 'busy': '';
     });
   }
 

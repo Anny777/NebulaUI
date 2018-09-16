@@ -1,10 +1,9 @@
-<div style="display: inline-block; width: 49%;">
-  <h2>Меню</h2>
-<table  class="striped">
+<div class="divBlock">
+  <h2 class="header">Меню</h2>
   <mat-form-field style="width: 100%">
     <input  matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
   </mat-form-field>
-
+<table  class="striped">
   <tr *ngFor="let dish of list | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
     <td style="width: 80%">
       {{dish.Name}}
@@ -14,4 +13,4 @@
   </tr>
 </table> 
 </div>
-<app-orderlist style="display: inline-block; vertical-align: top; width: 49%;" [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>
+<app-orderlist  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>

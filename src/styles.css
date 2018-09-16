@@ -5,6 +5,36 @@ body {
     margin: 0px;
 }
 
+.header{
+    color:#ee6e73; 
+    text-align:center;
+}
+
+.ready.material-icons.md-36{
+     font-size: 36px; 
+     color: green;
+}
+
+.cancel.material-icons.md-36{
+    font-size: 36px; 
+    color: red;
+    margin-left: 20px;
+}
+
+.divBlock{
+    display: inline-block; 
+    vertical-align: top; 
+    width: 49%;
+    background-color: rgba(242, 242, 242, 0.75);
+}
+.divBlockCook{
+    display: inline-block; 
+    vertical-align: top; 
+    width: 30%;
+    margin: 20px 20px 20px 20px;
+    background-color: rgba(242, 242, 242, 0.75);
+}
+
 td.bl {
     border-left: 5px dotted gray;
     vertical-align: top;

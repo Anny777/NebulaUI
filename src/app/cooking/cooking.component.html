@@ -1,9 +1,16 @@
-<div *ngFor="let order of filterWorkType()" class="mainBlock">
-  <h3>Стол № {{order.Table}} от 16.08.2018 20:49</h3>
-  <div *ngFor="let dish of order.Dishes" class="dishBlock">
-    <p>{{dish.Name}}</p>
-    <p>{{dish.Consist}}</p>
-    <button class="btn" style="background-color: lawngreen;" (click)="ready(dish.CookingDishId)">Готово</button>
-    <button class="btn" style="background-color: indianred;" *ngIf="dish.State == 5">Подтвердить отмену</button>
-  </div>
-</div>
+ <div *ngFor="let order of filterWorkType()" class="divBlockCook">
+    <h3 class="header">Стол № {{order.Table}} от 16.08.2018 20:49</h3>
+  <table *ngFor="let dish of order.Dishes" class="striped">
+    <tr>
+      <td >
+        {{dish.Name}}
+        <br> {{dish.Consist}}
+      </td>
+    </tr>
+    <tr>
+      <mat-icon class="ready material-icons md-36" (click)="ready(dish.CookingDishId)" style="cursor:pointer;">check_circle</mat-icon>
+      <mat-icon class="cancel material-icons md-36" *ngIf="dish.State == 5">cancel</mat-icon>
+    </tr>
+  </table> 
+  </div> 
+ 

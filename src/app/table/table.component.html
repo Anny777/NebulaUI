@@ -1,2 +1,1 @@
-<a class="{{table.style}}" *ngIf="!color" routerLink="../dishes" (click)="numberTable(table.Number)">{{table.Number}} </a> 
-<a class="{{table.style}}"  *ngIf="color" style="background-color:red" routerLink="../dishes" (click)="numberTable(table.Number)">{{table.Number}} </a> 
+<a class="{{table.style}} {{busy}}" routerLink="../dishes" (click)="numberTable(table.Number)">{{table.Number}} </a>
