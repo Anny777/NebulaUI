@@ -1,41 +1,38 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ListDishService } from '../services/dish-order.service';
-import { OrderViewModel } from '../model/orderViewModel';
-import { DishListComponent } from '../dish-list/dish-list.component';
-import { WorkshopType } from '../model/enum-WorkShopType';
-import { DishState } from '../model/enum-dishState';
+import { Component, OnInit, Input } from "@angular/core";
+import { ListDishService } from "../services/dish-order.service";
+import { OrderViewModel } from "../model/orderViewModel";
+import { DishState } from "../model/enum-dishState";
 
 @Component({
-  selector: 'app-cooking',
-  templateUrl: './cooking.component.html',
-  styleUrls: ['./cooking.component.css']
+  selector: "app-cooking",
+  templateUrl: "./cooking.component.html",
+  styleUrls: ["./cooking.component.css"]
 })
 export class CookingComponent implements OnInit {
-
   arrayOrders = [];
-  @Input() WorkType: number;
+  @Input()
+  WorkType: number;
 
-  constructor(private listDish: ListDishService) { }
+  constructor(private listDish: ListDishService) {}
 
   ngOnInit() {
     this.arrayOrders = this.listDish.orders;
-    this.listDish.OnArrayUpdated.subscribe(r => this.arrayOrders = r);
+    this.listDish.OnArrayUpdated.subscribe(r => (this.arrayOrders = r));
   }
 
   public filterWorkType(): OrderViewModel[] {
-    var result = [];
+    const result = [];
     for (let i = 0; i < this.arrayOrders.length; i++) {
       const element = this.arrayOrders[i];
-      var checkWorkType = false;
-      var dishes = [];
+      const dishes = [];
       for (let j = 0; j < element.Dishes.length; j++) {
         const dish = element.Dishes[j];
-        if(dish.WorkshopType== this.WorkType && (dish.State == DishState.InWork || dish.State == DishState.CancellationRequested)){
+        if (dish.WorkshopType == this.WorkType && ~[DishState.InWork, DishState.CancellationRequested].indexOf(dish.State)) {
           dishes.push(dish);
         }
       }
       if (dishes.length > 0) {
-        var order = new OrderViewModel();
+        const order = new OrderViewModel();
         order.Id = element.Id;
         order.Table = element.Table;
         order.Dishes = dishes;
@@ -46,8 +43,7 @@ export class CookingComponent implements OnInit {
     return result;
   }
 
-  public ready(id:number){
-    this.listDish.setReady(id).subscribe(result=> console.log(result));
+  public ready(id: number) {
+    this.listDish.setReady(id).subscribe(result => console.log(result));
   }
-
 }
