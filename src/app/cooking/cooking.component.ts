@@ -10,8 +10,7 @@ import { DishState } from "../model/enum-dishState";
 })
 export class CookingComponent implements OnInit {
   arrayOrders = [];
-  @Input()
-  WorkType: number;
+  @Input() WorkType: number;
 
   constructor(private listDish: ListDishService) {}
 

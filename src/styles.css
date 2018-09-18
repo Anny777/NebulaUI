@@ -10,13 +10,13 @@ body {
     text-align:center;
 }
 
-.ready.material-icons.md-36{
-     font-size: 36px; 
+.ready.material-icons.md-48{
+     font-size: 48px; 
      color: green;
 }
 
-.cancel.material-icons.md-36{
-    font-size: 36px; 
+.cancel.material-icons.md-48{
+    font-size: 48px; 
     color: red;
     margin-left: 20px;
 }

@@ -1,16 +1,17 @@
- <div *ngFor="let order of filterWorkType()" class="divBlockCook">
-    <h3 class="header">Стол № {{order.Table}} от 16.08.2018 20:49</h3>
+<div *ngFor="let order of filterWorkType()" class="divBlockCook">
+  <h3 class="header">Стол № {{order.Table}} от 16.08.2018 20:49</h3>
   <table *ngFor="let dish of order.Dishes" class="striped">
     <tr>
-      <td >
+      <td>
         {{dish.Name}}
         <br> {{dish.Consist}}
       </td>
+      <td>
+        <mat-icon class="ready material-icons md-48" (click)="ready(dish.CookingDishId)" style="cursor:pointer;">check_circle</mat-icon>
+      </td>
+      <td>
+        <mat-icon class="cancel material-icons md-48" *ngIf="dish.State == 5">cancel</mat-icon>
+      </td>
     </tr>
-    <tr>
-      <mat-icon class="ready material-icons md-36" (click)="ready(dish.CookingDishId)" style="cursor:pointer;">check_circle</mat-icon>
-      <mat-icon class="cancel material-icons md-36" *ngIf="dish.State == 5">cancel</mat-icon>
-    </tr>
-  </table> 
-  </div> 
- 
+  </table>
+</div>
