@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BarComponent } from './bar/bar.component';
 import { AdministrationComponent } from './administration/administration.component';
-import { SignInComponent } from './sign-in/sign-in.component';
 import { TableComponent } from './table/table.component';
 import { TableService } from './services/table.service';
 import { DishListComponent } from './dish-list/dish-list.component';
@@ -28,6 +27,9 @@ import {NgPipesModule} from 'ngx-pipes';
 import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
 import { CookingComponent } from './cooking/cooking.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ForgotComponent } from './forgot/forgot.component';
 
 
 // определение маршрутов
@@ -38,7 +40,8 @@ const appRoutes: Routes = [
   { path: 'kitchen', component: KitchenComponent },
   { path: 'bar', component: BarComponent },
   { path: 'admin', component: AdministrationComponent },
-  { path: 'sign-in', component: SignInComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'dishes', component: DishListComponent},
   { path: 'orders', component: OpenOrderComponent}
 ];
@@ -59,16 +62,17 @@ const appRoutes: Routes = [
     OrderlistComponent,
     OpenOrderComponent,
     CookingComponent,
-    SignInComponent,
     MatInput,
+    LoginComponent,
+    RegisterComponent,
     MatFormField
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
-    BrowserAnimationsModule, 
-    MatButtonModule, 
+    BrowserAnimationsModule,
+    MatButtonModule,
     MatCheckboxModule,
     FormsModule,
     NgPipesModule,

@@ -1,0 +1,19 @@
+<div id="content">
+  <div class="divBlock center" >
+      <div class="center">
+        <mat-form-field class="center">
+          <input matInput placeholder="EMail" [(ngModel)]="email" />
+        </mat-form-field>
+      </div>
+      <div class="center">
+        <mat-form-field class="center">
+          <input matInput placeholder="Пароль" [(ngModel)]="pass" />
+        </mat-form-field>
+      </div>
+      <div class="center link">
+            <a><button mat-raised-button color="warn" (click)="login()">Войти</button></a>
+        </div>
+      <div class="center link"><a [routerLink]="['/register']">Регистрация</a></div>
+      <div class="center link"><a href="#">Забыли пароль?</a></div>
+  </div>
+</div>
