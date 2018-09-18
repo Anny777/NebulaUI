@@ -23,23 +23,27 @@ export class CookingComponent implements OnInit {
   public filterWorkType(): OrderViewModel[] {
     const result = [];
     for (let i = 0; i < this.arrayOrders.length; i++) {
-      const element = this.arrayOrders[i];
+    const order = this.arrayOrders[i];
       const dishes = [];
-      for (let j = 0; j < element.Dishes.length; j++) {
-        const dish = element.Dishes[j];
+      for (let j = 0; j < order.Dishes.length; j++) {
+        const dish = order.Dishes[j];
         if (dish.WorkshopType == this.WorkType && ~[DishState.InWork, DishState.CancellationRequested].indexOf(dish.State)) {
           dishes.push(dish);
         }
       }
       if (dishes.length > 0) {
         const order = new OrderViewModel();
-        order.Id = element.Id;
-        order.Table = element.Table;
+        order.Id = order.Id;
+        order.Table = order.Table;
         order.Dishes = dishes;
 
         result.push(order);
       }
     }
+    console.log('array');
+    console.log(this.arrayOrders);
+    console.log('result');
+    console.log(result);
     return result;
   }
 
