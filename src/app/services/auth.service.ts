@@ -13,13 +13,6 @@ export class AuthService {
    * login
    */
   public login(email: string, pass: string): Observable<any> {
-    const loginData = {
-      'grant_type': 'password',
-      'username': email,
-      'password': pass
-    };
-    const ld = 'grant_type=password&username=bystrova_777@icloud.com&password=eNK746dWxNDtMjYk';
-console.log(loginData);
-    return this.client.post(this.config.host + "Token", ld)
+    return this.client.post(this.config.host + "Token", 'grant_type=password&username=' + email + '&password=' + pass)
   }
 }
