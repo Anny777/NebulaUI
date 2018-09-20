@@ -7,18 +7,23 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-email:string;
-pass:string;
+  email: string;
+  pass: string;
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
   }
-/**
- * login
- */
-public login() {
-  this.auth.login(this.email, this.pass).subscribe((result) => {
-    console.log(result);
-  })
-}
+  /**
+   * login
+   */
+  public login() {
+
+    this.auth.login(this.email, this.pass, c =>
+      {
+        this.auth.get<any>(
+          "api/Account/UserInfo",
+          d => console.log(d),
+          d => console.log(d));
+      }, c => console.log(c));
+  }
 }
