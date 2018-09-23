@@ -30,16 +30,20 @@ export class AuthService {
   }
 
   public get<T>(url: string, success?: (v: T) => void, error?: (v: T) => void) {
-    var t = {
-      headers: new HttpHeaders()
-        .set('Authorization', (this.token_type ? this.token_type : '') + ' ' + (this.access_token ? this.access_token : ''))
-    };
-    console.log(t);
-    this.client.get<T>(this.config.host + url, t)
+    this.client.get<T>(this.config.host + url, { headers: this._addAuth() })
       .subscribe(c => success(c), c => error(c));
   }
 
-  public post() {
+  public post<T>(url: string, body?: any, success?: (v: T) => void, error?: (v: T) => void) {
+    this.client.post<T>(this.config.host + url, body, { headers: this._addAuth() })
+      .subscribe(c => success(c), c => error(c));
+  }
 
+  private _addAuth(h?: HttpHeaders): HttpHeaders {
+    if (!h) {
+      h = new HttpHeaders();
+    }
+
+    return h.set('Authorization', (this.token_type ? this.token_type : '') + ' ' + (this.access_token ? this.access_token : ''));
   }
 }
