@@ -35,7 +35,7 @@ export class CookingComponent implements OnInit {
         order.Id = order.Id;
         order.Table = order.Table;
         order.Dishes = dishes;
-        order.CreatedDate = element.CreatedDate; 
+        order.CreatedDate = order.CreatedDate; 
         result.push(order);
       }
     }
