@@ -1,7 +1,7 @@
 <div *ngFor="let order of filterWorkType()" class="divBlockCook">
-  <h3 class="header">Стол № {{order.Table}} от 16.08.2018 20:49</h3>
-  <table *ngFor="let dish of order.Dishes" class="striped">
-    <tr>
+  <h3 class="header">Стол № {{order.Table}} от {{order.CreatedDate | date:'HH:mm'}}</h3>
+  <table  class="striped">
+    <tr *ngFor="let dish of order.Dishes">
       <td>
         {{dish.Name}}
         <br> {{dish.Consist}}

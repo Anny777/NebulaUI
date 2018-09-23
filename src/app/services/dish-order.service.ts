@@ -9,19 +9,13 @@ import { ConfigService } from "./config.service";
   providedIn: "root"
 })
 export class ListDishService {
-  @Output()
-  OnDishInWork = new EventEmitter<boolean>();
-  @Output()
-  OnDishReady = new EventEmitter<OrderViewModel[]>();
-  @Output()
-  OnDishTaken = new EventEmitter<boolean>();
+  @Output() OnDishInWork = new EventEmitter<boolean>();
+  @Output() OnDishReady = new EventEmitter<OrderViewModel[]>();
+  @Output() OnDishTaken = new EventEmitter<boolean>();
 
-  @Output()
-  OnDishCancelReq = new EventEmitter<boolean>();
-  @Output()
-  OnDishDelete = new EventEmitter<boolean>();
-  @Output()
-  OnArrayUpdated = new EventEmitter<OrderViewModel[]>();
+  @Output() OnDishCancelReq = new EventEmitter<boolean>();
+  @Output() OnDishDelete = new EventEmitter<boolean>();
+  @Output() OnArrayUpdated = new EventEmitter<OrderViewModel[]>();
 
   orders: Array<OrderViewModel> = [];
 

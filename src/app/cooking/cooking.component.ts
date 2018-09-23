@@ -9,7 +9,7 @@ import { DishState } from "../model/enum-dishState";
   styleUrls: ["./cooking.component.css"]
 })
 export class CookingComponent implements OnInit {
-  arrayOrders = [];
+  arrayOrders : Array<OrderViewModel>;
   @Input() WorkType: number;
 
   constructor(private listDish: ListDishService) {}
@@ -35,7 +35,7 @@ export class CookingComponent implements OnInit {
         order.Id = element.Id;
         order.Table = element.Table;
         order.Dishes = dishes;
-
+        order.CreatedDate = element.CreatedDate; 
         result.push(order);
       }
     }

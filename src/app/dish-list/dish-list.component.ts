@@ -35,6 +35,7 @@ export class DishListComponent implements OnInit {
    for (let index = 0; index < result.length; index++) {
      const element = result[index];
      if(element.Table == this.numberTable){
+       this.numberCustom = element.Id;
       this.orderArray = element.Dishes;
       this.isView = true;
      }
