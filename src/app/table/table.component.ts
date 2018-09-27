@@ -10,8 +10,7 @@ import { OrderViewModel } from "../model/orderViewModel";
   styleUrls: ["./table.component.css"]
 })
 export class TableComponent implements OnInit {
-  @Input()
-  number: number;
+  @Input() number: number;
 
   table: any = {};
 
@@ -35,6 +34,7 @@ export class TableComponent implements OnInit {
   }
 
   numberTable(num: number) {
+    console.log(num);
     this.data.setNumTable(num);
   }
 }

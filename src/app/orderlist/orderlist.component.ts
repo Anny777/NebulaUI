@@ -12,12 +12,13 @@ export class OrderlistComponent implements OnInit {
 
   constructor(private orderService: ListDishService) { }
 
-  @Input() _array = [];
+  @Input() _array : Array<DishViewModel>;
   @Input() view: boolean;
   @Input() numberTable: number;
   @Input() numberCustom: number;
 
   ngOnInit() {
+    console.log(this.numberTable);
   }
 
   public sendOrder() {
@@ -25,10 +26,9 @@ export class OrderlistComponent implements OnInit {
     mas.Dishes = this._array;
     mas.Table = this.numberTable;
     mas.Id = this.numberCustom;
-    this.orderService.createNewOrder(mas).subscribe(r => this.resp(r, this));
-  }
-  resp(r: any, s) {
-    console.log(r)
+    mas.CreatedDate = new Date();
+    this.orderService.createNewOrder(mas).subscribe();
+    console.log(mas);
   }
 
   public getTotal() {

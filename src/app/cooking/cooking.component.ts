@@ -9,10 +9,10 @@ import { DishState } from "../model/enum-dishState";
   styleUrls: ["./cooking.component.css"]
 })
 export class CookingComponent implements OnInit {
-  arrayOrders = [];
+  arrayOrders: Array<OrderViewModel>;
   @Input() WorkType: number;
 
-  constructor(private listDish: ListDishService) {}
+  constructor(private listDish: ListDishService) { }
 
   ngOnInit() {
     this.arrayOrders = this.listDish.orders;
@@ -22,7 +22,7 @@ export class CookingComponent implements OnInit {
   public filterWorkType(): OrderViewModel[] {
     const result = [];
     for (let i = 0; i < this.arrayOrders.length; i++) {
-    const order = this.arrayOrders[i];
+      const order = this.arrayOrders[i];
       const dishes = [];
       for (let j = 0; j < order.Dishes.length; j++) {
         const dish = order.Dishes[j];
@@ -31,18 +31,15 @@ export class CookingComponent implements OnInit {
         }
       }
       if (dishes.length > 0) {
-        const order = new OrderViewModel();
-        order.Id = order.Id;
-        order.Table = order.Table;
-        order.Dishes = dishes;
+        const orderModel = new OrderViewModel();
+        orderModel.Id = order.Id;
+        orderModel.Table = order.Table;
+        orderModel.Dishes = dishes;
+        orderModel.CreatedDate = order.CreatedDate;
 
         result.push(order);
       }
     }
-    console.log('array');
-    console.log(this.arrayOrders);
-    console.log('result');
-    console.log(result);
     return result;
   }
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderViewModel } from '../model/orderViewModel';
+import { ListDishService } from '../services/dish-order.service';
 
 @Component({
   selector: 'app-open-order',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OpenOrderComponent implements OnInit {
 
-  constructor() { }
+  arrayOrders: Array<OrderViewModel>;
+  constructor(private listDish: ListDishService) { }
 
   ngOnInit() {
+
   }
 
+  public getOrders() {
+    this.arrayOrders = this.listDish.orders;
+    return this.arrayOrders;
+  }
 }

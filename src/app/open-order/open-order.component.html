@@ -1,3 +1,20 @@
-<p>
-  open-order works!
-</p>
+<div *ngFor="let order of getOrders()" class="divBlockCook">
+  <h3 class="header">Стол № {{order.Table}} от {{order.CreatedDate | date:'dd.MM.yyyy'}}</h3>
+  <table class="striped">
+    <tr *ngFor="let dish of order.Dishes">
+      <td>
+        {{dish.Name}}
+        <br> {{dish.Price}}
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button mat-raised-button color="warn">Закрыть</button>
+      </td>
+    </tr>
+  </table>
+</div>
