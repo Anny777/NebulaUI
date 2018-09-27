@@ -3,7 +3,7 @@ import { NgModule, Pipe } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField,  MatIconModule, MatIcon } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField,  MatIconModule, MatIcon, MatProgressSpinnerModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './hall1/hall1.component';
@@ -77,7 +77,8 @@ const appRoutes: Routes = [
     FormsModule,
     NgPipesModule,
     Ng2FilterPipeModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   providers: [TableService, ListDishService, DataService],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
-import { Injectable, Input } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from './config.service';
-import { HttpClient, HttpResponse, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,28 +8,38 @@ import { HttpClient, HttpResponse, HttpParams, HttpHeaders, HttpErrorResponse } 
 export class AuthService {
   private access_token: string;
   private token_type: string;
+  public authChanged: EventEmitter<boolean> = new EventEmitter();
+  public isAuthenticated: boolean = false;
   constructor(private client: HttpClient, private config: ConfigService) {
     this.access_token = this._getCookie('access_token');
     this.token_type = this._getCookie('token_type');
+    this.authChanged.subscribe(i => this.isAuthenticated = i);
+    if (!!this.access_token && !!this.token_type) {
+      this.authChanged.emit(true);
+    }
   }
-  /**
-   * login
-   */
+
   public login(email: string, pass: string, success?: (v: any) => void, error?: (v: HttpErrorResponse) => void) {
-    console.log('login');
     var p = new HttpParams()
       .set('grant_type', 'password')
       .set('username', email)
       .set('password', pass);
-    console.log(p);
     this.client
       .post<any>(this.config.host + "Token", p)
-      .subscribe(c => { this.saveSession(c.access_token, c.token_type, c.expires_in); success(c); }, c => error(c));
+      .subscribe(c => {
+        this.authChanged.emit(true);
+        this.saveSession(c.access_token, c.token_type, c.expires_in);
+        success(c);
+      }, c => {
+        error(c);
+      });
   }
 
-  public logout() {
+  public logout(cb) {
     document.cookie = "access_token=; path=/; expires=" + new Date(0).toUTCString();
     document.cookie = "token_type=; path=/; expires=" + new Date(0).toUTCString();
+    this.authChanged.emit(false);
+    cb();
   }
 
   public saveSession(at: string, tt: string, ei: string) {
