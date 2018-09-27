@@ -28,6 +28,7 @@ export class ListDishService {
   }
 
   public respon(arrayOrders: any) {
+    console.log(arrayOrders);
     if (this.orders.length == 0) {
       this.orders = arrayOrders;
       return;
