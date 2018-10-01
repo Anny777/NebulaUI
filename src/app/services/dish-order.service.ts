@@ -4,6 +4,7 @@ import { OrderViewModel } from "../model/orderViewModel";
 import { Observable, interval } from "../../../node_modules/rxjs";
 import { DishState } from "../model/enum-dishState";
 import { ConfigService } from "./config.service";
+import { DishViewModel } from "../model/dishViewModel";
 
 @Injectable({
   providedIn: "root"
@@ -19,6 +20,8 @@ export class ListDishService {
 
   orders: Array<OrderViewModel> = [];
 
+   
+
   constructor(private http: HttpClient, private config: ConfigService) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
     const intervalObs = interval(1500);
@@ -28,7 +31,6 @@ export class ListDishService {
   }
 
   public respon(arrayOrders: any) {
-    console.log(arrayOrders);
     if (this.orders.length == 0) {
       this.orders = arrayOrders;
       return;
@@ -79,6 +81,14 @@ export class ListDishService {
     }
   }
 
+  public getTotalDish(_array : DishViewModel[]) {
+    var total = 0;
+    for (var i = 0; i < _array.length; i++) {
+      total += _array[i].Price;
+    }
+    return total;
+  }
+
   public getListDishes() {
     return this.http.get(this.config.host + "api/dish/List");
   }
@@ -103,5 +113,13 @@ export class ListDishService {
       this.config.host + "api/Order/SetState?id=" + id + "&dishState=1",
       {}
     );
+  }
+
+  public closeOrder(table:number):Observable<any>
+  {
+    debugger;
+    return this.http.post(
+      this.config.host + "api/Order/Close?tableNumber=" + table, {}
+    )
   }
 }

@@ -44,6 +44,6 @@ export class CookingComponent implements OnInit {
   }
 
   public ready(id: number) {
-    this.listDish.setReady(id).subscribe(result => console.log(result));
+    this.listDish.setReady(id).subscribe();
   }
 }

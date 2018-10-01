@@ -10,7 +10,7 @@ import { DishViewModel } from '../model/dishViewModel';
 })
 export class OrderlistComponent implements OnInit {
 
-  constructor(private orderService: ListDishService) { }
+  constructor(private dishOrderService: ListDishService) { }
 
   @Input() _array : Array<DishViewModel>;
   @Input() view: boolean;
@@ -27,16 +27,11 @@ export class OrderlistComponent implements OnInit {
     mas.Table = this.numberTable;
     mas.Id = this.numberCustom;
     mas.CreatedDate = new Date();
-    this.orderService.createNewOrder(mas).subscribe();
-    console.log(mas);
+    this.dishOrderService.createNewOrder(mas).subscribe();
   }
 
   public getTotal() {
-    var total = 0;
-    for (var i = 0; i < this._array.length; i++) {
-      total += this._array[i].Price;
-    }
-    return total;
+  return this.dishOrderService.getTotalDish(this._array);
   }
 
   public groupById() {
@@ -52,6 +47,8 @@ export class OrderlistComponent implements OnInit {
     }
     return result;
   }
+
+ 
 
   change(increased: boolean, dish: any) {
     if (increased == true) {

@@ -1,10 +1,10 @@
 <div *ngFor="let order of getOrders()" class="divBlockCook">
   <h3 class="header">Стол № {{order.Table}} от {{order.CreatedDate | date:'dd.MM.yyyy'}}</h3>
   <table class="striped">
-    <tr *ngFor="let dish of order.Dishes">
+    <tr *ngFor="let dish of groupByNameDishes(order.Dishes)">
       <td>
-        {{dish.Name}}
-        <br> {{dish.Price}}
+        {{dish.key.Name}} {{dish.value.length}}
+        <br> {{dish.key.Price * dish.value.length}} руб.
       </td>
       <td>
       </td>
@@ -12,9 +12,14 @@
       </td>
     </tr>
     <tr>
+        <td>
+            <strong>ИТОГО: </strong>
+          </td>
+          <td><strong>{{getTotal(order.Dishes)}} руб. </strong></td>
       <td>
-        <button mat-raised-button color="warn">Закрыть</button>
+        <button mat-raised-button color="warn" (click)="closeOrder(order.Table)">Закрыть</button>
       </td>
+      <td></td>
     </tr>
   </table>
 </div>

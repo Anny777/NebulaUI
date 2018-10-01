@@ -7,7 +7,7 @@ export class ConfigService {
 
   constructor() { }
 
-  public host = 'http://api.vip-33.ru/';
-  //public host = 'http://localhost:62679/';
+ // public host = 'http://api.vip-33.ru/';
+  public host = 'http://localhost:62679/';
 
 }
