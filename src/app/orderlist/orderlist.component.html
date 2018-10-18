@@ -29,7 +29,8 @@
         <strong>ИТОГО: </strong>
       </td>
       <td><strong>{{getTotal()}} руб. </strong></td>
-      <td><button mat-raised-button color="warn" (click)="sendOrder()">Заказать</button></td>
+      <td *ngIf="!isLoading"><button mat-raised-button color="warn" (click)="sendOrder()">Заказать</button></td>
+      <td *ngIf="isLoading"><mat-spinner [diameter]="50"></mat-spinner></td>
       <td></td>
     </tr>
 

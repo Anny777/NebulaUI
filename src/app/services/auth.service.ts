@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService } from './config.service';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { userInfo } from '../model/userInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,15 @@ export class AuthService {
   private access_token: string;
   private token_type: string;
   public authChanged: EventEmitter<boolean> = new EventEmitter();
+  public userInfo: userInfo;
   public isAuthenticated: boolean = false;
+
   constructor(private client: HttpClient, private config: ConfigService) {
     this.access_token = this._getCookie('access_token');
     this.token_type = this._getCookie('token_type');
     this.authChanged.subscribe(i => this.isAuthenticated = i);
     if (!!this.access_token && !!this.token_type) {
-      this.authChanged.emit(true);
+      this.getUserInfo();
     }
   }
 
@@ -27,8 +30,8 @@ export class AuthService {
     this.client
       .post<any>(this.config.host + "Token", p)
       .subscribe(c => {
-        this.authChanged.emit(true);
         this.saveSession(c.access_token, c.token_type, c.expires_in);
+        this.getUserInfo();
         success(c);
       }, c => {
         error(c);
@@ -38,6 +41,7 @@ export class AuthService {
   public logout(cb) {
     document.cookie = "access_token=; path=/; expires=" + new Date(0).toUTCString();
     document.cookie = "token_type=; path=/; expires=" + new Date(0).toUTCString();
+    this.userInfo = null;
     this.authChanged.emit(false);
     cb();
   }
@@ -73,5 +77,34 @@ export class AuthService {
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
+  public getUserInfo() {
+    this.get<any>(
+      "api/Account/UserInfo",
+      d => {
+        this.userInfo = d;
+        this.authChanged.emit(true);
+      },
+      d => {
+        this.authChanged.emit(false);
+        console.log(d);
+      }
+    );
+  }
+
+  public userIsInRole(roles: Array<string>) {
+    if(!this.userInfo){
+      return false;
+    }
+   
+    for (let index = 0; index < roles.length; index++) {
+      const element = roles[index];
+      if (this.userInfo.Roles.indexOf(element) > -1) {
+        return true;
+      };
+      return false;
+    
+  }
   }
 }

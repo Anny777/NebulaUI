@@ -7,7 +7,8 @@
         <br> {{dish.Consist}}
       </td>
       <td (click)="ready(dish.CookingDishId)" style="cursor:pointer;">
-        <mat-icon class="ready material-icons md-48"  >check_circle</mat-icon>
+        <mat-icon *ngIf="isLoading" class="ready material-icons md-48">check_circle</mat-icon>
+        <mat-spinner *ngIf="!isLoading" [diameter]="30"></mat-spinner>
       </td>
       <td>
         <mat-icon class="cancel material-icons md-48" *ngIf="dish.State == 5">cancel</mat-icon>

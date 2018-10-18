@@ -5,6 +5,8 @@ import { Observable, interval } from "../../../node_modules/rxjs";
 import { DishState } from "../model/enum-dishState";
 import { ConfigService } from "./config.service";
 import { DishViewModel } from "../model/dishViewModel";
+import { AuthService } from "./auth.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -19,18 +21,20 @@ export class ListDishService {
   @Output() OnArrayUpdated = new EventEmitter<OrderViewModel[]>();
 
   orders: Array<OrderViewModel> = [];
+  openOrders: Array<OrderViewModel> = [];
 
-   
 
-  constructor(private http: HttpClient, private config: ConfigService) {
+  constructor(private http: HttpClient, private config: ConfigService, private auth: AuthService, private router:Router) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
     const intervalObs = interval(1500);
     intervalObs.subscribe(c => {
-      this.getOpenOrder().subscribe(arrayOrders => this.respon(arrayOrders));
+      this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
     });
   }
 
   public respon(arrayOrders: any) {
+    this.openOrders = arrayOrders;
+
     if (this.orders.length == 0) {
       this.orders = arrayOrders;
       return;
@@ -81,7 +85,7 @@ export class ListDishService {
     }
   }
 
-  public getTotalDish(_array : DishViewModel[]) {
+  public getTotalDish(_array: DishViewModel[]) {
     var total = 0;
     for (var i = 0; i < _array.length; i++) {
       total += _array[i].Price;
@@ -89,23 +93,31 @@ export class ListDishService {
     return total;
   }
 
-  public getListDishes() {
-    return this.http.get(this.config.host + "api/dish/List");
+  public getListDishes(cb: any) {
+    this.auth.get<any>("api/dish/List",
+      d => cb(d),
+      d => console.log(d));
   }
 
-  public createNewOrder(param: OrderViewModel) {
-    return this.http.post(this.config.host + "api/Order/New", param);
+  public createNewOrder(param: OrderViewModel, cb: any) {
+    this.auth.post<any>("api/Order/New",
+      param,
+      d => this.router.navigate(['/']),
+      d => console.log(d));
   }
 
-  public getOpenOrder(): Observable<OrderViewModel> {
-    return this.http.get<OrderViewModel>(this.config.host + "api/Order/List");
+  public getOpenOrder(cb: any) {
+    this.auth.get<OrderViewModel>("api/Order/List",
+      d => cb(d),
+      d => console.log(d));
   }
 
-  public setReady(id: number): Observable<any> {
-    return this.http.post(
-      this.config.host + "api/Order/SetState?id=" + id + "&dishState=3",
-      {}
-    );
+  public setReady(id: number, cb: any) {
+    this.auth.post<any>(
+      "api/Order/SetState?id=" + id + "&dishState=3",
+      {},
+      d => cb(true),
+      d => console.log(d));
   }
 
   public setDeleted(id: number): Observable<any> {
@@ -115,11 +127,11 @@ export class ListDishService {
     );
   }
 
-  public closeOrder(table:number):Observable<any>
-  {
-    debugger;
-    return this.http.post(
-      this.config.host + "api/Order/Close?tableNumber=" + table, {}
-    )
+  public closeOrder(table: number, cb:any){
+    this.auth.post<any>(
+      "api/Order/Close?tableNumber=" + table,
+      {},
+      d => cb(true),
+      d => console.log(d));
   }
 }

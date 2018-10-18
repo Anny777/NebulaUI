@@ -12,6 +12,8 @@ export class CookingComponent implements OnInit {
   arrayOrders: Array<OrderViewModel>;
   @Input() WorkType: number;
 
+  isLoading: boolean = true;
+
   constructor(private listDish: ListDishService) { }
 
   ngOnInit() {
@@ -36,14 +38,14 @@ export class CookingComponent implements OnInit {
         orderModel.Table = order.Table;
         orderModel.Dishes = dishes;
         orderModel.CreatedDate = order.CreatedDate;
-
-        result.push(order);
+        result.push(orderModel);
       }
     }
-    return result;
+return result;
   }
 
   public ready(id: number) {
-    this.listDish.setReady(id).subscribe();
+    this.isLoading = false;
+    this.listDish.setReady(id, r => this.isLoading = r);
   }
 }

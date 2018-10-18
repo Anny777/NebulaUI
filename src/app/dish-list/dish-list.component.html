@@ -1,4 +1,5 @@
-<div class="divBlock">
+<div *ngIf="isLoading" class="divBlock" style="display: block;margin: 0 auto;" ><mat-spinner [diameter]="120"></mat-spinner></div>
+<div *ngIf="!isLoading" class="divBlock">
   <h2 class="header">Меню</h2>
   <mat-form-field style="width: 100%">
     <input  matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">

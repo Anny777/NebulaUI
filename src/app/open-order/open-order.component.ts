@@ -11,15 +11,15 @@ import { DishViewModel } from '../model/dishViewModel';
 export class OpenOrderComponent implements OnInit {
 
   arrayOrders: Array<OrderViewModel>;
+  isLoading: boolean = true;
+
   constructor(private dishService: ListDishService) { }
 
   ngOnInit() {
-
   }
 
   public getOrders() {
-    this.arrayOrders = this.dishService.orders;
-    return this.arrayOrders;
+   return this.dishService.openOrders;
   }
 
   public groupByNameDishes(dishes: DishViewModel[]) {
@@ -41,7 +41,7 @@ export class OpenOrderComponent implements OnInit {
   }
 
   public closeOrder(table:number) {
-    this.dishService.closeOrder(table).subscribe();
-
+    this.isLoading = false;
+    this.dishService.closeOrder(table, r => this.isLoading = r);
   }
 }

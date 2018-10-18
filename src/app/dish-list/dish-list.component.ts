@@ -10,7 +10,7 @@ import { DataService } from '../services/data.service';
 })
 export class DishListComponent implements OnInit {
 
-  constructor(private listServices: ListDishService, private data: DataService,private openOrder: ListDishService) {
+  constructor(private listServices: ListDishService, private data: DataService) {
     this.data = data;
   }
   message: string;
@@ -20,14 +20,17 @@ export class DishListComponent implements OnInit {
 
   list: Array<DishViewModel>;
   orderArray = [];
+  isLoading: boolean;
 
   ngOnInit() {
-    this.listServices.getListDishes().subscribe(r => this.resp(r));
+    this.isLoading = true;
+    this.listServices.getListDishes(r => this.resp(r));
     this.numberTable = this.data.getNumTable();
 
-    this.openOrder.getOpenOrder().subscribe(result => this.response(result));
+    this.listServices.getOpenOrder(r => this.response(r));
   }
   resp(r: any) {
+    this.isLoading = false;
     this.list = r;
   }
 
@@ -40,7 +43,6 @@ export class DishListComponent implements OnInit {
       this.isView = true;
      }
    }
-   console.log(this.orderArray);
   }
 
   public addDish(dish: Array<DishViewModel>) {

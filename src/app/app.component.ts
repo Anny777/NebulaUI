@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +10,23 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   title = 'Nebula';
+  role: boolean = false;
   constructor(private auth: AuthService, private router: Router) { }
   private isAuthenticated: boolean = false;
+
   ngOnInit(): void {
-      this.isAuthenticated = this.auth.isAuthenticated;
-      this.auth.authChanged.subscribe(isAuth => {
+    this.isAuthenticated = this.auth.isAuthenticated;
+    this.auth.authChanged.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
+      console.log(this.isAuthenticated);
     })
   }
   public logout() {
     this.auth.logout(() => this.router.navigate(['/login']));
+  }
+
+  public userIsInRole(roles: Array<string>){
+  return this.auth.userIsInRole(roles);
   }
 }
 

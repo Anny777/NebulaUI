@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Pipe, PipeTransform } from '@angular/core';
 import { OrderViewModel } from '../model/orderViewModel';
 import { ListDishService } from '../services/dish-order.service';
 import { DishViewModel } from '../model/dishViewModel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orderlist',
@@ -17,17 +18,19 @@ export class OrderlistComponent implements OnInit {
   @Input() numberTable: number;
   @Input() numberCustom: number;
 
+  isLoading: boolean = false;
+
   ngOnInit() {
-    console.log(this.numberTable);
   }
 
   public sendOrder() {
+    this.isLoading = true;
     var mas = new OrderViewModel();
     mas.Dishes = this._array;
     mas.Table = this.numberTable;
     mas.Id = this.numberCustom;
     mas.CreatedDate = new Date();
-    this.dishOrderService.createNewOrder(mas).subscribe();
+    this.dishOrderService.createNewOrder(mas, r => console.log());
   }
 
   public getTotal() {

@@ -16,9 +16,10 @@
             <strong>ИТОГО: </strong>
           </td>
           <td><strong>{{getTotal(order.Dishes)}} руб. </strong></td>
-      <td>
+      <td *ngIf="isLoading">
         <button mat-raised-button color="warn" (click)="closeOrder(order.Table)">Закрыть</button>
       </td>
+      <td *ngIf="!isLoading"><mat-spinner [diameter]="50"></mat-spinner></td>
       <td></td>
     </tr>
   </table>
