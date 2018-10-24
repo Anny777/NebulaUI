@@ -1,0 +1,13 @@
+.div_for_spinner{
+    /* display: inline-block; 
+    vertical-align: top;  */
+    width: 49%;
+    background-color: rgba(242, 242, 242, 0.75);
+    display: block;
+    margin: 0 auto;
+}
+
+.div_spinner{
+    display: block;
+    margin: 0 auto;
+}

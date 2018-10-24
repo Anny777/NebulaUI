@@ -12,11 +12,13 @@ export class CookingComponent implements OnInit {
   arrayOrders: Array<OrderViewModel>;
   @Input() WorkType: number;
 
-  isLoading: boolean = true;
+  isLoading: boolean;
+  isSpinner: number;;
 
   constructor(private listDish: ListDishService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.arrayOrders = this.listDish.orders;
     this.listDish.OnArrayUpdated.subscribe(r => (this.arrayOrders = r));
   }
@@ -45,7 +47,7 @@ return result;
   }
 
   public ready(id: number) {
-    this.isLoading = false;
+      this.isLoading = false;
     this.listDish.setReady(id, r => this.isLoading = r);
   }
 }

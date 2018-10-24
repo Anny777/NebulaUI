@@ -1,4 +1,4 @@
-<div *ngIf="isLoading" class="divBlock" style="display: block;margin: 0 auto;" ><mat-spinner [diameter]="120"></mat-spinner></div>
+<div *ngIf="isLoading" class="div_for_spinner"><mat-spinner [diameter]="120" class="div_spinner"></mat-spinner></div>
 <div *ngIf="!isLoading" class="divBlock">
   <h2 class="header">Меню</h2>
   <mat-form-field style="width: 100%">
@@ -14,4 +14,4 @@
   </tr>
 </table> 
 </div>
-<app-orderlist  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>
+<app-orderlist *ngIf="!isLoading"  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>

@@ -33,6 +33,10 @@ export class OrderlistComponent implements OnInit {
     this.dishOrderService.createNewOrder(mas, r => console.log());
   }
 
+  public clearOrder(){
+    this._array = this._array.filter(c => c.State > 0);
+  }
+
   public getTotal() {
   return this.dishOrderService.getTotalDish(this._array);
   }

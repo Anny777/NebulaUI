@@ -8,7 +8,6 @@ import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField,  MatIconMod
 import { AppComponent } from './app.component';
 import { Hall1Component } from './hall1/hall1.component';
 import { Hall2Component } from './hall2/hall2.component';
-import { MenuComponent } from './menu/menu.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -36,7 +35,6 @@ import { ForgotComponent } from './forgot/forgot.component';
 const appRoutes: Routes = [
   { path: '', component: Hall1Component },
   { path: 'hall-2', component: Hall2Component },
-  { path: 'menu', component: MenuComponent },
   { path: 'kitchen', component: KitchenComponent },
   { path: 'bar', component: BarComponent },
   { path: 'admin', component: AdministrationComponent },
@@ -51,7 +49,6 @@ const appRoutes: Routes = [
     AppComponent,
     Hall1Component,
     Hall2Component,
-    MenuComponent,
     KitchenComponent,
     BarComponent,
     AdministrationComponent,
