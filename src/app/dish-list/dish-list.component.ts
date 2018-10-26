@@ -27,7 +27,7 @@ export class DishListComponent implements OnInit {
     this.listServices.getListDishes(r => this.resp(r));
     this.numberTable = this.data.getNumTable();
 
-    this.listServices.getOpenOrder(r => this.response(r));
+    this.response(this.listServices.orders);
   }
   resp(r: any) {
     this.isLoading = false;
@@ -35,6 +35,7 @@ export class DishListComponent implements OnInit {
   }
 
   response(result:any){
+    console.log('response');
    for (let index = 0; index < result.length; index++) {
      const element = result[index];
      if(element.Table == this.numberTable){
@@ -46,11 +47,13 @@ export class DishListComponent implements OnInit {
   }
 
   public addDish(dish: Array<DishViewModel>) {
+    console.log('addDish');
     this.orderArray.push(dish);
     if (this.orderArray.length > 0) {
       this.isView = true;
     }
   }
 }
+
 
 

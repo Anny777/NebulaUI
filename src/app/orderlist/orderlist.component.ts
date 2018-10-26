@@ -42,6 +42,7 @@ export class OrderlistComponent implements OnInit {
   }
 
   public groupById() {
+    console.log('groupbyid');
     var result = [];
     for (let index = 0; index < this._array.length; index++) {
       const element = this._array[index];
