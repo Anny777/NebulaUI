@@ -3,13 +3,13 @@ import { NgModule, Pipe } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField,  MatIconModule, MatIcon, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField, MatIconModule, MatIcon, MatProgressSpinnerModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './hall1/hall1.component';
 import { Hall2Component } from './hall2/hall2.component';
 import { KitchenComponent } from './kitchen/kitchen.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { BarComponent } from './bar/bar.component';
 import { AdministrationComponent } from './administration/administration.component';
@@ -22,13 +22,14 @@ import { FormsModule } from '@angular/forms';
 import { OrderlistComponent } from './orderlist/orderlist.component';
 import { DataService } from './services/data.service';
 import { OpenOrderComponent } from './open-order/open-order.component';
-import {NgPipesModule} from 'ngx-pipes';
-import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
+import { NgPipesModule } from 'ngx-pipes';
+import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
 import { CookingComponent } from './cooking/cooking.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotComponent } from './forgot/forgot.component';
+import { Interceptor } from './services/interceptor';
 
 
 // определение маршрутов
@@ -40,8 +41,8 @@ const appRoutes: Routes = [
   { path: 'admin', component: AdministrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dishes', component: DishListComponent},
-  { path: 'orders', component: OpenOrderComponent}
+  { path: 'dishes', component: DishListComponent },
+  { path: 'orders', component: OpenOrderComponent }
 ];
 
 @NgModule({
@@ -77,7 +78,12 @@ const appRoutes: Routes = [
     MatIconModule,
     MatProgressSpinnerModule
   ],
-  providers: [TableService, ListDishService, DataService],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi: true
+  },
+    TableService, ListDishService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

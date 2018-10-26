@@ -10,7 +10,7 @@ export class LoginComponent implements OnInit {
   email: string;
   pass: string;
   isLoading: boolean = false;
-  
+
 
   constructor(private auth: AuthService) { }
 
@@ -21,9 +21,8 @@ export class LoginComponent implements OnInit {
    */
   public login() {
     this.isLoading = true;
-    this.auth.authChanged.subscribe(isAuth => this.isLoading = false);
-    this.auth.login(this.email, this.pass, 
-      c => {}, 
-      c => console.log(c));
+    this.auth.login(this.email, this.pass).subscribe(
+      isAuth => this.isLoading = false,
+      err => {this.isLoading = false; console.log(err); alert(err.error.error_description)});
   }
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { OrderViewModel } from '../model/orderViewModel';
 import { ListDishService } from '../services/dish-order.service';
 import { DishViewModel } from '../model/dishViewModel';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orderlist',
@@ -55,7 +54,7 @@ export class OrderlistComponent implements OnInit {
     return result;
   }
 
- 
+
 
   change(increased: boolean, dish: any) {
     if (increased == true) {

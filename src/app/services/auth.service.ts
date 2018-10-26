@@ -1,41 +1,45 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService } from './config.service';
-import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { userInfo } from '../model/userInfo';
+import { map } from 'rxjs/operators';
+import { Observable, concat } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private access_token: string;
-  private token_type: string;
+  public access_token: string;
+  public token_type: string;
   public authChanged: EventEmitter<boolean> = new EventEmitter();
   public userInfo: userInfo;
   public isAuthenticated: boolean = false;
 
-  constructor(private client: HttpClient, private config: ConfigService) {
+  constructor(public client: HttpClient) {
     this.access_token = this._getCookie('access_token');
     this.token_type = this._getCookie('token_type');
     this.authChanged.subscribe(i => this.isAuthenticated = i);
     if (!!this.access_token && !!this.token_type) {
-      this.getUserInfo();
+      this.getUserInfo(this);
     }
   }
 
-  public login(email: string, pass: string, success?: (v: any) => void, error?: (v: HttpErrorResponse) => void) {
+  public login(email: string, pass: string): Observable<any> {
     var p = new HttpParams()
       .set('grant_type', 'password')
       .set('username', email)
       .set('password', pass);
-    this.client
-      .post<any>(this.config.host + "Token", p)
-      .subscribe(c => {
-        this.saveSession(c.access_token, c.token_type, c.expires_in);
-        this.getUserInfo();
-        success(c);
-      }, c => {
-        error(c);
-      });
+
+      return concat(this.getToken(p)
+      .pipe(
+        map(c => {
+          if (c.access_token) {
+            this.saveSession(c.access_token, c.token_type, c.expires_in);
+          }
+
+          return c.response;
+        }),
+      ), this.getUserInfo(this))
   }
 
   public logout(cb) {
@@ -46,30 +50,12 @@ export class AuthService {
     cb();
   }
 
-  public saveSession(at: string, tt: string, ei: string) {
+  private saveSession(at: string, tt: string, ei: string) {
     console.log(ei);
     this.access_token = at;
     this.token_type = tt;
     document.cookie = 'access_token=' + this.access_token + '; path=/; expires=' + ei;
     document.cookie = 'token_type=' + this.token_type + '; path=/; expires=' + ei;
-  }
-
-  public get<T>(url: string, success?: (v: T) => void, error?: (v: T) => void) {
-    this.client.get<T>(this.config.host + url, { headers: this._addAuth() })
-      .subscribe(c => success(c), c => error(c));
-  }
-
-  public post<T>(url: string, body?: any, success?: (v: T) => void, error?: (v: T) => void) {
-    this.client.post<any>(this.config.host + url, body, { headers: this._addAuth() })
-      .subscribe(c => { success(c); }, c => error(c));
-  }
-
-  private _addAuth(h?: HttpHeaders): HttpHeaders {
-    if (!h) {
-      h = new HttpHeaders();
-    }
-
-    return h.set('Authorization', (this.token_type ? this.token_type : '') + ' ' + (this.access_token ? this.access_token : ''));
   }
 
   private _getCookie(name) {
@@ -79,32 +65,31 @@ export class AuthService {
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 
-  public getUserInfo() {
-    this.get<any>(
-      "api/Account/UserInfo",
-      d => {
-        this.userInfo = d;
-        this.authChanged.emit(true);
-      },
-      d => {
-        this.authChanged.emit(false);
-        console.log(d);
-      }
-    );
+  private getToken(data): Observable<any> {
+    return this.client.post<any>(environment.host + "Token", data)
+  }
+  public getUserInfo(a): Observable<any> {
+    return this.client.get(environment.host + "api/Account/UserInfo").pipe(
+      map(d => {
+        a.userInfo = d;
+        a.authChanged.emit(true);
+        return d;
+      }),
+    )
   }
 
   public userIsInRole(roles: Array<string>) {
-    if(!this.userInfo){
+    if (!this.userInfo) {
       return false;
     }
-   
+
     for (let index = 0; index < roles.length; index++) {
       const element = roles[index];
       if (this.userInfo.Roles.indexOf(element) > -1) {
         return true;
       };
       return false;
-    
-  }
+
+    }
   }
 }
