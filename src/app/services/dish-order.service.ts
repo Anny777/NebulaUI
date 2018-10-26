@@ -3,10 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { OrderViewModel } from "../model/orderViewModel";
 import { Observable, interval } from "../../../node_modules/rxjs";
 import { DishState } from "../model/enum-dishState";
-import { ConfigService } from "./config.service";
 import { DishViewModel } from "../model/dishViewModel";
-import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root"
@@ -25,8 +24,7 @@ export class ListDishService {
 
   change: boolean;
 
-
-  constructor(private http: HttpClient, private config: ConfigService, private auth: AuthService, private router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
     const intervalObs = interval(1500);
     intervalObs.subscribe(c => {
@@ -120,43 +118,41 @@ export class ListDishService {
   }
 
   public getListDishes(cb: any) {
-    this.auth.get<any>("api/dish/List",
+    this.http.get(environment.host + "api/dish/List").subscribe(
       d => cb(d),
-      d => console.log(d));
+      d => console.log(d))
   }
 
   public createNewOrder(param: OrderViewModel, cb: any) {
-    this.auth.post<any>("api/Order/New",
-      param,
+    this.http.post(environment.host + "api/Order/New", param).subscribe(
       d => this.router.navigate(['/']),
       d => console.log(d));
   }
 
   public getOpenOrder(cb: any) {
-    this.auth.get<OrderViewModel>("api/Order/List",
+    this.http.get(environment.host + "api/Order/List").subscribe(
       d => cb(d),
       d => console.log(d));
   }
 
   public setReady(id: number, cb: any) {
-    this.auth.post<any>(
-      "api/Order/SetState?id=" + id + "&dishState=3",
-      {},
-      d => cb(true),
-      d => console.log(d));
+    this.http.post(
+      environment.host + "api/Order/SetState?id=" + id + "&dishState=3", {}).subscribe(
+        d => cb(true),
+        d => console.log(d));
   }
 
   public setDeleted(id: number): Observable<any> {
     return this.http.post(
-      this.config.host + "api/Order/SetState?id=" + id + "&dishState=1",
+      environment.host + "api/Order/SetState?id=" + id + "&dishState=1",
       {}
     );
   }
 
   public closeOrder(table: number, cb: any) {
-    this.auth.post<any>(
-      "api/Order/Close?tableNumber=" + table,
-      {},
+    this.http.post(
+      environment.host + "api/Order/Close?tableNumber=" + table,
+      {}).subscribe(
       d => cb(true),
       d => console.log(d));
   }
