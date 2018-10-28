@@ -4,20 +4,20 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class DataService {
 
-    private messageSource = new BehaviorSubject("default message");
-    currentMessage = this.messageSource.asObservable();
+  private messageSource = new BehaviorSubject("default message");
+  currentMessage = this.messageSource.asObservable();
 
-    private state = new Subject<number>();
+  private state = new Subject<number>();
 
-    constructor() { }
+  constructor() { }
 
-    numTable: number;
+  numTable: number = 0;
 
-    setNumTable(number: number) {
-        this.numTable = number;
-    }
+  setNumTable(number: number) {
+    this.numTable = number;
+  }
 
-    getNumTable() {
-        return this.numTable;
-    }
+  getNumTable() {
+    return this.numTable;
+  }
 }

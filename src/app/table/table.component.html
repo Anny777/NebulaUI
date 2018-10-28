@@ -1,1 +1,1 @@
-<a class="{{table.style}} {{busy}}" routerLink="../dishes" (click)="numberTable(table.Number)">{{table.Number}} </a>
+<a [ngClass]="{'busy': table.busy}" class="{{table.style}}" routerLink="../dishes" (click)="numberTable(table.Number)"> {{table.Number}} </a>

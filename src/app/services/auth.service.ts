@@ -19,9 +19,6 @@ export class AuthService {
     this.access_token = this._getCookie('access_token');
     this.token_type = this._getCookie('token_type');
     this.authChanged.subscribe(i => this.isAuthenticated = i);
-    if (!!this.access_token && !!this.token_type) {
-      this.getUserInfo(this);
-    }
   }
 
   public login(email: string, pass: string): Observable<any> {
@@ -30,16 +27,7 @@ export class AuthService {
       .set('username', email)
       .set('password', pass);
 
-      return concat(this.getToken(p)
-      .pipe(
-        map(c => {
-          if (c.access_token) {
-            this.saveSession(c.access_token, c.token_type, c.expires_in);
-          }
-
-          return c.response;
-        }),
-      ), this.getUserInfo(this))
+    return concat(this.getToken(p), this.getUserInfo(this))
   }
 
   public logout(cb) {
@@ -67,15 +55,25 @@ export class AuthService {
 
   private getToken(data): Observable<any> {
     return this.client.post<any>(environment.host + "Token", data)
+      .pipe(
+        map(c => {
+          if (c.access_token) {
+            this.saveSession(c.access_token, c.token_type, c.expires_in);
+          }
+
+          return c.response;
+        })
+      )
   }
   public getUserInfo(a): Observable<any> {
-    return this.client.get(environment.host + "api/Account/UserInfo").pipe(
-      map(d => {
-        a.userInfo = d;
-        a.authChanged.emit(true);
-        return d;
-      }),
-    )
+    return this.client.get(environment.host + "api/Account/UserInfo")
+      .pipe(
+        map(d => {
+          a.userInfo = d;
+          a.authChanged.emit(true);
+          return d;
+        }),
+      )
   }
 
   public userIsInRole(roles: Array<string>) {

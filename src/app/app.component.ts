@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
     this.auth.authChanged.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
       console.log(this.isAuthenticated);
-    })
+    });
+    this.auth.getUserInfo(this.auth).subscribe();
   }
   public logout() {
     this.auth.logout(() => this.router.navigate(['/login']));

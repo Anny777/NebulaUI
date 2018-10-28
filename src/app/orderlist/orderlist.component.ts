@@ -12,7 +12,7 @@ export class OrderlistComponent implements OnInit {
 
   constructor(private dishOrderService: ListDishService) { }
 
-  @Input() _array : Array<DishViewModel>;
+  @Input() _array: Array<DishViewModel>;
   @Input() view: boolean;
   @Input() numberTable: number;
   @Input() numberCustom: number;
@@ -20,6 +20,7 @@ export class OrderlistComponent implements OnInit {
   isLoading: boolean = false;
 
   ngOnInit() {
+    console.log('inited order', this._array)
   }
 
   public sendOrder() {
@@ -32,12 +33,12 @@ export class OrderlistComponent implements OnInit {
     this.dishOrderService.createNewOrder(mas, r => console.log());
   }
 
-  public clearOrder(){
+  public clearOrder() {
     this._array = this._array.filter(c => c.State > 0);
   }
 
   public getTotal() {
-  return this.dishOrderService.getTotalDish(this._array);
+    return this.dishOrderService.getTotalDish(this._array);
   }
 
   public groupById() {
@@ -61,10 +62,11 @@ export class OrderlistComponent implements OnInit {
     if (increased == true) {
       this._array.push(dish.key);
     }
-    else{
+    else {
       var indx = this._array.map(c => c.Id).lastIndexOf(dish.key.Id);
-      this._array.splice(indx,1);
+      this._array.splice(indx, 1);
     }
+    console.log('changed', this._array)
   }
 }
 

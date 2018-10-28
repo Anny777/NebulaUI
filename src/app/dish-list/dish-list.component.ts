@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ListDishService } from '../services/dish-order.service';
 import { DishViewModel } from '../model/dishViewModel';
 import { DataService } from '../services/data.service';
+import { Router } from '@angular/router';
+import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 @Component({
   selector: 'app-dish-list',
@@ -10,7 +12,7 @@ import { DataService } from '../services/data.service';
 })
 export class DishListComponent implements OnInit {
 
-  constructor(private listServices: ListDishService, private data: DataService) {
+  constructor(private listServices: ListDishService, private data: DataService, private router: Router) {
     this.data = data;
   }
   message: string;
@@ -26,6 +28,10 @@ export class DishListComponent implements OnInit {
     this.isLoading = true;
     this.listServices.getListDishes(r => this.resp(r));
     this.numberTable = this.data.getNumTable();
+    if(!this.numberTable)
+    {
+      this.router.navigate(['/'])
+    }
 
     this.response(this.listServices.orders);
   }
