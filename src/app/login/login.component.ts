@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { userInfo } from '../model/userInfo';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
   email: string;
   pass: string;
   isLoading: boolean = false;
-
+  public userInfo: userInfo;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -23,7 +24,21 @@ export class LoginComponent implements OnInit {
   public login() {
     this.isLoading = true;
     this.auth.login(this.email, this.pass).subscribe(
-      isAuth => {this.isLoading = false; this.router.navigate(['/'])},
-      err => {this.isLoading = false; console.log(err); alert(err.error.error_description)});
+      isAuth => {
+        this.isLoading = false;
+        if (isAuth) {
+          if (isAuth.Roles.indexOf("Cook") > -1) {
+            this.router.navigate(['/kitchen']);
+          }
+
+          else if (isAuth.Roles.indexOf("Bartender") > -1) {
+            this.router.navigate(['/bar']);
+          }
+
+          else
+            this.router.navigate(['/']);
+        }
+      },
+      err => { this.isLoading = false; console.log(err); alert(err.error.error_description) });
   }
 }

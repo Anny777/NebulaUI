@@ -81,13 +81,10 @@ export class AuthService {
       return false;
     }
 
-    for (let index = 0; index < roles.length; index++) {
-      const element = roles[index];
-      if (this.userInfo.Roles.indexOf(element) > -1) {
-        return true;
-      };
-      return false;
-
+    if (roles.indexOf(this.userInfo.Roles.toString()) > -1) {
+      return true;
     }
+    else
+      return false;
   }
 }

@@ -35,6 +35,6 @@ export class TableComponent implements OnInit {
 
   private _setBusy(orders, table){
     table.busy = orders.map(d => d.Table).indexOf(table.Number) > -1;
-    console.log('table ' + table.Number + ' busy=' + table.busy);
+    // console.log('table ' + table.Number + ' busy=' + table.busy);
   }
 }

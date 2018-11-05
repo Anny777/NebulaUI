@@ -28,9 +28,7 @@ import { GroupByPipe } from './filter-pipe/groupBy-pipe';
 import { CookingComponent } from './cooking/cooking.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ForgotComponent } from './forgot/forgot.component';
 import { Interceptor } from './services/interceptor';
-
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -76,7 +74,8 @@ const appRoutes: Routes = [
     NgPipesModule,
     Ng2FilterPipeModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
