@@ -29,6 +29,7 @@ import { CookingComponent } from './cooking/cooking.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Interceptor } from './services/interceptor';
+import { ToastModule } from 'ng6-toastr/ng2-toastr';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -75,7 +76,8 @@ const appRoutes: Routes = [
     Ng2FilterPipeModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastModule.forRoot()
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

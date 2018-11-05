@@ -24,9 +24,12 @@
                         ],
                         "styles": [
                             "node_modules/material-design-icons/iconfont/material-icons.css",
+                            "node_modules/ng6-toastr/bundles/ng2-toastr.min.css",
                             "src/styles.css"
                         ],
-                        "scripts": []
+                        "scripts": [
+                          "node_modules/ng6-toastr/ng2-toastr.js"
+                        ]
                     },
                     "configurations": {
                         "production": {
