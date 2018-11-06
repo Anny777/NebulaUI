@@ -1,5 +1,9 @@
 <nav>
   <ul>
+    <li>
+      <i><mat-icon style="cursor:pointer" onclick="document.documentElement.webkitRequestFullscreen()" class="fullscreen material-icons 36dp">fullscreen</mat-icon>
+      </i>
+      </li>
     <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink=""><button mat-raised-button>Зал_1</button></a></li>
     <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink="hall-2"><button mat-raised-button>Зал_2</button></a></li>
     <li *ngIf="userIsInRole(['Admin','Bartender'])"><a routerLink="orders"><button mat-raised-button>Заказы</button></a></li>
