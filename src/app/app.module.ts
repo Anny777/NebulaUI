@@ -3,7 +3,7 @@ import { NgModule, Pipe } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField, MatIconModule, MatIcon, MatProgressSpinnerModule, MatFormFieldModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatIconModule, MatProgressSpinnerModule, MatFormFieldModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './components/hall1/hall1.component';
@@ -13,7 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { BarComponent } from './components/bar/bar.component';
 import { AdministrationComponent } from './components/administration/administration.component';
-import { TableComponent } from './table/table.component';
+import { TableComponent } from './components/table/table.component';
 import { TableService } from './services/table.service';
 import { DishListComponent } from './components/dish-list/dish-list.component';
 import { ListDishService } from './services/dish-order.service';
@@ -32,6 +32,8 @@ import { Interceptor } from './services/interceptor';
 import { StoreModule } from '@ngrx/store';
 import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
+import { EffectsModule } from '@ngrx/effects';
+import { effects } from './store/app.effects';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -74,6 +76,7 @@ const appRoutes: Routes = [
       orders: orderReducer
     }),
     RouterModule.forRoot(appRoutes),
+    EffectsModule.forRoot(effects),
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,

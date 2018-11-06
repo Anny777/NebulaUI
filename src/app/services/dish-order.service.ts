@@ -6,6 +6,7 @@ import { DishState } from "../model/enum-dishState";
 import { DishViewModel } from "../model/dishViewModel";
 import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
+import { IOrder } from "../models/order";
 
 @Injectable({
   providedIn: "root"
@@ -59,7 +60,7 @@ export class ListDishService {
           const currentDishIndex = currentOrder.Dishes.map(
             c => c.CookingDishId
           ).indexOf(newDish.CookingDishId);
-          // Если не нашел, значит блюдо новое и его нужно добавить в массив и отправить emit, 
+          // Если не нашел, значит блюдо новое и его нужно добавить в массив и отправить emit,
           // сообщая, что блюдо должно быть в работе
           if (currentDishIndex < 0) {
             this.change = true;
@@ -118,7 +119,7 @@ export class ListDishService {
   }
 
   public getListDishes(cb: any) {
-    this.http.get(environment.host + "api/dish/List").subscribe(
+    this.getOpenOrders().subscribe(
       d => cb(d),
       d => console.log(d))
   }
@@ -130,9 +131,13 @@ export class ListDishService {
   }
 
   public getOpenOrder(cb: any) {
-    this.http.get(environment.host + "api/Order/List").subscribe(
+    this.getOpenOrders().subscribe(
       d => cb(d),
       d => console.log(d));
+  }
+
+  public getOpenOrders(): Observable<IOrder[]>{
+    return this.http.get<IOrder[]>(environment.host + "api/Order/List");
   }
 
   public setReady(id: number, cb: any) {
