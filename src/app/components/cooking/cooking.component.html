@@ -1,6 +1,6 @@
 <div *ngFor="let order of filterWorkType()" class="divBlockCook">
   <h3 class="header">Стол № {{order.Table}} от {{order.CreatedDate | date:'HH:mm'}}</h3>
-  <table  class="striped">
+  <table class="striped">
     <tr *ngFor="let dish of order.Dishes">
       <td>
         {{dish.Name}}
@@ -8,6 +8,7 @@
       </td>
       <td (click)="ready(dish.CookingDishId)" style="cursor:pointer;">
         <mat-icon *ngIf="isLoading" class="ready material-icons md-48">check_circle</mat-icon>
+
         <mat-spinner *ngIf="!isLoading" [diameter]="30"></mat-spinner>
       </td>
       <td>
