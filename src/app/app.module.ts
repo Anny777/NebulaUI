@@ -30,7 +30,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './services/interceptor';
 import { StoreModule } from '@ngrx/store';
-import { reducer } from './store/reducers/order';
+import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
 
 // определение маршрутов
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot({
-      orders: reducer
+      orders: orderReducer
     }),
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
