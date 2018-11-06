@@ -1,3 +1,6 @@
 <p>
   forgot works!
 </p>
+<div *ngFor="let order of orders$ | async">
+    {{order.Id}}
+  </div>

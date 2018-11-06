@@ -3,7 +3,7 @@ import { NgModule, Pipe } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField, MatIconModule, MatIcon, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField, MatIconModule, MatIcon, MatProgressSpinnerModule, MatFormFieldModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './hall1/hall1.component';
@@ -29,7 +29,9 @@ import { CookingComponent } from './cooking/cooking.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Interceptor } from './services/interceptor';
-import { ToastModule } from 'ng6-toastr/ng2-toastr';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './store/reducers/order';
+import { ForgotComponent } from './forgot/forgot.component';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -41,7 +43,8 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dishes', component: DishListComponent },
-  { path: 'orders', component: OpenOrderComponent }
+  { path: 'orders', component: OpenOrderComponent },
+  { path: 'forgot', component: ForgotComponent }
 ];
 
 @NgModule({
@@ -62,11 +65,14 @@ const appRoutes: Routes = [
     MatInput,
     LoginComponent,
     RegisterComponent,
-    MatFormField
+    ForgotComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    StoreModule.forRoot({
+      orders: reducer
+    }),
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     MatButtonModule,
@@ -75,9 +81,9 @@ const appRoutes: Routes = [
     NgPipesModule,
     Ng2FilterPipeModule,
     MatIconModule,
+    MatFormFieldModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule,
-    ToastModule.forRoot()
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
