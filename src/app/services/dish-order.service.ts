@@ -12,7 +12,7 @@ import { environment } from "../../environments/environment";
 })
 export class ListDishService {
   @Output() OnDishInWork = new EventEmitter<boolean>();
-  @Output() OnDishReady = new EventEmitter<OrderViewModel[]>();
+  @Output() OnDishReady = new EventEmitter<any>();
   @Output() OnDishTaken = new EventEmitter<boolean>();
 
   @Output() OnDishCancelReq = new EventEmitter<boolean>();
@@ -76,7 +76,7 @@ export class ListDishService {
             switch (newDish.State) {
               case DishState.Ready:
                 this.change = true;
-                this.OnDishReady.emit(order);
+                this.OnDishReady.emit({Name: newDish.Name, Table: order.Table});
                 break;
               case DishState.Taken:
                 this.change = true;
@@ -138,8 +138,7 @@ export class ListDishService {
   public setReady(id: number, cb: any) {
     this.http.post(
       environment.host + "api/Order/SetState?id=" + id + "&dishState=3", {}).subscribe(
-        d => cb(true),
-        d => console.log(d));
+        d => cb(true));
   }
 
   public setDeleted(id: number): Observable<any> {
