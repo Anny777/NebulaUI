@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IOrder } from '../models/order';
+import { IOrder } from '../../models/order';
 import { AppState } from 'src/app.state';
 import { Store } from '@ngrx/store';
 

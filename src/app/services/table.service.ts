@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Routes } from '@angular/router';
-import { DishListComponent } from '../dish-list/dish-list.component';
+import { DishListComponent } from '../components/dish-list/dish-list.component';
 
 @Injectable({
   providedIn: 'root'

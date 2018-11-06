@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { ListDishService } from "../services/dish-order.service";
-import { OrderViewModel } from "../model/orderViewModel";
-import { DishState } from "../model/enum-dishState";
+import { ListDishService } from "../../services/dish-order.service";
+import { OrderViewModel } from "../../model/orderViewModel";
+import { DishState } from "../../model/enum-dishState";
 
 @Component({
   selector: "app-cooking",

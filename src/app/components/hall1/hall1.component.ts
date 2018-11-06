@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { ListDishService } from '../services/dish-order.service';
+import { ListDishService } from '../../services/dish-order.service';
 
 @Component({
   selector: 'app-hall1',

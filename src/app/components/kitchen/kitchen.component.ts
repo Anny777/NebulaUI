@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListDishService } from '../services/dish-order.service';
+import { ListDishService } from '../../services/dish-order.service';
 
 @Component({
   selector: 'app-kitchen',

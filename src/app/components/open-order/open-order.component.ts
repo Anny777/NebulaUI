@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderViewModel } from '../model/orderViewModel';
-import { ListDishService } from '../services/dish-order.service';
-import { DishViewModel } from '../model/dishViewModel';
+import { OrderViewModel } from '../../model/orderViewModel';
+import { ListDishService } from '../../services/dish-order.service';
+import { DishViewModel } from '../../model/dishViewModel';
 
 @Component({
   selector: 'app-open-order',

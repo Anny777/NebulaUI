@@ -6,32 +6,32 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule, MatInput, MatFormField, MatIconModule, MatIcon, MatProgressSpinnerModule, MatFormFieldModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
-import { Hall1Component } from './hall1/hall1.component';
-import { Hall2Component } from './hall2/hall2.component';
-import { KitchenComponent } from './kitchen/kitchen.component';
+import { Hall1Component } from './components/hall1/hall1.component';
+import { Hall2Component } from './components/hall2/hall2.component';
+import { KitchenComponent } from './components/kitchen/kitchen.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { BarComponent } from './bar/bar.component';
-import { AdministrationComponent } from './administration/administration.component';
+import { BarComponent } from './components/bar/bar.component';
+import { AdministrationComponent } from './components/administration/administration.component';
 import { TableComponent } from './table/table.component';
 import { TableService } from './services/table.service';
-import { DishListComponent } from './dish-list/dish-list.component';
+import { DishListComponent } from './components/dish-list/dish-list.component';
 import { ListDishService } from './services/dish-order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule } from '@angular/forms';
-import { OrderlistComponent } from './orderlist/orderlist.component';
+import { OrderlistComponent } from './components/orderlist/orderlist.component';
 import { DataService } from './services/data.service';
-import { OpenOrderComponent } from './open-order/open-order.component';
+import { OpenOrderComponent } from './components/open-order/open-order.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
-import { CookingComponent } from './cooking/cooking.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { CookingComponent } from './components/cooking/cooking.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './services/interceptor';
 import { StoreModule } from '@ngrx/store';
 import { reducer } from './store/reducers/order';
-import { ForgotComponent } from './forgot/forgot.component';
+import { ForgotComponent } from './components/forgot/forgot.component';
 
 // определение маршрутов
 const appRoutes: Routes = [
