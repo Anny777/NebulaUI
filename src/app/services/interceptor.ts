@@ -3,14 +3,17 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
@@ -18,6 +21,10 @@ export class Interceptor implements HttpInterceptor {
       }
     });
 
-    return next.handle(request);
+    return next.handle(request).do(event => { }, err => {
+      if (err instanceof HttpErrorResponse && err.status == 401) {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

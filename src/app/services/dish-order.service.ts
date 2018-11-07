@@ -27,7 +27,7 @@ export class ListDishService {
 
   constructor(private http: HttpClient, private router: Router) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
-    const intervalObs = interval(1500);
+    const intervalObs = interval(5000);
     intervalObs.subscribe(c => {
       this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
     });
@@ -132,8 +132,7 @@ export class ListDishService {
 
   public getOpenOrder(cb: any) {
     this.getOpenOrders().subscribe(
-      d => cb(d),
-      d => console.log(d));
+      d => cb(d));
   }
 
   public getOpenOrders(): Observable<IOrder[]>{
