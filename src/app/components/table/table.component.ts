@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { TableService } from "../../services/table.service";
 import { DataService } from "../../services/data.service";
 import { ListDishService } from "../../services/dish-order.service";

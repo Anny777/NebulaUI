@@ -1,5 +1,4 @@
 import { DishViewModel } from './dishViewModel';
-import { getLocaleTimeFormat } from '@angular/common';
 
 export class OrderViewModel {
     Id: number;

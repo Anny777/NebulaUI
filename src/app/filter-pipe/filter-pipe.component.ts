@@ -1,5 +1,4 @@
 import { PipeTransform, Pipe } from '@angular/core';
-import { DishViewModel } from '../model/dishViewModel';
 
 @Pipe({
   name: 'myfilter',

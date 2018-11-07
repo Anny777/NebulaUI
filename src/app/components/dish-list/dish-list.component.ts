@@ -3,7 +3,6 @@ import { ListDishService } from '../../services/dish-order.service';
 import { DishViewModel } from '../../model/dishViewModel';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
-import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 @Component({
   selector: 'app-dish-list',
