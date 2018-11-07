@@ -23,29 +23,38 @@ export class ListDishService {
 
   orders: Array<OrderViewModel> = [];
   openOrders: Array<OrderViewModel> = [];
-
+  inited: boolean = false;
   change: boolean;
+  intervalObs = interval(5000);
 
-  constructor(private http: HttpClient, private router: Router, private listDishes: DishService) {
-    // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
-    const intervalObs = interval(1500);
-    intervalObs.subscribe(c => {
-      this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
-    });
-  }
-
-  //Функция принимает массив заказов
-  public respon(arrayOrders: any) {
-    this.openOrders = arrayOrders;
-
-    // Если массив пришел пустой, то вернуть пустой массив
-    if (this.orders.length == 0) {
-      this.orders = arrayOrders;
+  constructor(private http: HttpClient, private router: Router, private listDishes: DishService) {}
+  public init() {
+    if (this.inited) {
       return;
     }
 
+    // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
+    this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
+    this.intervalObs.subscribe(c => {
+      this.inited = true;
+      this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
+    });
+    this.inited = true;
+  }
+
+
+  //Функция принимает массив заказов
+  public respon(arrayOrders: any) {
     this.change = false;
-    // Если массив имеет элементы, запускается цикл
+    this.openOrders = arrayOrders;
+
+    // Если текущий массив пустой (первый запуск или нет заказов), то записываем массив полученный от сервера
+    if (this.orders.length == 0) {
+      this.orders = arrayOrders;
+      this.OnArrayUpdated.emit(this.orders);
+      return;
+    }
+    // Если массив с сервера имеет элементы, запускается цикл
     for (let i = 0; i < arrayOrders.length; i++) {
       // Флаг указывает что не было никаких изменений
       const order = arrayOrders[i];
@@ -78,7 +87,7 @@ export class ListDishService {
             switch (newDish.State) {
               case DishState.Ready:
                 this.change = true;
-                this.OnDishReady.emit({Name: newDish.Name, Table: order.Table});
+                this.OnDishReady.emit({ Name: newDish.Name, Table: order.Table });
                 break;
               case DishState.Taken:
                 this.change = true;
@@ -105,7 +114,7 @@ export class ListDishService {
         this.OnDishInWork.emit();
       }
     }
-
+    console.log('is changed ', this.change)
     if (this.change == true) {
       this.OnArrayUpdated.emit(this.orders);
     }
@@ -133,11 +142,10 @@ export class ListDishService {
 
   public getOpenOrder(cb: any) {
     this.getOpenOrders().subscribe(
-      d => cb(d),
-      d => console.log(d));
+      d => cb(d));
   }
 
-  public getOpenOrders(): Observable<IOrder[]>{
+  public getOpenOrders(): Observable<IOrder[]> {
     return this.http.get<IOrder[]>(environment.host + "api/Order/List");
   }
 
@@ -158,7 +166,7 @@ export class ListDishService {
     this.http.post(
       environment.host + "api/Order/Close?tableNumber=" + table,
       {}).subscribe(
-      d => cb(true),
-      d => console.log(d));
+        d => cb(true),
+        d => console.log(d));
   }
 }

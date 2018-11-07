@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatIconModule, MatProgressSpinnerModule, MatFormFieldModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatInput, MatIconModule, MatProgressSpinnerModule, MatFormFieldModule, MatBadgeModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './components/hall1/hall1.component';
@@ -88,7 +88,8 @@ const appRoutes: Routes = [
     MatIconModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatBadgeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
