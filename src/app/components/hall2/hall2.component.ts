@@ -6,9 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hall2.component.css']
 })
 export class Hall2Component implements OnInit {
-
-  constructor() { }
-
   ngOnInit() {
   }
 

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ListDishService } from '../../services/dish-order.service';
 
 @Component({
   selector: 'app-hall1',
@@ -8,10 +6,6 @@ import { ListDishService } from '../../services/dish-order.service';
   styleUrls: ['./hall1.component.css']
 })
 export class Hall1Component implements OnInit {
-
-  constructor(private router: Router, private listDish: ListDishService) {
-  }
-
   ngOnInit() {
   }
 
