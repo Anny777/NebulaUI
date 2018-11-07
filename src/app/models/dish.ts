@@ -1,7 +1,7 @@
 import { WorkshopType } from "./workShopType";
 import { DishState } from "./dishState";
 
-export interface Dish {
+export interface IDish {
   Id: number;
   CookingDishId: number;
   Name: string;

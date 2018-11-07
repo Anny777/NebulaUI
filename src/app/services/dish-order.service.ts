@@ -7,6 +7,7 @@ import { DishViewModel } from "../model/dishViewModel";
 import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 import { IOrder } from "../models/order";
+import { DishService } from "./dish.service";
 
 @Injectable({
   providedIn: "root"
@@ -25,7 +26,7 @@ export class ListDishService {
 
   change: boolean;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private listDishes: DishService) {
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
     const intervalObs = interval(1500);
     intervalObs.subscribe(c => {
@@ -119,7 +120,7 @@ export class ListDishService {
   }
 
   public getListDishes(cb: any) {
-    this.getOpenOrders().subscribe(
+    this.listDishes.getListDishes().subscribe(
       d => cb(d),
       d => console.log(d))
   }

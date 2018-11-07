@@ -1,8 +1,8 @@
-import { Dish } from "./dish";
+import { IDish } from "./dish";
 
 export interface IOrder {
   Id: number;
-  Dishes: Dish[];
+  Dishes: IDish[];
   Table: number;
   CreatedDate: Date;
 }

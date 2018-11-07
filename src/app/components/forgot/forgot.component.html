@@ -4,3 +4,11 @@
 <div *ngFor="let order of orders$ | async">
   {{order.Id}}
 </div>
+
+
+<p>
+  Reducer Dish
+</p>
+<div *ngFor = "let dish of dishes$ | async">
+{{dish.Name}}
+</div>

@@ -32,7 +32,7 @@ export class DishListComponent implements OnInit {
       this.router.navigate(['/'])
     }
 
-    this.response(this.listServices.orders);
+    this.response(this.listServices.openOrders);
   }
   resp(r: any) {
     this.isLoading = false;

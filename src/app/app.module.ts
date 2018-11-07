@@ -34,6 +34,7 @@ import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
+import { dishReducer } from './store/reducers/dishReducer';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot({
-      orders: orderReducer
+      orders: orderReducer,
+      dishes: dishReducer
     }),
     RouterModule.forRoot(appRoutes),
     EffectsModule.forRoot(effects),
