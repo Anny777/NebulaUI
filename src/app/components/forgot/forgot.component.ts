@@ -24,7 +24,7 @@ dishes$: Observable<IDish[]>;
     this.store.dispatch(new OrderActions.LoadOrders());
 
     this.dishes$ = this.store.select(c => c.dishes.dishes);
-    this.store.dispatch(new DisheActions.LoadDish());
+    this.store.dispatch(new DisheActions.LoadDish()); // test
   }
 
 }
