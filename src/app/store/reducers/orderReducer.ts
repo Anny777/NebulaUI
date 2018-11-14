@@ -2,22 +2,24 @@ import { IOrder } from "src/app/models/order";
 import * as OrderActions from '../actions/orderActions'
 
 export interface IOrderState {
-  orders: IOrder[]
+  orders: IOrder[],
+  isOrdersLoading: boolean
 }
 
 const initialState: IOrderState = {
-  orders: []
+  orders: [],
+  isOrdersLoading: false
 };
 
-export function orderReducer(state: IOrderState = initialState, action: OrderActions.Actions) : IOrderState {
+export function orderReducer(state: IOrderState = initialState, action: OrderActions.Actions): IOrderState {
 
   switch (action.type) {
     case OrderActions.LOAD_ORDERS:
       return state;
     case OrderActions.LOAD_ORDERS_SUCCESS:
       return {
-        ...state,
-        orders: action.payload
+        ..._mergeOrders(action.payload, state),
+        isOrdersLoading: false
       }
     case OrderActions.LOAD_ORDERS_FAIL:
       return state;
@@ -25,4 +27,57 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
       return state;
   }
 
+}
+
+function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
+  if ((state.orders.length == 0 && orders.length > 0) || (orders.length == 0 && state.orders.length > 0)) {
+    console.log('full refresh');
+    return {
+      ...state,
+      orders: orders
+    }
+  }
+
+  let currentOrders = state.orders.copyWithin(0, 0);
+  let isChanged = false;
+  for (let orderIndex = 0; orderIndex < orders.length; orderIndex++) {
+    const order = orders[orderIndex];
+    const currentOrder = currentOrders.find(c => c.Id == order.Id)
+
+    if (!currentOrder) {
+      console.log('new order', order);
+      currentOrders.push(order);
+      isChanged = true;
+      continue;
+    }
+
+    for (let dishIndex = 0; dishIndex < order.Dishes.length; dishIndex++) {
+      const dish = order.Dishes[dishIndex];
+      const currentDish = currentOrder.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
+
+      if (!currentDish) {
+        console.log('new dish', order);
+        currentOrder.Dishes.push(dish);
+        isChanged = true;
+        continue;
+      }
+
+      if (currentDish.State != dish.State) {
+        console.log('new dish state', dish);
+        currentDish.State = dish.State;
+        isChanged = true;
+      }
+    }
+  }
+
+  if (isChanged) {
+    console.log('state changed');
+    return {
+      ...state,
+      orders: orders
+    }
+  }
+
+    console.log('not changed');
+    return state;
 }

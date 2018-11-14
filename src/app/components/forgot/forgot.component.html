@@ -1,14 +1,20 @@
 <p>
   forgot works!123
 </p>
-<div *ngFor="let order of orders$ | async">
-  {{order.Id}}
+<button (click)="refresh()">refresh</button>
+<div *ngIf="!(isOrdersLoadnig$ | async)">
+  <b>Orders list</b>
+  <div *ngFor="let order of orders$ | async">
+    {{order.Id}}
+    <div *ngFor="let dish of order.Dishes">
+      {{dish.Name}}
+    </div>
+  </div>
 </div>
-
 
 <p>
   Reducer Dish
 </p>
-<div *ngFor = "let dish of dishes$ | async">
-{{dish.Name}}
+<div *ngFor="let dish of dishes$ | async">
+  {{dish.Name}}
 </div>

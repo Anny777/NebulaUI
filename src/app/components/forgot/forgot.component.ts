@@ -15,16 +15,20 @@ import { IDish } from 'src/app/models/dish';
 })
 export class ForgotComponent implements OnInit {
 orders$: Observable<IOrder[]>;
+isOrdersLoading$: Observable<boolean>;
 dishes$: Observable<IDish[]>;
   constructor(private store: Store<IAppState>) {
   }
 
   ngOnInit() {
     this.orders$ = this.store.select(c=>c.orders.orders).pipe(tap(orders => console.log(orders)));
-    this.store.dispatch(new OrderActions.LoadOrders());
+    this.isOrdersLoading$ = this.store.select(c=>c.orders.isOrdersLoading).pipe(tap(isloading => console.log('isloading:',isloading)));
 
     this.dishes$ = this.store.select(c => c.dishes.dishes);
-    this.store.dispatch(new DisheActions.LoadDish()); // test
+    // this.store.dispatch(new DisheActions.LoadDish());
   }
+ refresh(){
+  this.store.dispatch(new OrderActions.LoadOrders());
 
+ }
 }
