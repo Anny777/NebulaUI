@@ -3,26 +3,45 @@ import * as OrderActions from '../actions/orderActions'
 
 export interface IOrderState {
   orders: IOrder[],
-  isOrdersLoading: boolean
+  isOrdersLoading: boolean,
+  isOrderAdd: boolean,
+  isOrderClose: boolean
 }
 
 const initialState: IOrderState = {
   orders: [],
-  isOrdersLoading: false
+  isOrdersLoading: false,
+  isOrderAdd: false,
+  isOrderClose: false
 };
 
 export function orderReducer(state: IOrderState = initialState, action: OrderActions.Actions): IOrderState {
 
   switch (action.type) {
     case OrderActions.LOAD_ORDERS:
-      return state;
+      return { ...state, isOrdersLoading: true };
     case OrderActions.LOAD_ORDERS_SUCCESS:
       return {
         ..._mergeOrders(action.payload, state),
         isOrdersLoading: false
       }
     case OrderActions.LOAD_ORDERS_FAIL:
-      return state;
+      return { ...state, isOrdersLoading: true };
+
+    case OrderActions.ADD_ORDER:
+      return { ...state, isOrderAdd: true };
+    case OrderActions.ADD_ORDER_SUCCESS:
+      return { ...state, isOrderAdd: false };
+    case OrderActions.ADD_ORDER_FAIL:
+      return { ...state, isOrderAdd: false };
+
+    case OrderActions.CLOSE_ORDER:
+      return { ...state, isOrderClose: true };
+    case OrderActions.CLOSE_ORDER_SUCCESS:
+      return { ...state, isOrderClose: false };
+    case OrderActions.CLOSE_ORDER_FAIL:
+      return { ...state, isOrderClose: true };
+
     default:
       return state;
   }
@@ -78,6 +97,6 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
     }
   }
 
-    console.log('not changed');
-    return state;
+  console.log('not changed');
+  return state;
 }

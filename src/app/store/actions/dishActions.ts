@@ -2,16 +2,16 @@ import { IDish } from "src/app/models/dish";
 import { Action } from '@ngrx/store';
 
 export const LOAD_DISHES = '[Dish] Load';
-export const LOAD_DISHES_SUCCESS = '[Dish] LoadSuccess';
-export const LOAD_DISHES_FAIL = '[Dish] LoadFail';
+export const LOAD_DISHES_SUCCESS = '[Dish] Load Success';
+export const LOAD_DISHES_FAIL = '[Dish] Load Fail';
 
 export const ADD_DISH = '[Dish] Add';
-export const ADD_DISH_SUCCESS = '[Dish] AddSuccess';
-export const ADD_DISH_FAIL = '[Dish] AddFail';
+export const ADD_DISH_SUCCESS = '[Dish] Add Success';
+export const ADD_DISH_FAIL = '[Dish] Add Fail';
 
-export const CHANGE_STATE = '[Dish] ChangeState';
-export const CHANGE_STATE_SUCCESS = '[Dish] ChangeStateSuccess';
-export const CHANGE_STATE_FAIL = '[Dish] ChangeStateFail';
+export const CHANGE_STATE = '[Dish] Change State';
+export const CHANGE_STATE_SUCCESS = '[Dish] Change State Success';
+export const CHANGE_STATE_FAIL = '[Dish] Change State Fail';
 
 
 export class LoadDishes implements Action {

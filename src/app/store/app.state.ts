@@ -1,7 +1,7 @@
 import { IOrderState } from "./reducers/orderReducer";
-import { IDIshState } from "./reducers/dishReducer";
+import { IDishState } from "./reducers/dishReducer";
 
 export interface IAppState{
   readonly orders: IOrderState,
-  readonly dishes: IDIshState
+  readonly dishes: IDishState
 }

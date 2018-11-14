@@ -1,50 +1,34 @@
 import * as DishActions from '../actions/dishActions'
 import { IDish } from "src/app/models/dish";
 
-export interface IDIshState {
+export interface IDishState {
   dishes: IDish[],
-  isLoading: boolean
+  isListLoading: boolean,
+  isChangeStateLoading: boolean
 }
 
-const initialState: IDIshState = {
+const initialState: IDishState = {
   dishes: [],
-  isLoading: true
+  isListLoading: false,
+  isChangeStateLoading: false
 };
 
-export function dishReducer(state: IDIshState = initialState, action: DishActions.Actions): IDIshState {
+export function dishReducer(state: IDishState = initialState, action: DishActions.Actions): IDishState {
 
   switch (action.type) {
     case DishActions.LOAD_DISHES:
-      return {
-        ...state,
-        isLoading: true
-      }
+      return {...state, isListLoading: true};
     case DishActions.LOAD_DISHES_SUCCESS:
-      return {
-        ...state,
-        dishes: action.payload,
-        isLoading: false
-      }
+      return {...state, dishes: action.payload, isListLoading: false};
     case DishActions.LOAD_DISHES_FAIL:
-      return {
-        ...state,
-        isLoading: false
-      }
+    return {...state, isListLoading: false};
+
     case DishActions.CHANGE_STATE:
-      return {
-        ...state,
-        isLoading: true
-      }
+      return {...state, isChangeStateLoading: true};
     case DishActions.CHANGE_STATE_SUCCESS:
-      return {
-        ...state,
-        isLoading: false
-      }
+      return {...state, isChangeStateLoading: false};
     case DishActions.CHANGE_STATE_FAIL:
-      return {
-        ...state,
-        isLoading: false
-      }
+      return {...state, isChangeStateLoading: true};
     default:
       return state;
   }

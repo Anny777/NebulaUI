@@ -149,6 +149,14 @@ export class ListDishService {
     return this.http.get<IOrder[]>(environment.host + "api/Order/List");
   }
 
+  public create(order: IOrder): Observable<any> {
+    return this.http.post(environment.host + "api/Order/New", order);
+}
+
+public close(table: number): Observable<any> {
+ return this.http.post(environment.host + "api/Order/Close?tableNumber=" + table,{});
+}
+
   public setReady(id: number, cb: any) {
     this.http.post(
       environment.host + "api/Order/SetState?id=" + id + "&dishState=3", {}).subscribe(
