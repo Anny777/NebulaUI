@@ -20,7 +20,6 @@ import { ListDishService } from './services/order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule } from '@angular/forms';
 import { OrderlistComponent } from './components/orderlist/orderlist.component';
-import { DataService } from './services/data.service';
 import { OpenOrderComponent } from './components/open-order/open-order.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
@@ -47,7 +46,8 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dishes', component: DishListComponent },
   { path: 'orders', component: OpenOrderComponent },
-  { path: 'forgot', component: ForgotComponent }
+  { path: 'forgot', component: ForgotComponent },
+  { path: 'order/:id', component: ForgotComponent }
 ];
 
 @NgModule({
@@ -96,7 +96,7 @@ const appRoutes: Routes = [
     useClass: Interceptor,
     multi: true
   },
-    TableService, ListDishService, DataService],
+    TableService, ListDishService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

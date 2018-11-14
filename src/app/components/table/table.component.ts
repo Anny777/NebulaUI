@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TableService } from "../../services/table.service";
-import { DataService } from "../../services/data.service";
 import { ListDishService } from "../../services/order.service";
 import { DishState } from "src/app/model/enum-dishState";
+import { ITable } from "src/app/models/table";
+import { IOrder } from "src/app/models/order";
 
 @Component({
   selector: "app-table",
@@ -11,17 +12,12 @@ import { DishState } from "src/app/model/enum-dishState";
 })
 export class TableComponent implements OnInit {
   @Input() number: number;
-  table: any = {};
+  table: ITable;
 
   constructor(
     private tableService: TableService,
-    private data: DataService,
     private listDishService: ListDishService
-  ) {
-    this.number = this.number;
-    this.data = data;
-
-  }
+  ) { }
 
   ngOnInit() {
     this.table = this.tableService.getTable(this.number);
@@ -33,16 +29,13 @@ export class TableComponent implements OnInit {
     this.listDishService.init();
   }
 
-  numberTable(num: number) {
-    this.data.setNumTable(num);
-  }
-
-  private _setBusy(orders, table) {
-    table.busy = orders.map(d => d.Table).indexOf(table.Number) > -1;
+  private _setBusy(orders: IOrder[], table: ITable) {
+    table.busy = !!orders.find(c => c.Table == table.number);
     try {
-      var o = orders.filter(c => c.Table == table.Number);
-      table.readyDishesCount = o[0]
-        .Dishes.filter(c => c.State == DishState.Ready).length;
+      table.readyDishesCount = orders.filter(c => c.Table == table.number)
+        .reduce((p, c) =>
+          c.Dishes.filter(d => d.State == DishState.Ready).length + p, 0
+        );
     } catch (error) {
       table.readyDishesCount = 0;
     }
