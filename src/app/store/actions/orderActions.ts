@@ -22,10 +22,12 @@ export class LoadOrdersFail implements Action {
   constructor(public payload: any) { }
 }
 
+
 export class AddOrder implements Action {
   readonly type = ADD_ORDER;
   constructor(public payload: IOrder) { }
 }
+
 
 export class CloseOrder implements Action {
   readonly type = CLOSE_ORDER;

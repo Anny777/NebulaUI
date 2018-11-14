@@ -129,7 +129,7 @@ export class ListDishService {
   }
 
   public getListDishes(cb: any) {
-    this.listDishes.getListDishes().subscribe(
+    this.listDishes.list().subscribe(
       d => cb(d),
       d => console.log(d))
   }

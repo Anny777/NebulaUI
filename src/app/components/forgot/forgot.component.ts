@@ -25,7 +25,7 @@ dishes$: Observable<IDish[]>;
     this.isOrdersLoading$ = this.store.select(c=>c.orders.isOrdersLoading).pipe(tap(isloading => console.log('isloading:',isloading)));
 
     this.dishes$ = this.store.select(c => c.dishes.dishes);
-    // this.store.dispatch(new DisheActions.LoadDish());
+    // this.store.dispatch(new DisheActions.LoadDishes()); // test
   }
  refresh(){
   this.store.dispatch(new OrderActions.LoadOrders());
