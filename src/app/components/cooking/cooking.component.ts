@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { ListDishService } from "../../services/dish-order.service";
+import { ListDishService } from "../../services/order.service";
 import { OrderViewModel } from "../../model/orderViewModel";
 import { DishState } from "../../model/enum-dishState";
 

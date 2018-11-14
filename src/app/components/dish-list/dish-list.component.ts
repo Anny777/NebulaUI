@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ListDishService } from '../../services/dish-order.service';
+import { ListDishService } from '../../services/order.service';
 import { DishViewModel } from '../../model/dishViewModel';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';

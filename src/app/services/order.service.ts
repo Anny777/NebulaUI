@@ -1,7 +1,7 @@
 import { Injectable, Output, EventEmitter } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { OrderViewModel } from "../model/orderViewModel";
-import { Observable, interval } from "../../../node_modules/rxjs";
+import { Observable, interval } from "rxjs";
 import { DishState } from "../model/enum-dishState";
 import { DishViewModel } from "../model/dishViewModel";
 import { Router } from "@angular/router";

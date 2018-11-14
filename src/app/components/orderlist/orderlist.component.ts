@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderViewModel } from '../../model/orderViewModel';
-import { ListDishService } from '../../services/dish-order.service';
+import { ListDishService } from '../../services/order.service';
 import { DishViewModel } from '../../model/dishViewModel';
 
 @Component({
