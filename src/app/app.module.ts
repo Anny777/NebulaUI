@@ -36,6 +36,7 @@ import { effects } from './store/app.effects';
 import { dishReducer } from './store/reducers/dishReducer';
 import { tableReducer } from './store/reducers/tableReducer';
 import { userReducer } from './store/reducers/userReduser';
+import { OrderComponent } from './components/order/order.component';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
     MatInput,
     LoginComponent,
     RegisterComponent,
-    ForgotComponent
+    ForgotComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,

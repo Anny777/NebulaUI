@@ -5,6 +5,7 @@ export interface IOrder {
   Dishes: IDish[];
   Table: number;
   CreatedDate: Date;
+  Description: string;
 }
 
 

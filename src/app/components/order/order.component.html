@@ -1,0 +1,41 @@
+<div class="divBlock">
+  <h2 class="header">Заказ для стола № {{number}}</h2>
+  <table class="striped">
+    <tr *ngFor="let dish of grouppedOrder">
+      <td>
+        {{dish.key.Name}}
+      </td>
+      <td style="width: 100px;">
+        {{dish.key.Price * dish.value.length}} руб.
+      </td>
+      <td colspan="2" style="width: 100px;">
+        <div style="cursor:pointer;" class="divIcon">
+          <mat-icon>remove</mat-icon>
+        </div>
+        <div class="divIcon"> {{dish.value.length}} </div>
+        <div style="cursor:pointer;" class="divIcon">
+          <mat-icon>add</mat-icon>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>ИТОГО: </strong>
+      </td>
+      <td colspan="2"><strong>{{getTotal()}} руб. </strong></td>
+    </tr>
+    <tr>
+      <td colspan="3">Комментарий к заказу: <textarea style="width: 100%"></textarea></td>
+    </tr>
+    <tr>
+      <td *ngIf="!isLoading" colspan="3">
+        <button mat-raised-button color="warn" (click)="sendOrder()">Заказать</button>
+        &nbsp;
+        <button mat-raised-button color="warn" (click)="clearOrder()">Отменить</button></td>
+      <td *ngIf="isLoading" colspan="3">
+        <mat-spinner [diameter]="50"></mat-spinner>
+      </td>
+    </tr>
+
+  </table>
+</div>
