@@ -21,7 +21,7 @@ export class TableComponent implements OnInit {
 
   ngOnInit() {
     this.table = this.tableService.getTable(this.number);
-    this._setBusy(this.listDishService.openOrders, this.table);
+    // this._setBusy(this.listDishService.openOrders, this.table);
     this.listDishService.OnArrayUpdated.subscribe(r => {
       console.log('loaded', r);
       this._setBusy(r, this.table);

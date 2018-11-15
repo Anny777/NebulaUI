@@ -49,6 +49,7 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
 }
 
 function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
+  // Сразу обновляем если один из массивов пуст
   if ((state.orders.length == 0 && orders.length > 0) || (orders.length == 0 && state.orders.length > 0)) {
     console.log('full refresh');
     return {
@@ -57,6 +58,7 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
     }
   }
 
+  // Добавляем новые и обновляем статусы блюд
   let currentOrders = state.orders.copyWithin(0, 0);
   let isChanged = false;
   for (let orderIndex = 0; orderIndex < orders.length; orderIndex++) {
@@ -85,6 +87,32 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
         console.log('new dish state', dish);
         currentDish.State = dish.State;
         isChanged = true;
+      }
+    }
+  }
+
+  // Удаляем то что не пришло с сервера
+  for (let currentOrderIndex = 0; currentOrderIndex < this.orders.length; currentOrderIndex++) {
+    const currentOrder = this.orders[currentOrderIndex];
+    const order = orders.find(c => c.Id == currentOrder.Id)
+
+    if (!order) {
+      console.log('remove order', currentOrder);
+      currentOrders.splice(currentOrderIndex, 1);
+      isChanged = true;
+      continue;
+    }
+
+    // Удаляем блюда
+    for (let currentDishIndex = 0; currentDishIndex < currentOrder.Dishes.length; currentDishIndex++) {
+      const currentDish = currentOrder.Dishes[currentDishIndex];
+      const dish = order.Dishes.find(c => c.CookingDishId == currentDish.CookingDishId);
+
+      if (!dish) {
+        console.log('remove dish', currentDish);
+        currentOrder.Dishes.splice(currentDishIndex, 1);
+        isChanged = true;
+        continue;
       }
     }
   }

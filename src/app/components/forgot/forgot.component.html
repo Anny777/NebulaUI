@@ -2,6 +2,12 @@
   forgot works!123
 </p>
 <button (click)="refresh()">refresh</button>
+
+
+<app-order [number]="1" role="Admin"></app-order>
+
+
+
 <div *ngIf="!(isOrdersLoadnig$ | async)">
   <b>Orders list</b>
   <div *ngFor="let order of orders$ | async">

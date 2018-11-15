@@ -1,21 +1,24 @@
-<div *ngIf="view" class="divBlock" style="float:right">
-  <h2 class="header">Заказ:</h2>
-  <table class="striped">
-    <tr *ngFor="let dishes of groupById()">
+<div *ngIf="view" class="divBlock">
+  <h2 class="header">Заказ для стола: {{table.number}}</h2>
+  <div *ngIf="isOrdersLoading$ | async" class="center" style="width: 100px;">
+    <mat-spinner></mat-spinner>
+  </div>
+  <table *ngIf="!(isOrdersLoading$ | async)" class="striped">
+    <tr *ngFor="let dish of groupById()">
       <td>
-        {{dishes.key.Name}}
+        {{dish.key.Name}}
       </td>
       <td><textarea></textarea></td>
       <td style="width: 100px;">
-        {{dishes.key.Price * dishes.value.length}} руб.
+        {{dish.key.Price * dish.value.length}} руб.
       </td>
       <td style="width: 100px;">
         <div style="cursor:pointer;" class="divIcon">
-          <mat-icon (click)="change(false, dishes)">remove</mat-icon>
+          <mat-icon (click)="change(false, dish)">remove</mat-icon>
         </div>
         <div class="divIcon"> {{dishValue.value.length}} </div>
         <div style="cursor:pointer;" class="divIcon">
-          <mat-icon (click)="change(true, dishes)">add</mat-icon>
+          <mat-icon (click)="change(true, dish)">add</mat-icon>
         </div>
       </td>
     </tr>
