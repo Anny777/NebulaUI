@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/app.state';
 import * as OrderActions from '../../store/actions/orderActions';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order',
@@ -21,6 +22,7 @@ export class OrderComponent implements OnInit {
     CreatedDate: new Date(),
     Description: ''
   };
+  grouppedOrder: any; // TODO: если увидел - типизируй!
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
@@ -29,7 +31,9 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(c => c.orders.orders.find(o => o.Table == this.number)).subscribe(c => this._mergeOrder(c));
+    this.store.select(c => c.orders.orders.find(o => o.Table == this.number))
+      .pipe(tap(order => this.groupById(order)))
+      .subscribe(order => this._mergeOrder(order));
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
@@ -72,11 +76,15 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
   }
 
-  public groupById() {
+  public groupById(order: IOrder) {
     //review!!!
+    if (!order) {
+      return;
+    }
+
     var result = [];
-    for (let index = 0; index < this.order.Dishes.length; index++) {
-      const element = this.order.Dishes[index];
+    for (let index = 0; index < order.Dishes.length; index++) {
+      const element = order.Dishes[index];
       var io = result.map(c => c.key.Id).indexOf(element.Id);
       if (~io) {
         result[io].value.push(element);
@@ -86,7 +94,7 @@ export class OrderComponent implements OnInit {
     }
 
     console.log('group result', result);
-    return result;
+    this.grouppedOrder = result;
   }
 
   public getTotal() {
