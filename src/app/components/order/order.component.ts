@@ -14,12 +14,19 @@ export class OrderComponent implements OnInit {
   @Input() number: number;
   @Input() role: string;
 
-  order: IOrder;
+  order: IOrder = {
+    Id: 0,
+    Dishes: [],
+    Table: 0,
+    CreatedDate: new Date(),
+    Description: ''
+  };
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
-
-  constructor(private store: Store<IAppState>) { }
+  constructor(private store: Store<IAppState>) {
+    this.order.Table = this.number;
+  }
 
   ngOnInit() {
     this.store.select(c => c.orders.orders.find(o => o.Table == this.number)).subscribe(c => this._mergeOrder(c));
@@ -29,15 +36,22 @@ export class OrderComponent implements OnInit {
   }
 
   private _mergeOrder(order: IOrder) {
+    console.log('merge order')
+    if (!order) {
+      return;
+    }
+
     // Добавляем или обновляем статус
     order.Dishes.forEach(dish => {
       let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
       if (!currentDish) {
         this.order.Dishes.push(dish);
+        return;
       }
 
       if (dish.State != currentDish.State) {
         currentDish.State = dish.State;
+        return;
       }
     });
 
@@ -70,6 +84,12 @@ export class OrderComponent implements OnInit {
         result.push({ key: element, value: [element] });
       }
     }
+
+    console.log('group result', result);
     return result;
+  }
+
+  public getTotal() {
+    return this.order.Dishes.reduce((p, c) => c.Price + p, 0);
   }
 }

@@ -92,8 +92,8 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
   }
 
   // Удаляем то что не пришло с сервера
-  for (let currentOrderIndex = 0; currentOrderIndex < this.orders.length; currentOrderIndex++) {
-    const currentOrder = this.orders[currentOrderIndex];
+  for (let currentOrderIndex = 0; currentOrderIndex < currentOrders.length; currentOrderIndex++) {
+    const currentOrder = currentOrders[currentOrderIndex];
     const order = orders.find(c => c.Id == currentOrder.Id)
 
     if (!order) {
