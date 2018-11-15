@@ -4,6 +4,7 @@ import { userInfo } from '../model/userInfo';
 import { map } from 'rxjs/operators';
 import { Observable, concat } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { IUser } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -66,8 +67,8 @@ export class AuthService {
       )
   }
 
-  public getUserInfo(a): Observable<any> {
-    return this.client.get(environment.host + "api/Account/UserInfo")
+  public getUserInfo(a): Observable<IUser> {
+    return this.client.get<IUser>(environment.host + "api/Account/UserInfo")
       .pipe(
         map(d => {
           a.userInfo = d;

@@ -34,6 +34,8 @@ import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
 import { dishReducer } from './store/reducers/dishReducer';
+import { tableReducer } from './store/reducers/tableReducer';
+import { userReducer } from './store/reducers/userReduser';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -75,7 +77,9 @@ const appRoutes: Routes = [
     HttpClientModule,
     StoreModule.forRoot({
       orders: orderReducer,
-      dishes: dishReducer
+      dishes: dishReducer,
+      table: tableReducer,
+      user: userReducer
     }),
     RouterModule.forRoot(appRoutes),
     EffectsModule.forRoot(effects),
