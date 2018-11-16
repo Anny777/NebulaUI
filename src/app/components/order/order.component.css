@@ -1,4 +1,4 @@
-.divIcon{
+.icon {
   vertical-align: top;
   display: inline-block;
   cursor: pointer;
@@ -6,4 +6,25 @@
   height: 25px;
   font-size: larger;
   text-align: center;
+}
+
+.content {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2vh;
+  margin: 1vh;
+  vertical-align: top;
+  background-color: rgba(242, 242, 242, 0.75);
+}
+
+.success {
+  background-color: lightgreen;
+}
+
+.warning {
+  background-color: lightyellow;
+}
+
+.error {
+  background-color: lightcoral;
 }

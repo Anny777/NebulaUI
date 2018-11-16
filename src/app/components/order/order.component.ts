@@ -5,6 +5,8 @@ import { IAppState } from 'src/app/store/app.state';
 import * as OrderActions from '../../store/actions/orderActions';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { DishState } from 'src/app/models/dishState';
+import { IDish } from 'src/app/models/dish';
 
 @Component({
   selector: 'app-order',
@@ -13,26 +15,31 @@ import { tap } from 'rxjs/operators';
 })
 export class OrderComponent implements OnInit {
   @Input() number: number;
-  @Input() role: string;
+  @Input() roles: string[];
 
   order: IOrder = {
     Id: 0,
     Dishes: [],
     Table: 0,
     CreatedDate: new Date(),
-    Description: ''
+    Comment: ''
   };
-  grouppedOrder: any; // TODO: если увидел - типизируй!
+
+  inWorkGroupped: any; // TODO: если увидел - типизируй!
+  readyDishes: IDish[];
+  cancellationDishes: IDish[];
+  inWorkDishes: IDish[];
+  deletedDishes: IDish[];
+
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
   constructor(private store: Store<IAppState>) {
-    this.order.Table = this.number;
   }
 
   ngOnInit() {
+    this.order.Table = this.number;
     this.store.select(c => c.orders.orders.find(o => o.Table == this.number))
-      .pipe(tap(order => this.groupById(order)))
       .subscribe(order => this._mergeOrder(order));
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
@@ -40,16 +47,20 @@ export class OrderComponent implements OnInit {
   }
 
   private _mergeOrder(order: IOrder) {
-    console.log('merge order')
     if (!order) {
       return;
     }
+
+    this.order.Id = order.Id;
+    this.order.Comment = order.Comment;
+    this.order.CreatedDate = order.CreatedDate;
 
     // Добавляем или обновляем статус
     order.Dishes.forEach(dish => {
       let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
       if (!currentDish) {
         this.order.Dishes.push(dish);
+        console.log('dish pushed', dish);
         return;
       }
 
@@ -60,12 +71,17 @@ export class OrderComponent implements OnInit {
     });
 
     // Удаляем ненужные
-    this.order.Dishes.forEach(dish => {
-      let serverDishIndex = order.Dishes.findIndex(c => c.CookingDishId == dish.CookingDishId);
-      if (serverDishIndex >= 0) {
-        this.order.Dishes.splice(serverDishIndex, 1);
-      }
-    });
+    this.order.Dishes = this.order.Dishes
+      .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
+
+    this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
+    this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
+    this.inWorkDishes = this.order.Dishes.filter(d => d.State == DishState.InWork);
+    this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
+
+    this.inWorkGroupped = this.groupById(order, d => d.State == DishState.InWork);
+
+    console.log(this.order);
   }
 
   add() {
@@ -76,7 +92,11 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
   }
 
-  public groupById(order: IOrder) {
+  reset() {
+
+  }
+
+  public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {
     //review!!!
     if (!order) {
       return;
@@ -85,6 +105,12 @@ export class OrderComponent implements OnInit {
     var result = [];
     for (let index = 0; index < order.Dishes.length; index++) {
       const element = order.Dishes[index];
+
+      // Фильтруем по предикату
+      if (predicate && !predicate(element)) {
+        continue;
+      }
+
       var io = result.map(c => c.key.Id).indexOf(element.Id);
       if (~io) {
         result[io].value.push(element);
@@ -93,11 +119,29 @@ export class OrderComponent implements OnInit {
       }
     }
 
-    console.log('group result', result);
-    this.grouppedOrder = result;
+    return result;
   }
 
   public getTotal() {
-    return this.order.Dishes.reduce((p, c) => c.Price + p, 0);
+    return this.order.Dishes.filter(c => c.State == DishState.InWork).reduce((p, c) => c.Price + p, 0);
+  }
+
+  public stateToString(state: DishState): string {
+    switch (state) {
+      case DishState.Deleted:
+        return 'Удалено';
+      case DishState.InWork:
+        return 'В работе';
+      case DishState.Ready:
+        return 'Готово';
+      case DishState.Taken:
+        return 'Забрано';
+      case DishState.CancellationRequested:
+        return 'Запрошена отмена';
+
+      default:
+        return 'Не известный статус!';
+
+    }
   }
 }

@@ -92,30 +92,49 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
   }
 
   // Удаляем то что не пришло с сервера
-  for (let currentOrderIndex = 0; currentOrderIndex < currentOrders.length; currentOrderIndex++) {
-    const currentOrder = currentOrders[currentOrderIndex];
-    const order = orders.find(c => c.Id == currentOrder.Id)
+  currentOrders = currentOrders.filter(co => {
+    var r = orders.some(o => o.Id == co.Id);
+    if (!r) { isChanged = true; }
+    console.log('order removed', co);
+    return r;
+  });
 
-    if (!order) {
-      console.log('remove order', currentOrder);
-      currentOrders.splice(currentOrderIndex, 1);
-      isChanged = true;
-      continue;
-    }
+  currentOrders.forEach(co => {
+    var o = orders.find(c => c.Id == co.Id);
+    if (!o) { return; }
 
-    // Удаляем блюда
-    for (let currentDishIndex = 0; currentDishIndex < currentOrder.Dishes.length; currentDishIndex++) {
-      const currentDish = currentOrder.Dishes[currentDishIndex];
-      const dish = order.Dishes.find(c => c.CookingDishId == currentDish.CookingDishId);
+    co.Dishes = co.Dishes
+      .filter(cd => {
+        var r = o.Dishes.some(d => d.CookingDishId == cd.CookingDishId);
+        if (!r) { isChanged = true; }
+        console.log('dish removed', cd);
+        return r;
+      });
+  });
+  // for (let currentOrderIndex = 0; currentOrderIndex < currentOrders.length; currentOrderIndex++) {
+  //   const currentOrder = currentOrders[currentOrderIndex];
+  //   const order = orders.find(c => c.Id == currentOrder.Id)
 
-      if (!dish) {
-        console.log('remove dish', currentDish);
-        currentOrder.Dishes.splice(currentDishIndex, 1);
-        isChanged = true;
-        continue;
-      }
-    }
-  }
+  //   if (!order) {
+  //     console.log('remove order', currentOrder);
+  //     currentOrders.splice(currentOrderIndex, 1);
+  //     isChanged = true;
+  //     continue;
+  //   }
+
+  //   // Удаляем блюда
+  //   for (let currentDishIndex = 0; currentDishIndex < currentOrder.Dishes.length; currentDishIndex++) {
+  //     const currentDish = currentOrder.Dishes[currentDishIndex];
+  //     const dish = order.Dishes.find(c => c.CookingDishId == currentDish.CookingDishId);
+
+  //     if (!dish) {
+  //       console.log('remove dish', currentDish);
+  //       currentOrder.Dishes.splice(currentDishIndex, 1);
+  //       isChanged = true;
+  //       continue;
+  //     }
+  //   }
+  // }
 
   if (isChanged) {
     console.log('state changed');

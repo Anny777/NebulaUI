@@ -3,10 +3,8 @@
 </p>
 <button (click)="refresh()">refresh</button>
 
-app order
 <app-order [number]="1" role="Admin"></app-order>
-app order end
-
+<app-order [number]="4" role="Admin"></app-order>
 
 <div *ngIf="!(isOrdersLoadnig$ | async)">
   <b>Orders list</b>
