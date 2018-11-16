@@ -3,8 +3,8 @@ import { IOrder } from 'src/app/models/order';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/app.state';
 import * as OrderActions from '../../store/actions/orderActions';
+import * as DishActions from '../../store/actions/dishActions';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 
@@ -94,6 +94,10 @@ export class OrderComponent implements OnInit {
 
   reset() {
 
+  }
+
+  setState(id: number, state: DishState) {
+    this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
   }
 
   public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {
