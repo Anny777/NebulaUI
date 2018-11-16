@@ -25,6 +25,7 @@ export class OrderComponent implements OnInit {
     Comment: ''
   };
 
+  isStateLoadings: number[];
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
   cancellationDishes: IDish[];
@@ -80,6 +81,7 @@ export class OrderComponent implements OnInit {
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
 
     this.inWorkGroupped = this.groupById(order, d => d.State == DishState.InWork);
+    this.isStateLoadings = [];
 
     console.log(this.order);
   }
@@ -97,7 +99,12 @@ export class OrderComponent implements OnInit {
   }
 
   setState(id: number, state: DishState) {
+    this.isStateLoadings.push(id);
     this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
+  }
+
+  isStateLoading(id: number) {
+    return this.isStateLoadings.some(c => c == id);
   }
 
   public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {

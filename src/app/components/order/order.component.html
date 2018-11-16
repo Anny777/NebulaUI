@@ -47,9 +47,11 @@
       <tr *ngFor="let dish of inWorkDishes">
         <td>{{dish.Name}}</td>
         <td>
-          <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 3)">Готово</button>
+          <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
+          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 3)">Готово</button>
           &nbsp;
-          <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 5)">Запросить отмену</button>
+          <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
+          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 5)">Запросить отмену</button>
         </td>
       </tr>
     </table>
@@ -61,9 +63,11 @@
       <tr *ngFor="let dish of cancellationDishes" [ngClass]="{'warning': true}">
         <td>{{dish.Name}}</td>
         <td>
-          <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 1)">Подтвердить</button>
+          <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
+          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 1)">Подтвердить</button>
           &nbsp;
-          <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
+          <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
+          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
         </td>
       </tr>
     </table>
@@ -84,7 +88,8 @@
       <tr *ngFor="let dish of readyDishes" [ngClass]="{'success': true}">
         <td>{{dish.Name}}</td>
         <td>
-          <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 4)">Забрано</button>
+          <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
+          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 4)">Забрано</button>
         </td>
       </tr>
     </table>
