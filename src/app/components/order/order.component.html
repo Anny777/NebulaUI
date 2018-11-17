@@ -1,6 +1,7 @@
 <div class="content">
   <h2 class="header">Стол № {{number}}</h2>
-  <div name="order">
+
+  <div name="order" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])">
     <h3 class="header">Заказ:</h3>
     <table class="striped">
       <tr *ngFor="let dish of inWorkGroupped">
@@ -48,7 +49,7 @@
         <td>{{dish.Name}}</td>
         <td>
           <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
-          <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 3)">Готово</button>
+          <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Cook','Bartender']) && !isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 3)">Готово</button>
           &nbsp;
           <mat-spinner *ngIf="isStateLoading(dish.CookingDishId)"></mat-spinner>
           <button mat-raised-button color="warn" *ngIf="!isStateLoading(dish.CookingDishId)" (click)="setState(dish.CookingDishId, 5)">Запросить отмену</button>
@@ -82,7 +83,7 @@
       </table>
     </div>
 
-  <div name="ready" [hidden]="!readyDishes || readyDishes.length <= 0">
+  <div name="ready" [hidden]="!readyDishes || readyDishes.length <= 0" *ngIf="userIsInRole(['Admin','Waiter'])">
     <h3 class="header">Готовые блюда:</h3>
     <table class="table-borderless">
       <tr *ngFor="let dish of readyDishes" [ngClass]="{'success': true}">

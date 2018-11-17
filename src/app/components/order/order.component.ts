@@ -7,6 +7,7 @@ import * as DishActions from '../../store/actions/dishActions';
 import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-order',
@@ -15,7 +16,7 @@ import { IDish } from 'src/app/models/dish';
 })
 export class OrderComponent implements OnInit {
   @Input() number: number;
-  @Input() roles: string[];
+  // @Input() roles: string[];
 
   order: IOrder = {
     Id: 0,
@@ -35,7 +36,7 @@ export class OrderComponent implements OnInit {
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
-  constructor(private store: Store<IAppState>) {
+  constructor(private store: Store<IAppState>, private auth: AuthService) {
   }
 
   ngOnInit() {
@@ -101,6 +102,7 @@ export class OrderComponent implements OnInit {
   setState(id: number, state: DishState) {
     this.isStateLoadings.push(id);
     this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
+    debugger;
   }
 
   isStateLoading(id: number) {
@@ -151,8 +153,12 @@ export class OrderComponent implements OnInit {
         return 'Запрошена отмена';
 
       default:
-        return 'Не известный статус!';
+        return 'Неизвестный статус!';
 
     }
   }
+
+  public userIsInRole(roles: Array<string>){
+    return this.auth.userIsInRole(roles);
+    }
 }
