@@ -104,6 +104,7 @@ export class OrderComponent implements OnInit {
     return this.isStateLoadings.some(c => c == id);
   }
 
+  // TODO to pipe
   public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {
     //review!!!
     if (!order) {
@@ -130,11 +131,43 @@ export class OrderComponent implements OnInit {
     return result;
   }
 
+  // TODO to pipe
   public getTotal() {
     return this.order.Dishes.filter(c => c.State == DishState.InWork).reduce((p, c) => c.Price + p, 0);
   }
 
   public userIsInRole(roles: Array<string>) {
     return this.auth.userIsInRole(roles);
+  }
+
+  public addDish(dish: IDish) {
+    this.order.Dishes.push({
+      Id: dish.Id,
+      CookingDishId: 0,
+      Name: dish.Name,
+      Consist: dish.Consist,
+      Unit: dish.Unit,
+      State: DishState.InWork,
+      Price: dish.Price,
+      WorkshopType: dish.WorkshopType
+    });
+  }
+
+  public removeDish(dish: IDish) {
+    // Если он еще не готовится, удаляем его
+    var i = this.order.Dishes.findIndex(c => c.CookingDishId == 0 && c.Id == dish.Id && c.State == DishState.InWork);
+    if (i >= 0) {
+      this.order.Dishes.splice(i, 1);
+      return;
+    }
+
+    // Ну нет, тогда запрашиваем отмену
+    i = this.order.Dishes.findIndex(c => c.Id == dish.Id && c.State == DishState.InWork);
+    if (i >= 0) {
+      this.order.Dishes.splice(i, 1);
+      return;
+    }
+
+    alert('В заказе не найдено блюдо ' + dish.Name);
   }
 }
