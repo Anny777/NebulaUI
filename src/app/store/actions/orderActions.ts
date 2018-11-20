@@ -1,5 +1,6 @@
 import { IOrder } from "src/app/models/order";
 import { Action } from '@ngrx/store';
+import { IDish } from "src/app/models/dish";
 
 export const LOAD_ORDERS = '[Orders] Load';
 export const LOAD_ORDERS_SUCCESS = '[Orders] Load success';
@@ -12,6 +13,9 @@ export const ADD_ORDER_FAIL = '[Orders] Add fail';
 export const CLOSE_ORDER = '[Orders] Close';
 export const CLOSE_ORDER_SUCCESS = '[Orders] Close success';
 export const CLOSE_ORDER_FAIL = '[Orders] Close fail';
+
+export const ADD_DISH = '[Orders] Add dish';
+export const REMOVE_DISH = '[Orders] Remove dish';
 
 
 export class LoadOrders implements Action {
@@ -56,4 +60,15 @@ export class CloseOrderFail implements Action {
   constructor(public payload: any) { }
 }
 
-export type Actions = LoadOrders | LoadOrdersSuccess | LoadOrdersFail | AddOrder | AddOrderSuccess | AddOrderFail | CloseOrder | CloseOrderSuccess | CloseOrderFail;
+export class AddDish implements Action{
+  readonly type = ADD_DISH;
+  constructor(public payload: IDish){};
+}
+
+export class RemoveDish implements Action{
+  readonly type = REMOVE_DISH;
+  constructor(public payload: IDish){};
+}
+
+export type Actions = LoadOrders | LoadOrdersSuccess | LoadOrdersFail | AddOrder | AddOrderSuccess | AddOrderFail | CloseOrder 
+| CloseOrderSuccess | CloseOrderFail | AddDish | RemoveDish;

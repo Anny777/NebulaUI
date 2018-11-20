@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DishViewModel } from '../../model/dishViewModel';
 import { Observable } from 'rxjs';
-import { IOrder } from '../../models/order';
 import { IAppState } from '../../store/app.state';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
@@ -22,7 +20,6 @@ export class DishListComponent implements OnInit {
   isView: boolean;
   numberCustom: number;
 
-  list: Array<DishViewModel>;
   orderArray = [];
 
   isListLoading$: Observable<boolean>;
@@ -45,33 +42,6 @@ export class DishListComponent implements OnInit {
       }
       )).subscribe();
   }
-
-  public addDish(dish: Array<DishViewModel>) {
-    console.log('addDish');
-    this.orderArray.push(dish);
-    if (this.orderArray.length > 0) {
-      this.isView = true;
-    }
-  }
-
-  // resp(r: any) {
-  //   this.isLoading = false;
-  //   this.list = r;
-  // }
-
-  // response(result: any) {
-  //   console.log('response');
-  //   for (let index = 0; index < result.length; index++) {
-  //     const element = result[index];
-  //     if (element.Table == this.numberTable) {
-  //       this.numberCustom = element.Id;
-  //       this.orderArray = element.Dishes;
-  //       this.isView = true;
-  //     }
-  //   }
-  // }
-
-
 }
 
 

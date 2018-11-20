@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderViewModel } from '../../model/orderViewModel';
 import { OrderService } from '../../services/order.service';
-import { DishViewModel } from '../../model/dishViewModel';
+import { IDish } from 'src/app/models/dish';
+import { IOrder } from 'src/app/models/order';
+
 
 @Component({
   selector: 'app-orderlist',
@@ -12,12 +13,13 @@ export class OrderlistComponent implements OnInit {
 
   constructor(private dishOrderService: OrderService) { }
 
-  @Input() _array: Array<DishViewModel>;
+  @Input() _array: Array<IDish>;
   @Input() view: boolean;
   @Input() numberTable: number;
   @Input() numberCustom: number;
 
   isLoading: boolean = false;
+  order: IOrder;
 
   ngOnInit() {
     console.log('inited order', this._array)
@@ -25,11 +27,12 @@ export class OrderlistComponent implements OnInit {
 
   public sendOrder() {
     this.isLoading = true;
-    var mas = new OrderViewModel();
-    mas.Dishes = this._array;
-    mas.Table = this.numberTable;
-    mas.Id = this.numberCustom;
-    mas.CreatedDate = new Date();
+    var mas = {
+    Dishes : this._array,
+    Table : this.numberTable,
+    Id : this.numberCustom,
+    CreatedDate : new Date()
+    }
     // this.dishOrderService.createNewOrder(mas, r => console.log());
   }
 

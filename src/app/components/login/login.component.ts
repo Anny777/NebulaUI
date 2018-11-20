@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { userInfo } from '../../model/userInfo';
+import { IUser } from 'src/app/models/user';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   email: string;
   pass: string;
   isLoading: boolean = false;
-  public userInfo: userInfo;
+  public userInfo: IUser;
 
   constructor(private auth: AuthService, private router: Router) { }
 
