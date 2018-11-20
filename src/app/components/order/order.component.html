@@ -42,14 +42,14 @@
     </table>
   </div>
 
-  <div name="inWork" [hidden]="!inWorkDishes || inWorkDishes.length <= 0">
+  <div name="inWork" *ngIf="userIsInRole(['Admin','Cook','Bartender'])" [hidden]="!inWorkDishes || inWorkDishes.length <= 0">
     <h3 class="header">Заказы:</h3>
     <table class="table-borderless">
       <tbody *ngFor="let dish of inWorkDishes">
         <tr [hidden]="isStateLoading(dish.CookingDishId)">
           <td>{{dish.Name}}</td>
           <td>
-            <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Cook','Bartender'])" (click)="setState(dish.CookingDishId, 3)">Готово</button>
+            <button mat-raised-button color="warn"  (click)="setState(dish.CookingDishId, 3)">Готово</button>
             &nbsp;
             <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 5)">Запросить
               отмену</button>
@@ -75,7 +75,7 @@
           <td>
             <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 1)">Подтвердить</button>
             &nbsp;
-            <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
+            <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Cook','Bartender'])" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
           </td>
         </tr>
         <tr *ngIf="isStateLoading(dish.CookingDishId)">

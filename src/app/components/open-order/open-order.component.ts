@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderViewModel } from '../../model/orderViewModel';
-import { ListDishService } from '../../services/order.service';
+import { OrderService } from '../../services/order.service';
 import { DishViewModel } from '../../model/dishViewModel';
 
 @Component({
@@ -13,7 +13,7 @@ export class OpenOrderComponent implements OnInit {
   arrayOrders: Array<OrderViewModel>;
   isLoading: boolean = true;
 
-  constructor(private dishService: ListDishService) { }
+  constructor(private dishService: OrderService) { }
 
   ngOnInit() {
   }

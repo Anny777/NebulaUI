@@ -1,19 +1,43 @@
-<div *ngIf="isLoading" class="div_for_spinner"><mat-spinner [diameter]="120" class="div_spinner"></mat-spinner></div>
-<div *ngIf="!isLoading" class="divBlock">
-  <h2 class="header">Меню</h2>
-  <mat-form-field style="width: 100%">
-    <input  matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
-  </mat-form-field>
-<table  class="striped">
-  <tr *ngFor="let dish of list | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
-    <td style="width: 80%">
-      {{dish.Name}}
-      <br> {{dish.Consist}}
-    </td>
-    <td>{{dish.Price}} руб.</td>
-  </tr>
-</table>
+<div *ngIf="(isListLoading$ | async)" class="div_for_spinner">
+  <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
+</div>
+<div *ngIf="!(isListLoading$ | async)">
+  <div class="divBlock">
+    <h2 class="header">Меню</h2>
+    <mat-form-field style="width: 100%">
+      <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
+    </mat-form-field>
+    <table class="striped">
+      <tr *ngFor="let dish of (dishes$ | async) | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
+        <td style="width: 80%">
+          {{dish.Name}}
+          <br> {{dish.Consist}}
+        </td>
+        <td>{{dish.Price}} руб.</td>
+      </tr>
+    </table>
+  </div>
+  <app-order [number]="numberTable"></app-order>
 </div>
 
-<app-order [number]="numberTable"></app-order>
-<!-- <app-orderlist *ngIf="!isLoading"  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist> -->
+<!-- <div *ngIf="isLoading" class="div_for_spinner">
+  <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
+</div>
+<div *ngIf="!isLoading">
+  <div class="divBlock">
+    <h2 class="header">Меню</h2>
+    <mat-form-field style="width: 100%">
+      <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
+    </mat-form-field>
+    <table class="striped">
+      <tr *ngFor="let dish of list | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
+        <td style="width: 80%">
+          {{dish.Name}}
+          <br> {{dish.Consist}}
+        </td>
+        <td>{{dish.Price}} руб.</td>
+      </tr>
+    </table>
+  </div>
+  <app-order [number]="numberTable"></app-order>
+</div> -->
