@@ -1,17 +1,11 @@
 import { Action } from '@ngrx/store';
-import { ITable } from 'src/app/models/table';
+import { IOrder } from 'src/app/models/order';
 
-export const SET__READY_DISHES_COUNT = '[Table] Count Ready Dish';
-export const SET_STATE_TABLE = '[Table] State Table';
+export const UPDATE_TABLE = '[Table] Count Ready Dish';
 
-export class CountReadyDish implements Action {
-    readonly type = SET__READY_DISHES_COUNT;
-    constructor(public payload: ITable[]){}
+export class UpdateTable implements Action {
+  readonly type = UPDATE_TABLE;
+  constructor(public payload: IOrder[]) { }
 }
 
-export class StateTable implements Action{
-    readonly type = SET_STATE_TABLE;
-    constructor(public payload: boolean){}
-}
-
-export type Actions = CountReadyDish| StateTable;
+export type Actions = UpdateTable;

@@ -117,30 +117,6 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
         return r;
       });
   });
-  // for (let currentOrderIndex = 0; currentOrderIndex < currentOrders.length; currentOrderIndex++) {
-  //   const currentOrder = currentOrders[currentOrderIndex];
-  //   const order = orders.find(c => c.Id == currentOrder.Id)
-
-  //   if (!order) {
-  //     console.log('remove order', currentOrder);
-  //     currentOrders.splice(currentOrderIndex, 1);
-  //     isChanged = true;
-  //     continue;
-  //   }
-
-  //   // Удаляем блюда
-  //   for (let currentDishIndex = 0; currentDishIndex < currentOrder.Dishes.length; currentDishIndex++) {
-  //     const currentDish = currentOrder.Dishes[currentDishIndex];
-  //     const dish = order.Dishes.find(c => c.CookingDishId == currentDish.CookingDishId);
-
-  //     if (!dish) {
-  //       console.log('remove dish', currentDish);
-  //       currentOrder.Dishes.splice(currentDishIndex, 1);
-  //       isChanged = true;
-  //       continue;
-  //     }
-  //   }
-  // }
 
   if (isChanged) {
     console.log('state changed');

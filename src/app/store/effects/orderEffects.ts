@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Effect, Actions } from "@ngrx/effects";
 import * as OrderActions from "../actions/orderActions";
-import { switchMap, map, catchError } from "rxjs/operators";
+import * as TableActions from "../actions/tableActions";
+import { switchMap, map, catchError, tap } from "rxjs/operators";
 import { OrderService } from "src/app/services/order.service";
 import { of } from "rxjs";
 
@@ -14,6 +15,10 @@ export class orderEffects {
       switchMap(c => this.orderService.getList()
         .pipe(
           map(orders => new OrderActions.LoadOrdersSuccess(orders)),
+          switchMap(loadSuccess => [
+            new TableActions.UpdateTable(loadSuccess.payload),
+            loadSuccess]
+          ),
           catchError(error => of(new OrderActions.LoadOrdersFail(error)))
         )
       ));

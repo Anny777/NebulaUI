@@ -1,11 +1,11 @@
 import { IOrderState } from "./reducers/orderReducer";
 import { IDishState } from "./reducers/dishReducer";
-import { ITable } from "../models/table";
-import { IUser } from "../models/user";
+import { ITableState } from "./reducers/tableReducer";
+import { IUserState } from "./reducers/userReduser";
 
 export interface IAppState{
   readonly orders: IOrderState,
   readonly dishes: IDishState,
-  readonly table: ITable,
-  readonly user: IUser
+  readonly table: ITableState,
+  readonly user: IUserState
 }
