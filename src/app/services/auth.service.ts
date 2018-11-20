@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { userInfo } from '../model/userInfo';
 import { map } from 'rxjs/operators';
 import { Observable, concat } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -13,7 +12,7 @@ export class AuthService {
   public access_token: string;
   public token_type: string;
   public authChanged: EventEmitter<boolean> = new EventEmitter();
-  public userInfo: userInfo;
+  public userInfo: IUser;
   public isAuthenticated: boolean = false;
 
   constructor(public client: HttpClient) {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TableService } from "../../services/table.service";
 import { OrderService } from "../../services/order.service";
-import { DishState } from "src/app/model/enum-dishState";
+import { DishState } from "src/app/model/DishState";
 import { ITable } from "src/app/models/table";
 import { IOrder } from "src/app/models/order";
 

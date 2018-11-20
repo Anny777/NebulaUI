@@ -41,11 +41,13 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
       return { ...state, isOrderClose: false };
     case OrderActions.CLOSE_ORDER_FAIL:
       return { ...state, isOrderClose: true };
-
+    case OrderActions.ADD_DISH:
+      return { ...state };
+    case OrderActions.REMOVE_DISH:
+      return { ...state };
     default:
       return state;
   }
-
 }
 
 function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {

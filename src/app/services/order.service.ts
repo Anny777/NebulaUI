@@ -1,6 +1,5 @@
 import { Injectable, Output, EventEmitter } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { OrderViewModel } from "../model/orderViewModel";
 import { interval, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { DishService } from "./dish.service";
@@ -21,7 +20,6 @@ export class OrderService {
 
   @Output() OnDishCancelReq = new EventEmitter<boolean>();
   @Output() OnDishDelete = new EventEmitter<boolean>();
-  @Output() OnArrayUpdated = new EventEmitter<OrderViewModel[]>();
 
   private inited: boolean = false;
   private intervalObs = interval(2000);
