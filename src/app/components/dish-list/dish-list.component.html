@@ -15,4 +15,5 @@
 </table>
 </div>
 
-<app-orderlist *ngIf="!isLoading"  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist>
+<app-order [number]="numberTable"></app-order>
+<!-- <app-orderlist *ngIf="!isLoading"  [_array]="orderArray" [view]="isView" [numberTable]="numberTable" [numberCustom]="numberCustom"></app-orderlist> -->

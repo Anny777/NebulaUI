@@ -50,7 +50,7 @@ const appRoutes: Routes = [
   { path: 'dishes', component: DishListComponent },
   { path: 'orders', component: OpenOrderComponent },
   { path: 'forgot', component: ForgotComponent },
-  { path: 'order/:id', component: ForgotComponent }
+  { path: 'order/:id', component: DishListComponent }
 ];
 
 @NgModule({
