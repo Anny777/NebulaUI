@@ -105,4 +105,8 @@ const appRoutes: Routes = [
     TableService, OrderService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(orderService: OrderService) {
+    orderService.init();
+  }
+}

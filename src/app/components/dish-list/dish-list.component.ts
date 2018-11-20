@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { IDish } from 'src/app/models/dish';
 import * as DishActions from '../../store/actions/dishActions';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class DishListComponent implements OnInit {
 
   isListLoading$: Observable<boolean>;
   dishes$: Observable<IDish[]>;
-  constructor(private store: Store<IAppState>) {
+  constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
   }
 
 
@@ -38,11 +39,11 @@ export class DishListComponent implements OnInit {
 
     // this.isLoading = true;
     // this.listServices.getListDishes(r => this.resp(r));
-    // this.route.paramMap.pipe(
-    //   tap((params: ParamMap) => {
-    //     this.numberTable = Number.parseInt(params.get('id'));
-    //   }
-    //   )).subscribe();
+    this.route.paramMap.pipe(
+      tap((params: ParamMap) => {
+        this.numberTable = Number.parseInt(params.get('id'));
+      }
+      )).subscribe();
   }
 
   public addDish(dish: Array<DishViewModel>) {

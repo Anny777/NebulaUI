@@ -94,8 +94,11 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
   // Удаляем то что не пришло с сервера
   currentOrders = currentOrders.filter(co => {
     var r = orders.some(o => o.Id == co.Id);
-    if (!r) { isChanged = true; }
-    console.log('order removed', co);
+    if (!r) {
+      isChanged = true;
+      console.log('order removed', co);
+    }
+
     return r;
   });
 
@@ -106,8 +109,11 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
     co.Dishes = co.Dishes
       .filter(cd => {
         var r = o.Dishes.some(d => d.CookingDishId == cd.CookingDishId);
-        if (!r) { isChanged = true; }
-        console.log('dish removed', cd);
+        if (!r) {
+          isChanged = true;
+          console.log('dish removed', cd);
+        }
+
         return r;
       });
   });
