@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { OrderService } from "../../services/order.service";
-import { OrderViewModel } from "../../model/orderViewModel";
-import { DishState } from "../../model/enum-dishState";
+import { IOrder } from "src/app/models/order";
+import { DishState } from "src/app/models/dishState";
 
 @Component({
   selector: "app-cooking",
@@ -9,7 +9,7 @@ import { DishState } from "../../model/enum-dishState";
   styleUrls: ["./cooking.component.css"]
 })
 export class CookingComponent implements OnInit {
-  arrayOrders: Array<OrderViewModel>;
+  arrayOrders: Array<IOrder>;
   @Input() WorkType: number;
 
   isLoading: boolean;
@@ -20,10 +20,10 @@ export class CookingComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     // this.arrayOrders = this.listDish.orders;
-    this.listDish.OnArrayUpdated.subscribe(r => (this.arrayOrders = r));
+    // this.listDish.OnArrayUpdated.subscribe(r => (this.arrayOrders = r));
   }
 
-  public filterWorkType(): OrderViewModel[] {
+  public filterWorkType(): IOrder[] {
     const result = [];
     for (let i = 0; i < this.arrayOrders.length; i++) {
       const order = this.arrayOrders[i];
@@ -35,19 +35,20 @@ export class CookingComponent implements OnInit {
         }
       }
       if (dishes.length > 0) {
-        const orderModel = new OrderViewModel();
-        orderModel.Id = order.Id;
-        orderModel.Table = order.Table;
-        orderModel.Dishes = dishes;
-        orderModel.CreatedDate = order.CreatedDate;
+        const orderModel = {
+          Id: order.Id,
+          Table: order.Table,
+          Dishes: dishes,
+          CreatedDate: order.CreatedDate
+        }
         result.push(orderModel);
-      }
-    }
-return result;
-  }
 
-  public ready(id: number) {
-      this.isLoading = false;
-    // this.listDish.setReady(id, r => this.isLoading = r);
+      }
+      return result;
+    }
   }
 }
+  // public ready(id: number) {
+  //     this.isLoading = false;
+  //   // this.listDish.setReady(id, r => this.isLoading = r);
+  // }

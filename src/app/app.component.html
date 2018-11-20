@@ -6,7 +6,6 @@
     </li>
     <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink=""><button mat-raised-button>Зал_1</button></a></li>
     <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink="hall-2"><button mat-raised-button>Зал_2</button></a></li>
-    <li *ngIf="userIsInRole(['Admin','Bartender'])"><a routerLink="orders"><button mat-raised-button>Заказы</button></a></li>
     <li *ngIf="userIsInRole(['Admin','Cook'])"><a routerLink="kitchen"><button mat-raised-button>Кухня</button></a></li>
     <li *ngIf="userIsInRole(['Admin','Bartender'])"><a routerLink="bar"> <button mat-raised-button>Бар</button></a></li>
     <li *ngIf="userIsInRole(['Admin'])"><a routerLink="admin"> <button mat-raised-button>Администрирование</button></a></li>

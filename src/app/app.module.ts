@@ -20,7 +20,6 @@ import { OrderService } from './services/order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule } from '@angular/forms';
 import { OrderlistComponent } from './components/orderlist/orderlist.component';
-import { OpenOrderComponent } from './components/open-order/open-order.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
@@ -48,7 +47,6 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dishes', component: DishListComponent },
-  { path: 'orders', component: OpenOrderComponent },
   { path: 'forgot', component: ForgotComponent },
   { path: 'order/:id', component: DishListComponent }
 ];
@@ -66,7 +64,6 @@ const appRoutes: Routes = [
     FilterPipeComponent,
     GroupByPipe,
     OrderlistComponent,
-    OpenOrderComponent,
     CookingComponent,
     MatInput,
     LoginComponent,
