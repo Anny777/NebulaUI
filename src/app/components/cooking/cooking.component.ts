@@ -19,7 +19,7 @@ export class CookingComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.arrayOrders = this.listDish.orders;
+    // this.arrayOrders = this.listDish.orders;
     this.listDish.OnArrayUpdated.subscribe(r => (this.arrayOrders = r));
   }
 
@@ -48,6 +48,6 @@ return result;
 
   public ready(id: number) {
       this.isLoading = false;
-    this.listDish.setReady(id, r => this.isLoading = r);
+    // this.listDish.setReady(id, r => this.isLoading = r);
   }
 }

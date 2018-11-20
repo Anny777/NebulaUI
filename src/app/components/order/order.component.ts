@@ -25,6 +25,15 @@ export class OrderComponent implements OnInit {
     Comment: ''
   };
 
+  // TODO undo via store!
+  orderBackup: IOrder = {
+    Id: 0,
+    Dishes: [],
+    Table: 0,
+    CreatedDate: new Date(),
+    Comment: ''
+  };
+
   isStateLoadings: number[];
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
@@ -133,7 +142,7 @@ export class OrderComponent implements OnInit {
 
   // TODO to pipe
   public getTotal() {
-    return this.order.Dishes.filter(c => c.State == DishState.InWork).reduce((p, c) => c.Price + p, 0);
+    return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
   }
 
   public userIsInRole(roles: Array<string>) {
@@ -151,6 +160,7 @@ export class OrderComponent implements OnInit {
       Price: dish.Price,
       WorkshopType: dish.WorkshopType
     });
+    this._mergeOrder(this.order);
   }
 
   public removeDish(dish: IDish) {
@@ -158,6 +168,7 @@ export class OrderComponent implements OnInit {
     var i = this.order.Dishes.findIndex(c => c.CookingDishId == 0 && c.Id == dish.Id && c.State == DishState.InWork);
     if (i >= 0) {
       this.order.Dishes.splice(i, 1);
+      this._mergeOrder(this.order);
       return;
     }
 
@@ -165,6 +176,7 @@ export class OrderComponent implements OnInit {
     i = this.order.Dishes.findIndex(c => c.Id == dish.Id && c.State == DishState.InWork);
     if (i >= 0) {
       this.order.Dishes.splice(i, 1);
+      this._mergeOrder(this.order);
       return;
     }
 

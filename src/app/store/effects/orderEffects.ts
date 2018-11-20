@@ -11,7 +11,7 @@ export class orderEffects {
   @Effect()
   loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
     .pipe(
-      switchMap(c => this.orderService.getOpenOrders()
+      switchMap(c => this.orderService.getList()
         .pipe(
           map(orders => new OrderActions.LoadOrdersSuccess(orders)),
           catchError(error => of(new OrderActions.LoadOrdersFail(error)))

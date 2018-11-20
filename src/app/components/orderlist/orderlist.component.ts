@@ -30,7 +30,7 @@ export class OrderlistComponent implements OnInit {
     mas.Table = this.numberTable;
     mas.Id = this.numberCustom;
     mas.CreatedDate = new Date();
-    this.dishOrderService.createNewOrder(mas, r => console.log());
+    // this.dishOrderService.createNewOrder(mas, r => console.log());
   }
 
   public clearOrder() {
@@ -38,7 +38,7 @@ export class OrderlistComponent implements OnInit {
   }
 
   public getTotal() {
-    return this.dishOrderService.getTotalDish(this._array);
+    // return this.dishOrderService.getTotalDish(this._array);
   }
 
   public groupById() {

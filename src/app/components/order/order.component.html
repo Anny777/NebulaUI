@@ -8,11 +8,11 @@
         <td>{{dish.key.Name}}</td>
         <td style="width: 100px;">{{dish.key.Price}} р.</td>
         <td style="width: 100px;">
-          <div style="cursor:pointer;" class="icon" (click)="removeDish(dish)">
+          <div style="cursor:pointer;" class="icon" (click)="removeDish(dish.key)">
             <mat-icon>remove</mat-icon>
           </div>
           <div class="icon"> {{dish.value.length}} </div>
-          <div style="cursor:pointer;" class="icon" (click)="addDish(dish)">
+          <div style="cursor:pointer;" class="icon" (click)="addDish(dish.key)">
             <mat-icon>add</mat-icon>
           </div>
         </td>
@@ -75,7 +75,7 @@
           <td>
             <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 1)">Подтвердить</button>
             &nbsp;
-            <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Cook','Bartender'])" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
+            <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 2)">Отменить</button>
           </td>
         </tr>
         <tr *ngIf="isStateLoading(dish.CookingDishId)">

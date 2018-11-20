@@ -19,7 +19,7 @@ export class OpenOrderComponent implements OnInit {
   }
 
   public getOrders() {
-   return this.dishService.openOrders;
+  //  return this.dishService.openOrders;
   }
 
   public groupByNameDishes(dishes: DishViewModel[]) {
@@ -37,11 +37,11 @@ export class OpenOrderComponent implements OnInit {
   }
 
   public getTotal(_array: DishViewModel[]) {
-    return this.dishService.getTotalDish(_array);
+    // return this.dishService.getTotalDish(_array);
   }
 
   public closeOrder(table:number) {
     this.isLoading = false;
-    this.dishService.closeOrder(table, r => this.isLoading = r);
+    // this.dishService.closeOrder(table, r => this.isLoading = r);
   }
 }
