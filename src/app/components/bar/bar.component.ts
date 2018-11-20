@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ListDishService } from '../../services/order.service';
 
 @Component({
   selector: 'app-bar',
@@ -8,7 +7,7 @@ import { ListDishService } from '../../services/order.service';
 })
 export class BarComponent implements OnInit {
 
-  constructor(private listDish: ListDishService) { }
+  constructor() { }
 
 
   ngOnInit() {

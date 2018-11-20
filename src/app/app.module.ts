@@ -16,7 +16,7 @@ import { AdministrationComponent } from './components/administration/administrat
 import { TableComponent } from './components/table/table.component';
 import { TableService } from './services/table.service';
 import { DishListComponent } from './components/dish-list/dish-list.component';
-import { ListDishService } from './services/order.service';
+import { OrderService } from './services/order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule } from '@angular/forms';
 import { OrderlistComponent } from './components/orderlist/orderlist.component';
@@ -102,7 +102,7 @@ const appRoutes: Routes = [
     useClass: Interceptor,
     multi: true
   },
-    TableService, ListDishService],
+    TableService, OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

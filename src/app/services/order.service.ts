@@ -8,11 +8,15 @@ import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 import { IOrder } from "../models/order";
 import { DishService } from "./dish.service";
+import { Store } from "@ngrx/store";
+import { IAppState } from "../store/app.state";
+import * as OrderActions from '../store/actions/orderActions';
+
 
 @Injectable({
   providedIn: "root"
 })
-export class ListDishService {
+export class OrderService {
   @Output() OnDishInWork = new EventEmitter<boolean>();
   @Output() OnDishReady = new EventEmitter<any>();
   @Output() OnDishTaken = new EventEmitter<boolean>();
@@ -27,7 +31,7 @@ export class ListDishService {
   change: boolean;
   intervalObs = interval(5000);
 
-  constructor(private http: HttpClient, private router: Router, private listDishes: DishService) {}
+  constructor(private http: HttpClient, private router: Router, private listDishes: DishService, private store: Store<IAppState>) {}
   public init() {
     if (this.inited) {
       return;
@@ -37,7 +41,9 @@ export class ListDishService {
     this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
     this.intervalObs.subscribe(c => {
       this.inited = true;
-      this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
+      this.store.dispatch(new OrderActions.LoadOrders());
+
+    //  this.getOpenOrder(arrayOrders => this.respon(arrayOrders));
     });
     this.inited = true;
   }
@@ -159,13 +165,13 @@ public close(table: number): Observable<any> {
 
   public setReady(id: number, cb: any) {
     this.http.post(
-      environment.host + "api/Order/SetState?id=" + id + "&dishState=3", {}).subscribe(
+      environment.host + "api/Dish/SetState?id=" + id + "&dishState=3", {}).subscribe(
         d => cb(true));
   }
 
   public setDeleted(id: number): Observable<any> {
     return this.http.post(
-      environment.host + "api/Order/SetState?id=" + id + "&dishState=1",
+      environment.host + "api/Dish/SetState?id=" + id + "&dishState=1",
       {}
     );
   }

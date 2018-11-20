@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderViewModel } from '../../model/orderViewModel';
-import { ListDishService } from '../../services/order.service';
+import { OrderService } from '../../services/order.service';
 import { DishViewModel } from '../../model/dishViewModel';
 
 @Component({
@@ -10,7 +10,7 @@ import { DishViewModel } from '../../model/dishViewModel';
 })
 export class OrderlistComponent implements OnInit {
 
-  constructor(private dishOrderService: ListDishService) { }
+  constructor(private dishOrderService: OrderService) { }
 
   @Input() _array: Array<DishViewModel>;
   @Input() view: boolean;

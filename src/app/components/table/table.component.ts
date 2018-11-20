@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TableService } from "../../services/table.service";
-import { ListDishService } from "../../services/order.service";
+import { OrderService } from "../../services/order.service";
 import { DishState } from "src/app/model/enum-dishState";
 import { ITable } from "src/app/models/table";
 import { IOrder } from "src/app/models/order";
@@ -16,7 +16,7 @@ export class TableComponent implements OnInit {
 
   constructor(
     private tableService: TableService,
-    private listDishService: ListDishService
+    private listDishService: OrderService
   ) { }
 
   ngOnInit() {

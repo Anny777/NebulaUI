@@ -18,7 +18,7 @@ export class DishService {
 
   public SetState(id:number, state:number){
     return this.http.post(
-      environment.host + "api/Order/SetState?id=" + id + "&dishState=" + state,
+      environment.host + "api/Dish/SetState?id=" + id + "&dishState=" + state,
       {}
       );
   }

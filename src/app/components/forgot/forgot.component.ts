@@ -4,7 +4,6 @@ import { IOrder } from '../../models/order';
 import { IAppState } from '../../store/app.state';
 import { Store } from '@ngrx/store';
 import * as OrderActions from '../../store/actions/orderActions';
-import * as DisheActions from '../../store/actions/dishActions';
 import { tap } from 'rxjs/operators';
 import { IDish } from 'src/app/models/dish';
 

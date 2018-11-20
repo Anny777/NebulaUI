@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { ListDishService } from "../../services/order.service";
+import { OrderService } from "../../services/order.service";
 import { OrderViewModel } from "../../model/orderViewModel";
 import { DishState } from "../../model/enum-dishState";
 
@@ -15,7 +15,7 @@ export class CookingComponent implements OnInit {
   isLoading: boolean;
   isSpinner: number;;
 
-  constructor(private listDish: ListDishService) { }
+  constructor(private listDish: OrderService) { }
 
   ngOnInit() {
     this.isLoading = true;
