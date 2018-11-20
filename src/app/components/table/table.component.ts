@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { TableService } from "../../services/table.service";
-import { OrderService } from "../../services/order.service";
-import { DishState } from "src/app/model/DishState";
 import { ITable } from "src/app/models/table";
 import { IOrder } from "src/app/models/order";
+import { Store } from "@ngrx/store";
+import { IAppState } from "src/app/store/app.state";
+import { tap } from "rxjs/operators";
+import { DishState } from "src/app/models/dishState";
 
 @Component({
   selector: "app-table",
@@ -16,17 +18,14 @@ export class TableComponent implements OnInit {
 
   constructor(
     private tableService: TableService,
-    private listDishService: OrderService
+    private store: Store<IAppState>
   ) { }
 
   ngOnInit() {
     this.table = this.tableService.getTable(this.number);
-    // this._setBusy(this.listDishService.openOrders, this.table);
-    this.listDishService.OnArrayUpdated.subscribe(r => {
-      console.log('loaded', r);
-      this._setBusy(r, this.table);
-    });
-    this.listDishService.init();
+    this.store
+      .select(s => s.orders.orders)
+      .pipe(tap(orders => this._setBusy(orders, this.table)));
   }
 
   private _setBusy(orders: IOrder[], table: ITable) {
