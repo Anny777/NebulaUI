@@ -28,3 +28,7 @@
 .error {
   background-color: lightcoral;
 }
+
+mat-spinner {
+  margin: 0 auto;
+}

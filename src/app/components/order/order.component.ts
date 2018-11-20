@@ -16,7 +16,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class OrderComponent implements OnInit {
   @Input() number: number;
-  // @Input() roles: string[];
 
   order: IOrder = {
     Id: 0,
@@ -62,7 +61,6 @@ export class OrderComponent implements OnInit {
       let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
       if (!currentDish) {
         this.order.Dishes.push(dish);
-        console.log('dish pushed', dish);
         return;
       }
 
@@ -83,8 +81,6 @@ export class OrderComponent implements OnInit {
 
     this.inWorkGroupped = this.groupById(order, d => d.State == DishState.InWork);
     this.isStateLoadings = [];
-
-    console.log(this.order);
   }
 
   add() {
@@ -96,13 +92,12 @@ export class OrderComponent implements OnInit {
   }
 
   reset() {
-
+    this.order.Dishes = this.order.Dishes.filter(c => c.CookingDishId > 0);
   }
 
   setState(id: number, state: DishState) {
     this.isStateLoadings.push(id);
     this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
-    debugger;
   }
 
   isStateLoading(id: number) {
@@ -139,26 +134,7 @@ export class OrderComponent implements OnInit {
     return this.order.Dishes.filter(c => c.State == DishState.InWork).reduce((p, c) => c.Price + p, 0);
   }
 
-  public stateToString(state: DishState): string {
-    switch (state) {
-      case DishState.Deleted:
-        return 'Удалено';
-      case DishState.InWork:
-        return 'В работе';
-      case DishState.Ready:
-        return 'Готово';
-      case DishState.Taken:
-        return 'Забрано';
-      case DishState.CancellationRequested:
-        return 'Запрошена отмена';
-
-      default:
-        return 'Неизвестный статус!';
-
-    }
-  }
-
-  public userIsInRole(roles: Array<string>){
+  public userIsInRole(roles: Array<string>) {
     return this.auth.userIsInRole(roles);
-    }
+  }
 }
