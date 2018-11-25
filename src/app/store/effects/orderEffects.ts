@@ -37,8 +37,11 @@ export class orderEffects {
     .pipe(
       switchMap(c => this.orderService.create(c.payload)
         .pipe(
-          map(r => new OrderActions.AddOrderSuccess()),
+          map(o => new OrderActions.AddOrderSuccess(o)),
           catchError(error => of(new OrderActions.AddOrderFail(error)))
+        )
+        .pipe(
+          tap(c => this.store.dispatch(new OrderActions.GetOrder(c.payload.order.Table)))
         )
       ));
 
@@ -88,7 +91,7 @@ export class orderEffects {
       switchMap(
         c => this.dishService.SetState(c.payload.dish, c.payload.state)
           .pipe(
-            map(o => new OrderActions.ChangeStateSuccess({dish: c.payload.dish, order: o})),
+            map(o => new OrderActions.ChangeStateSuccess({ dish: c.payload.dish, order: o })),
             catchError(error => of(new OrderActions.ChangeStateFail(error)))
           )
           .pipe(

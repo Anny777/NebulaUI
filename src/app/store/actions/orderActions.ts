@@ -62,6 +62,7 @@ export class AddOrder implements Action {
 }
 export class AddOrderSuccess implements Action {
   readonly type = ADD_ORDER_SUCCESS;
+  constructor(public payload: IOrder) { }
 }
 export class AddOrderFail implements Action {
   readonly type = ADD_ORDER_FAIL;

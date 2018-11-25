@@ -54,8 +54,8 @@ export class OrderService {
     return this.http.get<IOrder>(environment.host + "Order/GetOrder?table=" + table);
   }
 
-  public create(order: IOrder): Observable<any> {
-    return this.http.post(environment.host + "Order/New", order);
+  public create(order: IOrder): Observable<IOrder> {
+    return this.http.post<IOrder>(environment.host + "Order/New", order);
   }
 
   public close(table: number): Observable<any> {
