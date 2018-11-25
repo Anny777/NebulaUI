@@ -37,13 +37,11 @@ export function tableReducer(state: ITableState = initialState, action: TableAct
       result.forEach(table => {
         table.busy = !!orders.find(c => c.Table == table.number);
         try {
-          console.log(table);
           table.readyDishesCount = orders.filter(c => c.Table == table.number)
             .reduce((p, c) =>
               c.Dishes.filter(d => d.State == DishState.Ready).length + p, 0
             );
         } catch (error) {
-          console.log(error);
           table.readyDishesCount = 0;
         }
       });

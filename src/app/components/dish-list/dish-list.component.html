@@ -1,8 +1,8 @@
 <div *ngIf="(isListLoading$ | async)" class="div_for_spinner">
   <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
 </div>
-<div *ngIf="!(isListLoading$ | async)">
-  <div class="divBlock">
+<div>
+  <div class="divBlock" *ngIf="!(isListLoading$ | async)">
     <h2 class="header">Меню</h2>
     <mat-form-field style="width: 100%">
       <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
@@ -17,27 +17,12 @@
       </tr>
     </table>
   </div>
-  <app-order [number]="numberTable"></app-order>
-</div>
 
-<!-- <div *ngIf="isLoading" class="div_for_spinner">
-  <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
-</div>
-<div *ngIf="!isLoading">
-  <div class="divBlock">
-    <h2 class="header">Меню</h2>
-    <mat-form-field style="width: 100%">
-      <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
-    </mat-form-field>
-    <table class="striped">
-      <tr *ngFor="let dish of list | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
-        <td style="width: 80%">
-          {{dish.Name}}
-          <br> {{dish.Consist}}
-        </td>
-        <td>{{dish.Price}} руб.</td>
-      </tr>
-    </table>
+  <div style="display:inline-block; width: 48%">
+    <app-order *ngIf="!(isOrderLoading$ | async)" [number]="numberTable"></app-order>
+    {{(isOrderLoading$ | async)}}
+    <div *ngIf="isOrderLoading$ | async" class="div_for_spinner">
+      <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
+    </div>
   </div>
-  <app-order [number]="numberTable"></app-order>
-</div> -->
+</div>

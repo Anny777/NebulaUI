@@ -31,7 +31,7 @@ export class dishEffects {
             catchError(error => of(new DishActions.ChangeStateFail(error)))
           )
           .pipe(
-            tap(c => this.store.dispatch(new OrderActions.LoadOrders()))
+            // tap(c => this.store.dispatch(new OrderActions.GetOrder()))
           )
       ));
 }

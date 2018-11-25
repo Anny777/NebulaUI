@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 import { AuthService } from 'src/app/services/auth.service';
+import { switchMap, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order',
@@ -25,15 +26,6 @@ export class OrderComponent implements OnInit {
     Comment: ''
   };
 
-  // TODO undo via store!
-  orderBackup: IOrder = {
-    Id: 0,
-    Dishes: [],
-    Table: 0,
-    CreatedDate: new Date(),
-    Comment: ''
-  };
-
   isStateLoadings: number[];
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
@@ -44,19 +36,23 @@ export class OrderComponent implements OnInit {
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
-  constructor(private store: Store<IAppState>, private auth: AuthService) {
-  }
+  isOrderLoading$: Observable<boolean>;
 
-  ngOnInit() {
-    this.order.Table = this.number;
-    this.store.select(c => c.orders.orders.find(o => o.Table == this.number))
-      .subscribe(order => this._mergeOrder(order));
+  constructor(private store: Store<IAppState>, private auth: AuthService) {
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
+    this.isOrderLoading$ = this.store.select(c => c.orders.isCurrentOrderLoading);
+    this.store.select(c => c.orders.currentOrder)
+      .pipe(tap(order => this._mergeOrder(order)));
+  }
+
+  ngOnInit() {
+    this.store.dispatch(new OrderActions.GetOrder(this.number));
   }
 
   private _mergeOrder(order: IOrder) {
+    console.log('merge order', order);
     if (!order) {
       return;
     }
@@ -100,10 +96,6 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
   }
 
-  reset() {
-    this.order.Dishes = this.order.Dishes.filter(c => c.CookingDishId > 0);
-  }
-
   setState(id: number, state: DishState) {
     this.isStateLoadings.push(id);
     this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
@@ -136,12 +128,16 @@ export class OrderComponent implements OnInit {
         result.push({ key: element, value: [element] });
       }
     }
-
-    return result;
+    console.log(result, result.sort((a, b) => a.key.Id - b.key.Id))
+    return result.sort(c => c.key.Id);
   }
 
   // TODO to pipe
   public getTotal() {
+    if (!this.inWorkDishes) {
+      return;
+    }
+
     return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
   }
 
@@ -150,36 +146,28 @@ export class OrderComponent implements OnInit {
   }
 
   public addDish(dish: IDish) {
-    this.order.Dishes.push({
-      Id: dish.Id,
-      CookingDishId: 0,
-      Name: dish.Name,
-      Consist: dish.Consist,
-      Unit: dish.Unit,
-      State: DishState.InWork,
-      Price: dish.Price,
-      WorkshopType: dish.WorkshopType
-    });
-    this._mergeOrder(this.order);
+    this.store.dispatch(new OrderActions.AddDish(
+      [{
+        Id: dish.Id,
+        CookingDishId: 0,
+        Name: dish.Name,
+        Consist: dish.Consist,
+        Unit: dish.Unit,
+        State: DishState.InWork,
+        Price: dish.Price,
+        WorkshopType: dish.WorkshopType
+      },
+      this.order.Id
+      ]
+    ));
   }
 
   public removeDish(dish: IDish) {
-    // Если он еще не готовится, удаляем его
-    var i = this.order.Dishes.findIndex(c => c.CookingDishId == 0 && c.Id == dish.Id && c.State == DishState.InWork);
-    if (i >= 0) {
-      this.order.Dishes.splice(i, 1);
-      this._mergeOrder(this.order);
-      return;
-    }
-
-    // Ну нет, тогда запрашиваем отмену
-    i = this.order.Dishes.findIndex(c => c.Id == dish.Id && c.State == DishState.InWork);
-    if (i >= 0) {
-      this.order.Dishes.splice(i, 1);
-      this._mergeOrder(this.order);
-      return;
-    }
-
-    alert('В заказе не найдено блюдо ' + dish.Name);
+    this.store.dispatch(new OrderActions.RemoveDish(
+      [
+        dish,
+        this.order.Id
+      ]
+    ));
   }
 }

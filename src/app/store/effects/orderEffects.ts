@@ -5,10 +5,16 @@ import * as TableActions from "../actions/tableActions";
 import { switchMap, map, catchError, tap } from "rxjs/operators";
 import { OrderService } from "src/app/services/order.service";
 import { of } from "rxjs";
+import { DishService } from "src/app/services/dish.service";
+import { DishState } from "src/app/models/dishState";
 
 @Injectable()
 export class orderEffects {
-  constructor(private actions$: Actions, private orderService: OrderService) { }
+  constructor(
+    private actions$: Actions,
+    private dishService: DishService,
+    private orderService: OrderService
+  ) { }
   @Effect()
   loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
     .pipe(
@@ -40,6 +46,36 @@ export class orderEffects {
         .pipe(
           map(r => new OrderActions.CloseOrderSuccess()),
           catchError(error => of(new OrderActions.CloseOrderFail(error)))
+        )
+      ));
+
+  @Effect()
+  removeDish$ = this.actions$.ofType<OrderActions.RemoveDish>(OrderActions.REMOVE_DISH)
+    .pipe(
+      switchMap(c => this.dishService.SetState(c.payload[0].CookingDishId, DishState.CancellationRequested)
+        .pipe(
+          map(o => new OrderActions.RemoveDishSuccess({ dish: c.payload[0], order: o })),
+          catchError(error => of(new OrderActions.RemoveDishFail({ dish: c.payload[0], response: error })))
+        )
+      ));
+
+  @Effect()
+  addDish$ = this.actions$.ofType<OrderActions.AddDish>(OrderActions.ADD_DISH)
+    .pipe(
+      switchMap(c => this.dishService.addDish(c.payload[0], c.payload[1])
+        .pipe(
+          map(r => new OrderActions.AddDishSuccess({ dish: r.dish, order: r.order })),
+          catchError(r => of(new OrderActions.AddDishFail({ dish: r.dish, response: r.error })))
+        )
+      ));
+
+  @Effect()
+  getOrder$ = this.actions$.ofType<OrderActions.GetOrder>(OrderActions.GET_ORDER)
+    .pipe(
+      switchMap(c => this.orderService.get(c.payload)
+        .pipe(
+          map(order => new OrderActions.GetOrderSuccess(order)),
+          catchError(r => of(new OrderActions.GetOrderFail(r)))
         )
       ));
 }

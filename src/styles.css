@@ -6,30 +6,30 @@ body {
 }
 
 .header{
-    color:#ee6e73; 
+    color:#ee6e73;
     text-align:center;
 }
 
 .ready.material-icons.md-48{
-     font-size: 48px; 
+     font-size: 48px;
      color: green;
 }
 
 .cancel.material-icons.md-48{
-    font-size: 48px; 
+    font-size: 48px;
     color: red;
     margin-left: 20px;
 }
 
 .divBlock{
-    display: inline-block; 
-    vertical-align: top; 
-    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
     background-color: rgba(242, 242, 242, 0.75);
 }
 .divBlockCook{
-    display: inline-block; 
-    vertical-align: top; 
+    display: inline-block;
+    vertical-align: top;
     width: 30%;
     margin: 20px 20px 20px 20px;
     background-color: rgba(242, 242, 242, 0.75);
