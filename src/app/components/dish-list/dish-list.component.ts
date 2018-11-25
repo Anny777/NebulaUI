@@ -31,7 +31,7 @@ export class DishListComponent implements OnInit {
   initialOrder: IOrder = {
     Id: 0,
     Dishes: [],
-    Table: 0,
+    Table: this.numberTable,
     CreatedDate: new Date(),
     Comment: ''
   };
@@ -39,32 +39,32 @@ export class DishListComponent implements OnInit {
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
   }
 
-
   ngOnInit() {
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
-    this.store.select(c => c.orders.currentOrder).subscribe(o => 
-      { 
-        console.log(o); 
-        this.order = o;
-        if(!this.order){
-          this.isCreateOrder = true;
-        }
-      });
+    this.store.select(c => c.orders.currentOrder).subscribe(o => {
+      this.order = o;
+      if (!this.order) {
+        this.isCreateOrder = true;
+      }
+      else {
+        this.isCreateOrder = false;
+      }
+    });
     this.store.dispatch(new DishActions.LoadDishes());
     this.route.paramMap
       .pipe(map(p => Number.parseInt(p.get('id'))))
       .subscribe(id => {
         this.numberTable = id;
       });
+    this.initialOrder.Table = this.numberTable;
   }
 
   addDish(dish: IDish) {
     this.store.dispatch(new OrderActions.AddDish([dish, this.order.Id]));
   }
 
-  createOrder(){
-    debugger;
+  createOrder() {
     this.store.dispatch(new OrderActions.AddOrder(this.initialOrder));
   }
 }

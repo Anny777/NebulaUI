@@ -2,7 +2,7 @@
   <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
 </div>
 
-<div *ngIf="isCreateOrder">
+<div [hidden]="!isCreateOrder">
   <button class="buttonCreate" mat-raised-button color="warn" (click)="createOrder()">Сделать заказ</button>
 </div>
 
