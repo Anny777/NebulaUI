@@ -56,8 +56,8 @@ export class DishListComponent implements OnInit {
       .pipe(map(p => Number.parseInt(p.get('id'))))
       .subscribe(id => {
         this.numberTable = id;
+        this.initialOrder.Table = this.numberTable;
       });
-    this.initialOrder.Table = this.numberTable;
   }
 
   addDish(dish: IDish) {

@@ -41,7 +41,7 @@ export class orderEffects {
           catchError(error => of(new OrderActions.AddOrderFail(error)))
         )
         .pipe(
-          tap(c => this.store.dispatch(new OrderActions.GetOrder(c.payload.order.Table)))
+          tap(s => this.store.dispatch(new OrderActions.GetOrder(c.payload.Table)))
         )
       ));
 
@@ -52,6 +52,9 @@ export class orderEffects {
         .pipe(
           map(r => new OrderActions.CloseOrderSuccess()),
           catchError(error => of(new OrderActions.CloseOrderFail(error)))
+        )
+        .pipe(
+          tap(s => this.store.dispatch(new OrderActions.GetOrder(c.payload)))
         )
       ));
 
