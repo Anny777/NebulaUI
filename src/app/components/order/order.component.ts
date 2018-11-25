@@ -18,13 +18,15 @@ import { IDishLoading } from 'src/app/models/dishLoading';
 export class OrderComponent implements OnInit {
   @Input() number: number;
 
-  order: IOrder = {
+  initialOrder: IOrder = {
     Id: 0,
     Dishes: [],
     Table: 0,
     CreatedDate: new Date(),
     Comment: ''
   };
+
+  order: IOrder;
 
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
@@ -49,36 +51,38 @@ export class OrderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.order = this.initialOrder;
     this.store.dispatch(new OrderActions.GetOrder(this.number));
   }
 
   private _mergeOrder(order: IOrder) {
     console.log('merge order', order);
     if (!order) {
-      return;
+      this.order = order;
+    } else {
+
+      this.order.Id = order.Id;
+      this.order.Comment = order.Comment;
+      this.order.CreatedDate = order.CreatedDate;
+
+      // Добавляем или обновляем статус
+      order.Dishes.forEach(dish => {
+        let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
+        if (!currentDish) {
+          this.order.Dishes.push(dish);
+          return;
+        }
+
+        if (dish.State != currentDish.State) {
+          currentDish.State = dish.State;
+          return;
+        }
+      });
+
+      // Удаляем ненужные
+      this.order.Dishes = this.order.Dishes
+        .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
     }
-
-    this.order.Id = order.Id;
-    this.order.Comment = order.Comment;
-    this.order.CreatedDate = order.CreatedDate;
-
-    // Добавляем или обновляем статус
-    order.Dishes.forEach(dish => {
-      let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
-      if (!currentDish) {
-        this.order.Dishes.push(dish);
-        return;
-      }
-
-      if (dish.State != currentDish.State) {
-        currentDish.State = dish.State;
-        return;
-      }
-    });
-
-    // Удаляем ненужные
-    this.order.Dishes = this.order.Dishes
-      .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
 
     this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
     this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
