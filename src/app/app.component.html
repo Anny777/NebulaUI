@@ -10,7 +10,7 @@
     <li *ngIf="userIsInRole(['Admin','Bartender'])"><a routerLink="bar"> <button mat-raised-button>Бар</button></a></li>
     <li *ngIf="userIsInRole(['Admin'])"><a routerLink="admin"> <button mat-raised-button>Администрирование</button></a></li>
     <li *ngIf="!isAuthenticated"><a routerLink="login"><button mat-raised-button>Вход</button></a></li>
-    <li *ngIf="isAuthenticated"><a><button mat-raised-button (click)="logout()">Выход</button></a></li>
+    <li *ngIf="isAuthenticated"><a><button mat-raised-button (click)="logout()">{{user}} - Выйти</button></a></li>
   </ul>
 </nav>
 <div id="content">
