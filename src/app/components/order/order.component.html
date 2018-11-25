@@ -17,7 +17,7 @@
           </div>
         </td>
         <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
-        <td colspan="4"></td>
+        <td colspan="4">{{isStateLoading(dish.key.CookingDishId)}}</td>
       </tr>
       <tr>
         <td><strong>ИТОГО:</strong></td>
@@ -30,10 +30,6 @@
       </tr>
       <tr>
         <td *ngIf="!isLoading" colspan="3">
-          <button mat-raised-button color="warn" (click)="add()">Заказать</button>
-          &nbsp;
-          <button mat-raised-button color="warn" (click)="clear()">Сбросить</button>
-          &nbsp;
           <button mat-raised-button color="warn" (click)="close()">Закрыть</button>
         </td>
         <td *ngIf="isLoading" colspan="3">
@@ -44,7 +40,7 @@
   </div>
 
   <div name="inWork" *ngIf="userIsInRole(['Admin','Cook','Bartender'])" [hidden]="!inWorkDishes || inWorkDishes.length <= 0">
-    <h3 class="header">Заказы:</h3>
+    <h3 class="header">Блюда:</h3>
     <table class="table-borderless">
       <tbody *ngFor="let dish of inWorkDishes">
         <tr [hidden]="isStateLoading(dish.CookingDishId)">
@@ -100,7 +96,7 @@
   </div>
 
   <div name="ready" [hidden]="!readyDishes || readyDishes.length <= 0" *ngIf="userIsInRole(['Admin','Waiter'])">
-    <h3 class="header">Готовые блюда:</h3>
+    <h3 class="header">Готовые:</h3>
     <table class="table-borderless">
       <tbody *ngFor="let dish of readyDishes">
         <tr [ngClass]="{'success': true}" [hidden]="isStateLoading(dish.CookingDishId)">

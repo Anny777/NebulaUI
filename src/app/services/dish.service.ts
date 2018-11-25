@@ -4,8 +4,6 @@ import { IDish } from '../models/dish';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { IOrder } from '../models/order';
-import { map } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +16,13 @@ export class DishService {
     return this.http.get<IDish[]>(environment.host + "Dish/List");
   }
 
-  public SetState(id: number, state: number): Observable<IOrder> {
-    return this.http.post<IOrder>(
-      environment.host + "Dish/SetState?id=" + id + "&dishState=" + state,
-      {}
-    );
+  public SetState(dish: IDish, state: number): Observable<IOrder> {
+    return this.http
+      .post<IOrder>(environment.host + "Dish/SetState?id=" + dish.CookingDishId + "&dishState=" + state, {});
   }
 
-  public addDish(dish: IDish, orderId: number): Observable<{ dish: IDish, order: IOrder }> {
+  public addDish(dish: IDish, orderId: number): Observable<IOrder> {
     return this.http
-      .post<IOrder>(environment.host + "Dish/AddDish?idOrder=" + orderId, dish)
-      .pipe(map(order => { return { dish, order } }));
+      .post<IOrder>(environment.host + "Dish/AddDish?idOrder=" + orderId, dish);
   }
 }

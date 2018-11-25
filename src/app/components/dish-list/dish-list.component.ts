@@ -26,6 +26,7 @@ export class DishListComponent implements OnInit {
 
   isListLoading$: Observable<boolean>;
   dishes$: Observable<IDish[]>;
+  order: IOrder;
 
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
   }
@@ -34,6 +35,7 @@ export class DishListComponent implements OnInit {
   ngOnInit() {
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
+    this.store.select(c => c.orders.currentOrder).subscribe(o => { console.log(o); this.order = o });
     this.store.dispatch(new DishActions.LoadDishes());
     this.route.paramMap
       .pipe(map(p => Number.parseInt(p.get('id'))))
@@ -43,7 +45,7 @@ export class DishListComponent implements OnInit {
   }
 
   addDish(dish: IDish) {
-    this.store.dispatch(new OrderActions.AddDish([dish, this.numberTable]));
+    this.store.dispatch(new OrderActions.AddDish([dish, this.order.Id]));
   }
 }
 

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 import { AuthService } from 'src/app/services/auth.service';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { IDishLoading } from 'src/app/models/dishLoading';
 
 @Component({
   selector: 'app-order',
@@ -18,7 +18,7 @@ import { switchMap, map, tap } from 'rxjs/operators';
 export class OrderComponent implements OnInit {
   @Input() number: number;
 
-  order: IOrder = {
+  initialOrder: IOrder = {
     Id: 0,
     Dishes: [],
     Table: 0,
@@ -26,7 +26,8 @@ export class OrderComponent implements OnInit {
     Comment: ''
   };
 
-  isStateLoadings: number[];
+  order: IOrder;
+
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
   cancellationDishes: IDish[];
@@ -37,6 +38,7 @@ export class OrderComponent implements OnInit {
   isOrderClose$: Observable<boolean>;
   isOrderAdd$: Observable<boolean>;
   isOrderLoading$: Observable<boolean>;
+  dishLoading: IDishLoading[];
 
   constructor(private store: Store<IAppState>, private auth: AuthService) {
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
@@ -44,39 +46,43 @@ export class OrderComponent implements OnInit {
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
     this.isOrderLoading$ = this.store.select(c => c.orders.isCurrentOrderLoading);
     this.store.select(c => c.orders.currentOrder).subscribe(order => this._mergeOrder(order));
+    this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
+
   }
 
   ngOnInit() {
+    this.order = this.initialOrder;
     this.store.dispatch(new OrderActions.GetOrder(this.number));
   }
 
   private _mergeOrder(order: IOrder) {
     console.log('merge order', order);
     if (!order) {
-      return;
+      this.order = order;
+    } else {
+
+      this.order.Id = order.Id;
+      this.order.Comment = order.Comment;
+      this.order.CreatedDate = order.CreatedDate;
+
+      // Добавляем или обновляем статус
+      order.Dishes.forEach(dish => {
+        let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
+        if (!currentDish) {
+          this.order.Dishes.push(dish);
+          return;
+        }
+
+        if (dish.State != currentDish.State) {
+          currentDish.State = dish.State;
+          return;
+        }
+      });
+
+      // Удаляем ненужные
+      this.order.Dishes = this.order.Dishes
+        .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
     }
-
-    this.order.Id = order.Id;
-    this.order.Comment = order.Comment;
-    this.order.CreatedDate = order.CreatedDate;
-
-    // Добавляем или обновляем статус
-    order.Dishes.forEach(dish => {
-      let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
-      if (!currentDish) {
-        this.order.Dishes.push(dish);
-        return;
-      }
-
-      if (dish.State != currentDish.State) {
-        currentDish.State = dish.State;
-        return;
-      }
-    });
-
-    // Удаляем ненужные
-    this.order.Dishes = this.order.Dishes
-      .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
 
     this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
     this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
@@ -84,7 +90,6 @@ export class OrderComponent implements OnInit {
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
 
     this.inWorkGroupped = this.groupById(order, d => d.State == DishState.InWork);
-    this.isStateLoadings = [];
   }
 
   add() {
@@ -96,12 +101,15 @@ export class OrderComponent implements OnInit {
   }
 
   setState(id: number, state: DishState) {
-    this.isStateLoadings.push(id);
     this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
   }
 
   isStateLoading(id: number) {
-    return this.isStateLoadings.some(c => c == id);
+    try {
+      return this.dishLoading.find(c => c.dish.CookingDishId == id).isLoading;
+    } catch (error) {
+      return false;
+    }
   }
 
   // TODO to pipe
