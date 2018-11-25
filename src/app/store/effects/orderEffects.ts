@@ -52,7 +52,7 @@ export class orderEffects {
   @Effect()
   removeDish$ = this.actions$.ofType<OrderActions.RemoveDish>(OrderActions.REMOVE_DISH)
     .pipe(
-      switchMap(c => this.dishService.SetState(c.payload[0].CookingDishId, DishState.CancellationRequested)
+      switchMap(c => this.dishService.SetState(c.payload[0], DishState.CancellationRequested)
         .pipe(
           map(o => new OrderActions.RemoveDishSuccess({ dish: c.payload[0], order: o })),
           catchError(error => of(new OrderActions.RemoveDishFail({ dish: c.payload[0], response: error })))
@@ -64,7 +64,7 @@ export class orderEffects {
     .pipe(
       switchMap(c => this.dishService.addDish(c.payload[0], c.payload[1])
         .pipe(
-          map(r => new OrderActions.AddDishSuccess({ dish: r.dish, order: r.order })),
+          map(o => new OrderActions.AddDishSuccess({ dish: c.payload[0], order: o })),
           catchError(r => of(new OrderActions.AddDishFail({ dish: c.payload[0], response: r.error })))
         )
       ));

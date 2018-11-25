@@ -92,14 +92,15 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
         dishLoading: _toggleDishLoading(state.dishLoading, action.payload[0].CookingDishId, true)
       };
     case OrderActions.REMOVE_DISH_SUCCESS:
+      console.log(action.payload.dish.CookingDishId);
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload[0].CookingDishId, false)
+        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false)
       };
     case OrderActions.REMOVE_DISH_FAIL:
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload[0].CookingDishId, false)
+        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false)
       };
 
     default:
