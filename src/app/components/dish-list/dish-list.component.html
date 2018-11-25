@@ -1,7 +1,12 @@
 <div *ngIf="(isListLoading$ | async)" class="div_for_spinner">
   <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
 </div>
-<div>
+
+<div *ngIf="isCreateOrder">
+  <button class="buttonCreate" mat-raised-button color="warn" (click)="createOrder()">Сделать заказ</button>
+</div>
+
+<div [hidden]="isCreateOrder">
   <div class="divBlock" *ngIf="!(isListLoading$ | async)">
     <h2 class="header">Меню</h2>
     <mat-form-field style="width: 100%">
@@ -19,7 +24,7 @@
   </div>
 
   <div style="display:inline-block; width: 48%">
-    <app-order *ngIf="!(isOrderLoading$ | async)" [number]="numberTable"></app-order>
+    <app-order [hidden]="isOrderLoading$ | async" [number]="numberTable"></app-order>
     {{(isOrderLoading$ | async)}}
     <div *ngIf="isOrderLoading$ | async" class="div_for_spinner">
       <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
