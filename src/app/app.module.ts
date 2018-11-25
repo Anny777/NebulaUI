@@ -19,7 +19,6 @@ import { DishListComponent } from './components/dish-list/dish-list.component';
 import { OrderService } from './services/order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule } from '@angular/forms';
-import { OrderlistComponent } from './components/orderlist/orderlist.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
@@ -63,7 +62,6 @@ const appRoutes: Routes = [
     DishListComponent,
     FilterPipeComponent,
     GroupByPipe,
-    OrderlistComponent,
     CookingComponent,
     MatInput,
     LoginComponent,

@@ -46,19 +46,19 @@ export class OrderService {
 
   public getList(): Observable<IOrder[]> {
     console.log('get orders list!');
-    return this.http.get<IOrder[]>(environment.host + "Order");
+    return this.http.get<IOrder[]>(environment.host + "Order/List");
   }
 
   public get(table: number): Observable<IOrder> {
     console.log('get order!');
-    return this.http.get<IOrder>(environment.host + "Order/" + table);
+    return this.http.get<IOrder>(environment.host + "Order/GetOrder?table=" + table);
   }
 
   public create(order: IOrder): Observable<any> {
-    return this.http.post(environment.host + "Order", order);
+    return this.http.post(environment.host + "Order/New", order);
   }
 
   public close(table: number): Observable<any> {
-    return this.http.post(environment.host + "Order?tableNumber=" + table, {});
+    return this.http.post(environment.host + "Order/Close?tableNumber=" + table, {});
   }
 }

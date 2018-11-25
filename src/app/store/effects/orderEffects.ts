@@ -65,7 +65,7 @@ export class orderEffects {
       switchMap(c => this.dishService.addDish(c.payload[0], c.payload[1])
         .pipe(
           map(r => new OrderActions.AddDishSuccess({ dish: r.dish, order: r.order })),
-          catchError(r => of(new OrderActions.AddDishFail({ dish: r.dish, response: r.error })))
+          catchError(r => of(new OrderActions.AddDishFail({ dish: c.payload[0], response: r.error })))
         )
       ));
 

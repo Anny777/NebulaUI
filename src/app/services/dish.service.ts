@@ -27,7 +27,7 @@ export class DishService {
 
   public addDish(dish: IDish, orderId: number): Observable<{ dish: IDish, order: IOrder }> {
     return this.http
-      .post<IOrder>(environment.host + "Order/AddDish?orderId=" + orderId, dish)
+      .post<IOrder>(environment.host + "Dish/AddDish?idOrder=" + orderId, dish)
       .pipe(map(order => { return { dish, order } }));
   }
 }

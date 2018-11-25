@@ -99,7 +99,7 @@ export class RemoveDishSuccess implements Action {
 }
 export class RemoveDishFail implements Action {
   readonly type = REMOVE_DISH_FAIL;
-  constructor(public payload: { dish: IDish, response: any }) { };
+  constructor(public payload: { dish: IDish, response: any }) { console.log(payload)};
 }
 
 export type Actions =

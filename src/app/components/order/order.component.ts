@@ -43,8 +43,7 @@ export class OrderComponent implements OnInit {
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
     this.isOrderLoading$ = this.store.select(c => c.orders.isCurrentOrderLoading);
-    this.store.select(c => c.orders.currentOrder)
-      .pipe(tap(order => this._mergeOrder(order)));
+    this.store.select(c => c.orders.currentOrder).subscribe(order => this._mergeOrder(order));
   }
 
   ngOnInit() {
