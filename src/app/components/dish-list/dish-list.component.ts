@@ -19,7 +19,7 @@ export class DishListComponent implements OnInit {
 
   message: string;
   numberTable: number;
-  isView: boolean;
+  isCreateOrder: boolean = false;
   numberCustom: number;
 
   orderArray = [];
@@ -28,6 +28,14 @@ export class DishListComponent implements OnInit {
   dishes$: Observable<IDish[]>;
   order: IOrder;
 
+  initialOrder: IOrder = {
+    Id: 0,
+    Dishes: [],
+    Table: 0,
+    CreatedDate: new Date(),
+    Comment: ''
+  };
+
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
   }
 
@@ -35,7 +43,14 @@ export class DishListComponent implements OnInit {
   ngOnInit() {
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
-    this.store.select(c => c.orders.currentOrder).subscribe(o => { console.log(o); this.order = o });
+    this.store.select(c => c.orders.currentOrder).subscribe(o => 
+      { 
+        console.log(o); 
+        this.order = o;
+        if(!this.order){
+          this.isCreateOrder = true;
+        }
+      });
     this.store.dispatch(new DishActions.LoadDishes());
     this.route.paramMap
       .pipe(map(p => Number.parseInt(p.get('id'))))
@@ -46,6 +61,11 @@ export class DishListComponent implements OnInit {
 
   addDish(dish: IDish) {
     this.store.dispatch(new OrderActions.AddDish([dish, this.order.Id]));
+  }
+
+  createOrder(){
+    debugger;
+    this.store.dispatch(new OrderActions.AddOrder(this.initialOrder));
   }
 }
 
