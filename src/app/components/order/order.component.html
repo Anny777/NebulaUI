@@ -17,6 +17,7 @@
           </div>
         </td>
         <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
+        <td colspan="4"></td>
       </tr>
       <tr>
         <td><strong>ИТОГО:</strong></td>
@@ -49,7 +50,7 @@
         <tr [hidden]="isStateLoading(dish.CookingDishId)">
           <td>{{dish.Name}}</td>
           <td>
-            <button mat-raised-button color="warn"  (click)="setState(dish.CookingDishId, 3)">Готово</button>
+            <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 3)">Готово</button>
             &nbsp;
             <button mat-raised-button color="warn" (click)="setState(dish.CookingDishId, 5)">Запросить
               отмену</button>
