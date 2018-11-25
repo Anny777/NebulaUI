@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   public getUserInfo(a): Observable<IUser> {
-    return this.client.get<IUser>(environment.host + "api/Account/UserInfo")
+    return this.client.get<IUser>(environment.host + "Account/UserInfo")
       .pipe(
         map(d => {
           a.userInfo = d;

@@ -15,19 +15,19 @@ export class DishService {
   constructor(private http: HttpClient) { }
 
   public list(): Observable<IDish[]> {
-    return this.http.get<IDish[]>(environment.host + "api/Dish/List");
+    return this.http.get<IDish[]>(environment.host + "Dish/List");
   }
 
   public SetState(id: number, state: number): Observable<IOrder> {
     return this.http.post<IOrder>(
-      environment.host + "api/Dish/SetState?id=" + id + "&dishState=" + state,
+      environment.host + "Dish/SetState?id=" + id + "&dishState=" + state,
       {}
     );
   }
 
   public addDish(dish: IDish, orderId: number): Observable<{ dish: IDish, order: IOrder }> {
     return this.http
-      .post<IOrder>(environment.host + "api/Order/AddDish?orderId=" + orderId, dish)
+      .post<IOrder>(environment.host + "Order/AddDish?orderId=" + orderId, dish)
       .pipe(map(order => { return { dish, order } }));
   }
 }
