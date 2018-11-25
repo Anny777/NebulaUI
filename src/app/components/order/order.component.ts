@@ -47,7 +47,6 @@ export class OrderComponent implements OnInit {
     this.isOrderLoading$ = this.store.select(c => c.orders.isCurrentOrderLoading);
     this.store.select(c => c.orders.currentOrder).subscribe(order => this._mergeOrder(order));
     this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
-
   }
 
   ngOnInit() {
@@ -57,10 +56,9 @@ export class OrderComponent implements OnInit {
 
   private _mergeOrder(order: IOrder) {
     console.log('merge order', order);
-    if (!order) {
-      this.order = order;
+    if (!order || !this.order) {
+      this.order = this.initialOrder;
     } else {
-
       this.order.Id = order.Id;
       this.order.Comment = order.Comment;
       this.order.CreatedDate = order.CreatedDate;
@@ -89,7 +87,7 @@ export class OrderComponent implements OnInit {
     this.inWorkDishes = this.order.Dishes.filter(d => d.State == DishState.InWork);
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
 
-    this.inWorkGroupped = this.groupById(order, d => d.State == DishState.InWork);
+    this.inWorkGroupped = this.groupById(this.order, d => d.State == DishState.InWork);
   }
 
   add() {
@@ -100,8 +98,8 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
   }
 
-  setState(id: number, state: DishState) {
-    this.store.dispatch(new DishActions.ChangeState({ id: id, state: state }))
+  setState(dish: IDish, state: DishState) {
+    this.store.dispatch(new DishActions.ChangeState({ dish: dish, state: state }))
   }
 
   isStateLoading(id: number) {
@@ -165,15 +163,6 @@ export class OrderComponent implements OnInit {
         WorkshopType: dish.WorkshopType
       },
       this.order.Id
-      ]
-    ));
-  }
-
-  public removeDish(dish: IDish) {
-    this.store.dispatch(new OrderActions.RemoveDish(
-      [
-        dish,
-        this.order.Id
       ]
     ));
   }

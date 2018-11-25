@@ -25,13 +25,13 @@ export class dishEffects {
   changeState$ = this.actions$.ofType<DishActions.ChangeState>(DishActions.CHANGE_STATE)
     .pipe(
       switchMap(
-        c => this.dishService.SetState(c.payload.id, c.payload.state)
+        c => this.dishService.SetState(c.payload.dish, c.payload.state)
           .pipe(
-            map(r => new DishActions.ChangeStateSuccess()),
+            map(o => new DishActions.ChangeStateSuccess(o)),
             catchError(error => of(new DishActions.ChangeStateFail(error)))
           )
           .pipe(
-            // tap(c => this.store.dispatch(new OrderActions.GetOrder()))
+            tap(c => this.store.dispatch(new OrderActions.GetOrder(c.payload.Table)))
           )
       ));
 }
