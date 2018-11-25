@@ -4,21 +4,27 @@
   <div name="order" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])">
     <h3 class="header">Заказ:</h3>
     <table class="striped">
-      <tr *ngFor="let dish of inWorkGroupped">
-        <td>{{dish.key.Name}}</td>
-        <td style="width: 100px;">{{dish.key.Price}} р.</td>
-        <td style="width: 100px;">
-          <div style="cursor:pointer;" class="icon" (click)="setState(dish.key, 5)">
-            <mat-icon>remove</mat-icon>
-          </div>
-          <div class="icon"> {{dish.value.length}} </div>
-          <div style="cursor:pointer;" class="icon" (click)="addDish(dish.key)">
-            <mat-icon>add</mat-icon>
-          </div>
-        </td>
-        <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
-        <td colspan="4">{{isStateLoading(dish.key.CookingDishId)}}</td>
-      </tr>
+      <tbody *ngFor="let dish of inWorkGroupped">
+        <tr *ngIf="!isStateLoading(dish.key.CookingDishId)">
+          <td>{{dish.key.Name}}</td>
+          <td style="width: 100px;">{{dish.key.Price}} р.</td>
+          <td style="width: 100px;">
+            <div style="cursor:pointer;" class="icon" (click)="setState(dish.key, 5)">
+              <mat-icon>remove</mat-icon>
+            </div>
+            <div class="icon"> {{dish.value.length}} </div>
+            <div style="cursor:pointer;" class="icon" (click)="addDish(dish.key)">
+              <mat-icon>add</mat-icon>
+            </div>
+          </td>
+          <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
+        </tr>
+        <tr *ngIf="isStateLoading(dish.key.CookingDishId)">
+          <td colspan="4">
+            <mat-spinner [diameter]="40"></mat-spinner>
+          </td>
+        </tr>
+      </tbody>
       <tr>
         <td><strong>ИТОГО:</strong></td>
         <td></td>
