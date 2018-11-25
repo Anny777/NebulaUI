@@ -64,12 +64,12 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     case OrderActions.ADD_DISH:
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload[0].CookingDishId, true)
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload[0], true)
       };
     case OrderActions.ADD_DISH_SUCCESS:
       var s = {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false),
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false),
         orders: state.orders.map(order => {
           if (order.Id == action.payload.order.Id) {
             return action.payload.order;
@@ -83,24 +83,40 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     case OrderActions.ADD_DISH_FAIL:
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false)
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
       };
 
     case OrderActions.REMOVE_DISH:
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload[0].CookingDishId, true)
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload[0], true)
       };
     case OrderActions.REMOVE_DISH_SUCCESS:
       console.log(action.payload.dish.CookingDishId);
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false)
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
       };
     case OrderActions.REMOVE_DISH_FAIL:
       return {
         ...state,
-        dishLoading: _toggleDishLoading(state.dishLoading, action.payload.dish.CookingDishId, false)
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
+      };
+
+    case OrderActions.CHANGE_STATE:
+      return {
+        ...state,
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, true)
+      };
+    case OrderActions.CHANGE_STATE_SUCCESS:
+      return {
+        ...state,
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
+      };
+    case OrderActions.CHANGE_STATE_FAIL:
+      return {
+        ...state,
+        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
       };
 
     default:
@@ -198,9 +214,16 @@ function _mergeDishes(currentDish: IDish, dish: IDish, currentOrder: IOrder): { 
   }
 }
 
-function _toggleDishLoading(loadings: IDishLoading[], id: number, flag: boolean): IDishLoading[] {
+export function toggleDishLoading(loadings: IDishLoading[], dish: IDish, flag: boolean): IDishLoading[] {
+  console.log('loadings', loadings);
+  if (loadings && !loadings.some(c => c.dish.CookingDishId == dish.CookingDishId)) {
+    loadings.push({
+      dish: dish,
+      isLoading: false
+    });
+  }
   return loadings.map(dl => {
-    if (dl.dish.CookingDishId == id) {
+    if (dl.dish.CookingDishId == dish.CookingDishId) {
       dl.isLoading = flag;
     }
 

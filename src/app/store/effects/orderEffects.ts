@@ -7,13 +7,16 @@ import { OrderService } from "src/app/services/order.service";
 import { of } from "rxjs";
 import { DishService } from "src/app/services/dish.service";
 import { DishState } from "src/app/models/dishState";
+import { Store } from "@ngrx/store";
+import { IAppState } from "../app.state";
 
 @Injectable()
 export class orderEffects {
   constructor(
     private actions$: Actions,
     private dishService: DishService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private store: Store<IAppState>
   ) { }
   @Effect()
   loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
@@ -77,5 +80,19 @@ export class orderEffects {
           map(order => new OrderActions.GetOrderSuccess(order)),
           catchError(r => of(new OrderActions.GetOrderFail(r)))
         )
+      ));
+
+  @Effect()
+  changeState$ = this.actions$.ofType<OrderActions.ChangeState>(OrderActions.CHANGE_STATE)
+    .pipe(
+      switchMap(
+        c => this.dishService.SetState(c.payload.dish, c.payload.state)
+          .pipe(
+            map(o => new OrderActions.ChangeStateSuccess({dish: c.payload.dish, order: o})),
+            catchError(error => of(new OrderActions.ChangeStateFail(error)))
+          )
+          .pipe(
+            tap(c => this.store.dispatch(new OrderActions.GetOrder(c.payload.order.Table)))
+          )
       ));
 }

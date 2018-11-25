@@ -1,6 +1,7 @@
 import { IOrder } from "src/app/models/order";
 import { Action } from '@ngrx/store';
 import { IDish } from "src/app/models/dish";
+import { DishState } from "src/app/models/dishState";
 
 export const LOAD_ORDERS = '[Orders] Load';
 export const LOAD_ORDERS_SUCCESS = '[Orders] Load success';
@@ -26,6 +27,9 @@ export const REMOVE_DISH = '[Orders] Remove dish';
 export const REMOVE_DISH_SUCCESS = '[Orders] Remove dish success';
 export const REMOVE_DISH_FAIL = '[Orders] Remove dish fail';
 
+export const CHANGE_STATE = '[Orders] Change dish State';
+export const CHANGE_STATE_SUCCESS = '[Orders] Change dish State Success';
+export const CHANGE_STATE_FAIL = '[Orders] Change dish State Fail';
 
 export class LoadOrders implements Action {
   readonly type = LOAD_ORDERS;
@@ -99,7 +103,22 @@ export class RemoveDishSuccess implements Action {
 }
 export class RemoveDishFail implements Action {
   readonly type = REMOVE_DISH_FAIL;
-  constructor(public payload: { dish: IDish, response: any }) {};
+  constructor(public payload: { dish: IDish, response: any }) { };
+}
+
+export class ChangeState implements Action {
+  readonly type = CHANGE_STATE;
+  constructor(public payload: { dish: IDish, state: DishState }) { }
+}
+
+export class ChangeStateSuccess implements Action {
+  readonly type = CHANGE_STATE_SUCCESS;
+  constructor(public payload: { dish: IDish, order: IOrder }) { }
+}
+
+export class ChangeStateFail implements Action {
+  readonly type = CHANGE_STATE_FAIL;
+  constructor(public payload: any) { }
 }
 
 export type Actions =
@@ -108,4 +127,5 @@ export type Actions =
   | AddOrder | AddOrderSuccess | AddOrderFail
   | CloseOrder | CloseOrderSuccess | CloseOrderFail
   | AddDish | AddDishSuccess | AddDishFail
-  | RemoveDish | RemoveDishSuccess | RemoveDishFail;
+  | RemoveDish | RemoveDishSuccess | RemoveDishFail
+  | ChangeState | ChangeStateSuccess | ChangeStateFail;

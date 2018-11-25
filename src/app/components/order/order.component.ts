@@ -99,7 +99,7 @@ export class OrderComponent implements OnInit {
   }
 
   setState(dish: IDish, state: DishState) {
-    this.store.dispatch(new DishActions.ChangeState({ dish: dish, state: state }))
+    this.store.dispatch(new OrderActions.ChangeState({ dish: dish, state: state }))
   }
 
   isStateLoading(id: number) {
