@@ -59,6 +59,7 @@ export class OrderComponent implements OnInit {
     if (!order || !this.order) {
       this.order = this.initialOrder;
     } else {
+      this.order.Table = this.number;
       this.order.Id = order.Id;
       this.order.Comment = order.Comment;
       this.order.CreatedDate = order.CreatedDate;
@@ -88,10 +89,6 @@ export class OrderComponent implements OnInit {
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
 
     this.inWorkGroupped = this.groupById(this.order, d => d.State == DishState.InWork);
-  }
-
-  add() {
-    this.store.dispatch(new OrderActions.AddOrder(this.order));
   }
 
   close() {
