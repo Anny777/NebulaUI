@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { IUser } from './models/user';
+import { OrderService } from './services/order.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   title = 'Nebula';
   role: boolean = false;
   user: string = "";
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router, private orderService: OrderService) { }
   private isAuthenticated: boolean = false;
 
   ngOnInit(): void {
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
     this.auth.authChanged.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
       if (isAuth) {
+        this.orderService.init();
         this.user = this.auth.userInfo.Email;
       }
     });

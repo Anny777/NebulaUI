@@ -10,6 +10,7 @@ import { IOrder } from "../models/order";
 import { environment } from "src/environments/environment";
 import { IDish } from "../models/dish";
 import { map } from "rxjs/operators";
+import { AuthService } from "./auth.service";
 
 
 @Injectable({
@@ -30,27 +31,26 @@ export class OrderService {
   // openOrders: Array<OrderViewModel> = [];
   // change: boolean;
 
-  constructor(private http: HttpClient, private router: Router, private listDishes: DishService, private store: Store<IAppState>) { }
-  public init() {
-    if (this.inited) {
+  constructor(private http: HttpClient, private authService: AuthService, private store: Store<IAppState>) { }
+    public init() {
+    if (this.inited || !this.authService.isAuthenticated) {
       return;
     }
 
     // Опрос сервера каждую секунду, чтобы была актуальная информация по заказам
+    this.inited = true;
+    this.store.dispatch(new OrderActions.LoadOrders());
     this.intervalObs.subscribe(c => {
-      this.inited = true;
-      // this.store.dispatch(new OrderActions.LoadOrders());
+      this.store.dispatch(new OrderActions.LoadOrders());
     });
     this.inited = true;
   }
 
   public getList(): Observable<IOrder[]> {
-    console.log('get orders list!');
     return this.http.get<IOrder[]>(environment.host + "Order/List");
   }
 
   public get(table: number): Observable<IOrder> {
-    console.log('get order!');
     return this.http.get<IOrder>(environment.host + "Order/GetOrder?table=" + table);
   }
 

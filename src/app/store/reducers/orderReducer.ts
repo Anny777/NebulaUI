@@ -5,8 +5,6 @@ import { IDish } from "src/app/models/dish";
 
 export interface IOrderState {
   orders: IOrder[],
-  currentOrder: IOrder,
-  isCurrentOrderLoading: boolean,
   isOrdersLoading: boolean,
   isOrderAdd: boolean,
   isOrderClose: boolean,
@@ -15,8 +13,6 @@ export interface IOrderState {
 
 const initialState: IOrderState = {
   orders: [],
-  currentOrder: null,
-  isCurrentOrderLoading: false,
   isOrdersLoading: false,
   isOrderAdd: false,
   isOrderClose: false,
@@ -31,7 +27,11 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     case OrderActions.LOAD_ORDERS_SUCCESS:
       return {
         ..._mergeOrders(action.payload, state),
-        isOrdersLoading: false
+        isOrdersLoading: false,
+        dishLoading: state.dishLoading.map(dishLoading => {
+          dishLoading.isLoading = false;
+          return dishLoading;
+        })
       }
     case OrderActions.LOAD_ORDERS_FAIL:
       return { ...state, isOrdersLoading: true };
@@ -44,15 +44,19 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
       return { ...state, isOrderAdd: false };
 
     case OrderActions.GET_ORDER:
-      return { ...state, isCurrentOrderLoading: true };
+      return state;
     case OrderActions.GET_ORDER_SUCCESS:
       return {
         ...state,
-        isCurrentOrderLoading: false,
-        currentOrder: action.payload
+        orders: state.orders.map(order => {
+          if (order.Id == action.payload.Id) {
+            return _mergeOrder(action.payload, order).o;
+          }
+          return order;
+        })
       };
     case OrderActions.GET_ORDER_FAIL:
-      return { ...state, isCurrentOrderLoading: false };
+      return state;
 
     case OrderActions.CLOSE_ORDER:
       return { ...state, isOrderClose: true };
@@ -110,13 +114,15 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
       };
     case OrderActions.CHANGE_STATE_SUCCESS:
       return {
-        ...state,
-        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
+        ...state
+        // ,
+        // dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
       };
     case OrderActions.CHANGE_STATE_FAIL:
       return {
-        ...state,
-        dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
+        ...state
+        // ,
+        // dishLoading: toggleDishLoading(state.dishLoading, action.payload.dish, false)
       };
 
     default:
@@ -141,7 +147,14 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
   for (let orderIndex = 0; orderIndex < orders.length; orderIndex++) {
     const order = orders[orderIndex];
     const currentOrder = currentOrders.find(c => c.Id == order.Id)
-    isChanged = _mergeOrder(order, currentOrder, currentOrders).r ? true : isChanged;
+
+    if (!currentOrder) {
+      console.log('new order', order);
+      currentOrders.push(order);
+      isChanged = true;
+    }
+
+    isChanged = _mergeOrder(order, currentOrder).r ? true : isChanged;
   }
 
   // Удаляем то что не пришло с сервера
@@ -183,35 +196,33 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
   return state;
 }
 
-function _mergeOrder(order: IOrder, currentOrder: IOrder, currentOrders: IOrder[]): { o: IOrder, r: boolean } {
-  if (!currentOrder) {
-    console.log('new order', order);
-    currentOrders.push(order);
-    return { o: currentOrder, r: true };
-  }
-
+function _mergeOrder(order: IOrder, currentOrder: IOrder): { o: IOrder, r: boolean } {
   var r = { o: currentOrder, r: false };
   for (let dishIndex = 0; dishIndex < order.Dishes.length; dishIndex++) {
     const dish = order.Dishes[dishIndex];
     const currentDish = currentOrder.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
     r.r = _mergeDishes(currentDish, dish, currentOrder).r ? true : r.r;
+    if (r.r) { console.log('order changed!') }
   }
 
   return r;
 }
 
 function _mergeDishes(currentDish: IDish, dish: IDish, currentOrder: IOrder): { o: IOrder, r: boolean } {
+  var result = { o: currentOrder, r: false };
   if (!currentDish) {
     console.log('new dish', dish);
     currentOrder.Dishes.push(dish);
-    return { o: currentOrder, r: true };
+    result.r = true;
   }
 
   if (currentDish.State != dish.State) {
     console.log('new dish state', dish);
     currentDish.State = dish.State;
-    return { o: currentOrder, r: true };
+    result.r = true;
   }
+
+  return result;
 }
 
 export function toggleDishLoading(loadings: IDishLoading[], dish: IDish, flag: boolean): IDishLoading[] {

@@ -44,14 +44,14 @@ export class OrderComponent implements OnInit {
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
-    this.isOrderLoading$ = this.store.select(c => c.orders.isCurrentOrderLoading);
-    this.store.select(c => c.orders.currentOrder).subscribe(order => this._mergeOrder(order));
+    this.store.select(c => c.orders.orders.find(order => order.Table == this.number)).subscribe(order => this._mergeOrder(order));
     this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
   }
 
   ngOnInit() {
     this.order = this.initialOrder;
-    this.store.dispatch(new OrderActions.GetOrder(this.number));
+    this.order.Table = this.number;
+    this.store.dispatch(new OrderActions.LoadOrders());
   }
 
   private _mergeOrder(order: IOrder) {

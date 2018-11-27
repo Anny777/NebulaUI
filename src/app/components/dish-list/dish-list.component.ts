@@ -42,7 +42,7 @@ export class DishListComponent implements OnInit {
   ngOnInit() {
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
-    this.store.select(c => c.orders.currentOrder).subscribe(o => {
+    this.store.select(c => c.orders.orders.find(o => o.Table == this.numberTable)).subscribe(o => {
       this.order = o;
       if (!this.order) {
         this.isCreateOrder = true;

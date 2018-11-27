@@ -1,4 +1,4 @@
-<!-- <app-cooking [WorkType] ="1"></app-cooking> -->
-
-<app-order [number]="4"></app-order>
+<div class="divBlockCook" *ngFor="let order of orders$ | async">
+    <app-order [number]="order.Table"></app-order>
+  </div>
 

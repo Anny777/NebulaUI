@@ -24,7 +24,7 @@ body {
 .divBlock{
     display: inline-block;
     vertical-align: top;
-    width: 48%;
+    width: 40%;
     background-color: rgba(242, 242, 242, 0.75);
 }
 .divBlockCook{
