@@ -58,6 +58,7 @@ export class OrderComponent implements OnInit {
     console.log('merge order', order);
     if (!order || !this.order) {
       this.order = this.initialOrder;
+      this.order.Table = this.number;
     } else {
       this.order.Table = this.number;
       this.order.Id = order.Id;

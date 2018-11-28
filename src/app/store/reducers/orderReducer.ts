@@ -46,15 +46,16 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     case OrderActions.GET_ORDER:
       return state;
     case OrderActions.GET_ORDER_SUCCESS:
-      return {
-        ...state,
-        orders: state.orders.map(order => {
-          if (order.Id == action.payload.Id) {
-            return _mergeOrder(action.payload, order).o;
-          }
-          return order;
-        })
-      };
+      return state;
+    // return {
+    //   ...state,
+    //   orders: state.orders.map(order => {
+    //     if (order.Id == action.payload.Id) {
+    //       return _mergeOrder(action.payload, order).o;
+    //     }
+    //     return order;
+    //   })
+    // };
     case OrderActions.GET_ORDER_FAIL:
       return state;
 
@@ -214,13 +215,12 @@ function _mergeDishes(currentDish: IDish, dish: IDish, currentOrder: IOrder): { 
     console.log('new dish', dish);
     currentOrder.Dishes.push(dish);
     result.r = true;
-  }
-
-  if (currentDish.State != dish.State) {
-    console.log('new dish state', dish);
-    currentDish.State = dish.State;
-    result.r = true;
-  }
+  } else
+    if (currentDish.State != dish.State) {
+      console.log('new dish state', dish);
+      currentDish.State = dish.State;
+      result.r = true;
+    }
 
   return result;
 }

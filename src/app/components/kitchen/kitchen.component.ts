@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IOrder } from 'src/app/models/order';
 import { WorkshopType } from 'src/app/models/workShopType';
+import { DishState } from 'src/app/models/dishState';
 
 @Component({
   selector: 'app-kitchen',
@@ -16,9 +17,13 @@ export class KitchenComponent implements OnInit {
   constructor(private store: Store<IAppState>) { }
 
   ngOnInit() {
-    this.orders$ = this.store.select(c => c.orders.orders.map(order => {
-      if (order.Dishes.some(c => c.WorkshopType == WorkshopType.Kitchen)) {
-        return order;
+    this.orders$ = this.store.select(c => c.orders.orders.filter(order => {
+      if (order.Dishes &&
+        order.Dishes.length > 0 &&
+        order.Dishes.some(c => c.WorkshopType == WorkshopType.Kitchen &&
+          [DishState.InWork, DishState.CancellationRequested].some(s => s == c.State)
+        )) {
+        return true;
       }
     }));
   }
