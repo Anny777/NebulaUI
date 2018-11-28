@@ -216,7 +216,7 @@ function _mergeDishes(currentDish: IDish, dish: IDish, currentOrder: IOrder): { 
     currentOrder.Dishes.push(dish);
     result.r = true;
   } else
-    if (currentDish.State != dish.State) {
+    if (dish && currentDish.State != dish.State) {
       console.log('new dish state', dish);
       currentDish.State = dish.State;
       result.r = true;
