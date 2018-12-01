@@ -10,29 +10,12 @@ import { OrderService } from './services/order.service';
 })
 export class AppComponent implements OnInit {
   title = 'Nebula';
-  role: boolean = false;
-  user: string = "";
-  constructor(private auth: AuthService, private router: Router, private orderService: OrderService) { }
-  private isAuthenticated: boolean = false;
+ 
+  constructor() { }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.auth.isAuthenticated;
-    this.auth.authChanged.subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-      if (isAuth) {
-        this.orderService.init();
-        this.user = this.auth.userInfo.Email;
-      }
-    });
-    this.auth.getUserInfo(this.auth).subscribe();
-
+    
   }
-  public logout() {
-    this.auth.logout(() => this.router.navigate(['/login']));
-  }
-
-  public userIsInRole(roles: Array<string>) {
-    return this.auth.userIsInRole(roles);
-  }
+  
 }
 

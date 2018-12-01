@@ -1,6 +1,4 @@
 .div_for_spinner{
-    /* display: inline-block; 
-    vertical-align: top;  */
     width: 49%;
     background-color: rgba(242, 242, 242, 0.75);
     display: block;
@@ -19,3 +17,11 @@
     transform: translate(-50%, -50%);
     width: 300px;
 }
+
+.content {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 2vh;
+    margin: 1vh;
+    vertical-align: top;
+  }

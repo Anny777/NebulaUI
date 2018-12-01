@@ -24,15 +24,17 @@ body {
 .divBlock{
     display: inline-block;
     vertical-align: top;
-    width: 40%;
+    border-radius: 5px;
+    width: 48%;
     background-color: rgba(242, 242, 242, 0.75);
 }
 .divBlockCook{
     display: inline-block;
     vertical-align: top;
-    width: 30%;
-    margin: 20px 20px 20px 20px;
+    width: 40%;
+    margin: 10px 0px 0px 65px;
     background-color: rgba(242, 242, 242, 0.75);
+    border-radius: 5px;
 }
 
 td.bl {

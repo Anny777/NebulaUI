@@ -1,4 +1,3 @@
-<div class="content">
   <h2 class="header">Стол № {{number}}</h2>
 
   <div name="order" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])">
@@ -18,6 +17,7 @@
             </div>
           </td>
           <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
+          <td></td>
         </tr>
         <tr *ngIf="isStateLoading(dish.key.CookingDishId)">
           <td colspan="4">
@@ -30,6 +30,7 @@
         <td></td>
         <td></td>
         <td><strong>{{getTotal()}} руб. </strong></td>
+        <td></td>
       </tr>
       <tr>
         <td colspan="4">Комментарий к заказу: <textarea rows="5" style="width: 100%"></textarea></td>
@@ -41,6 +42,8 @@
         <td *ngIf="isLoading" colspan="3">
           <mat-spinner [diameter]="50"></mat-spinner>
         </td>
+        <td></td>
+        <td></td>
       </tr>
     </table>
   </div>
@@ -121,4 +124,3 @@
       </tbody>
     </table>
   </div>
-</div>

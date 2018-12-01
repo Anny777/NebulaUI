@@ -2,32 +2,34 @@
   <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
 </div>
 
-<div [hidden]="!isCreateOrder && !(isListLoading$ | async)">
-  <button class="buttonCreate" mat-raised-button color="warn" (click)="createOrder()">Сделать заказ</button>
-</div>
-
-<div [hidden]="isCreateOrder">
-  <div class="divBlock" *ngIf="!(isListLoading$ | async)">
-    <h2 class="header">Меню</h2>
-    <mat-form-field style="width: 100%">
-      <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
-    </mat-form-field>
-    <table class="striped">
-      <tr *ngFor="let dish of (dishes$ | async) | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
-        <td style="width: 80%">
-          {{dish.Name}}
-          <br> {{dish.Consist}}
-        </td>
-        <td>{{dish.Price}} руб.</td>
-      </tr>
-    </table>
+<div *ngIf="!(isListLoading$ | async)" class="content">
+  <div [hidden]="!isCreateOrder">
+    <button class="buttonCreate" mat-raised-button color="warn" (click)="createOrder()">Сделать заказ</button>
   </div>
 
-  <div style="display:inline-block; width: 48%">
-    <app-order [hidden]="isOrderLoading$ | async" [number]="numberTable"></app-order>
-    {{(isOrderLoading$ | async)}}
-    <div *ngIf="isOrderLoading$ | async" class="div_for_spinner">
-      <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
+  <div [hidden]="isCreateOrder">
+    <div class="divBlock" *ngIf="!(isListLoading$ | async)">
+      <h2 class="header">Меню</h2>
+      <mat-form-field style="width: 100%">
+        <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
+      </mat-form-field>
+      <table class="striped">
+        <tr *ngFor="let dish of (dishes$ | async) | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
+          <td>
+            {{dish.Name}}
+            <br> {{dish.Consist}}
+          </td>
+          <td>{{dish.Price}} р.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divBlock" style="margin-left:20px">
+      <app-order [hidden]="isOrderLoading$ | async" [number]="numberTable"></app-order>
+      {{(isOrderLoading$ | async)}}
+      <div *ngIf="isOrderLoading$ | async" class="div_for_spinner">
+        <mat-spinner [diameter]="120" class="div_spinner"></mat-spinner>
+      </div>
     </div>
   </div>
 </div>

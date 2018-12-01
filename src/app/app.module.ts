@@ -22,7 +22,6 @@ import { FormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
-import { CookingComponent } from './components/cooking/cooking.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { Interceptor } from './services/interceptor';
@@ -35,6 +34,7 @@ import { dishReducer } from './store/reducers/dishReducer';
 import { tableReducer } from './store/reducers/tableReducer';
 import { userReducer } from './store/reducers/userReduser';
 import { OrderComponent } from './components/order/order.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 // определение маршрутов
 const appRoutes: Routes = [
@@ -62,12 +62,12 @@ const appRoutes: Routes = [
     DishListComponent,
     FilterPipeComponent,
     GroupByPipe,
-    CookingComponent,
     MatInput,
     LoginComponent,
     RegisterComponent,
     ForgotComponent,
-    OrderComponent
+    OrderComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
