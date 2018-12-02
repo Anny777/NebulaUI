@@ -32,3 +32,11 @@
 mat-spinner {
   margin: 0 auto;
 }
+
+.tdName{
+  width: 35%;
+}
+
+.tdButt{
+  width: 65%;
+}

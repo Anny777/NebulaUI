@@ -3,6 +3,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 body {
     margin: 0px;
+    background-image: url('/assets/background4.png');
 }
 
 .header{
@@ -25,9 +26,10 @@ body {
     display: inline-block;
     vertical-align: top;
     border-radius: 5px;
-    width: 48%;
+    width: 46%;
     background-color: rgba(242, 242, 242, 0.75);
 }
+
 .divBlockCook{
     display: inline-block;
     vertical-align: top;
@@ -61,10 +63,6 @@ td.bb {
     text-align: center;
 }
 
-body {
-    background-image: url('/assets/background4.png');
-}
-
 .mainBlock {
     width: 400px;
     background-color: lightblue;
@@ -84,7 +82,7 @@ td {
 }
 
 table {
-    width: 100%;
+    width: 100%; 
     display: table;
     border-collapse: collapse;
     border-spacing: 0;
@@ -92,10 +90,11 @@ table {
 
 table.striped tr {
     border-bottom: none;
+    width: 10px !important;
 }
 
-table.striped>tbody>tr:nth-child(odd) {
-    background-color: rgba(242, 242, 242, 0.5)
+ table.striped>tbody>tr:nth-child(odd) {
+    background-color: rgba(242, 242, 242, 0.5);
 }
 
 table.striped>tbody>tr>td {
@@ -111,10 +110,6 @@ table.highlight>tbody>tr:hover {
     background-color: rgba(242, 242, 242, 0.5)
 }
 
-table.centered thead tr th,
-table.centered tbody tr td {
-    text-align: center
-}
 
 tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.12)
@@ -129,7 +124,18 @@ th {
     border-radius: 2px
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 960px) {
+    .divBlockCook{
+        display: inline-block;
+        vertical-align: top;
+        width: 45%;
+        margin: 10px 0px 0px 10px;
+        background-color: rgba(242, 242, 242, 0.75);
+        border-radius: 5px;
+    }
+}
+
+ @media only screen and (max-width: 900px) {
     table.responsive-table {
         width: 100%;
         border-collapse: collapse;
@@ -186,5 +192,5 @@ th {
     table.responsive-table thead {
         border: 0;
         border-right: 1px solid rgba(0, 0, 0, 0.12)
-    }
+    } 
 }

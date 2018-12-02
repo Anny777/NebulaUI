@@ -14,17 +14,19 @@
         <input matInput [(ngModel)]="serchNameDish" name="serchNameDish" placeholder="Введите название блюда">
       </mat-form-field>
       <table class="striped">
+          <tbody>
         <tr *ngFor="let dish of (dishes$ | async) | myfilter : serchNameDish" (click)="addDish(dish)" style="cursor: pointer;">
           <td>
             {{dish.Name}}
             <br> {{dish.Consist}}
-          </td>
+          </td >
           <td>{{dish.Price}} р.</td>
         </tr>
+      </tbody>
       </table>
     </div>
 
-    <div class="divBlock" style="margin-left:20px">
+    <div class="divBlock" style="margin-left:20px; width: 44% !important;">
       <app-order [hidden]="isOrderLoading$ | async" [number]="numberTable"></app-order>
       {{(isOrderLoading$ | async)}}
       <div *ngIf="isOrderLoading$ | async" class="div_for_spinner">
