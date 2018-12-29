@@ -8,6 +8,7 @@ export interface IOrderState {
   isOrdersLoading: boolean,
   isOrderAdd: boolean,
   isOrderClose: boolean,
+  isOrderExport: boolean,
   dishLoading: IDishLoading[]
 }
 
@@ -16,6 +17,7 @@ const initialState: IOrderState = {
   isOrdersLoading: false,
   isOrderAdd: false,
   isOrderClose: false,
+  isOrderExport: false,
   dishLoading: []
 };
 
@@ -58,6 +60,14 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     // };
     case OrderActions.GET_ORDER_FAIL:
       return state;
+
+
+    case OrderActions.EXPORT_ORDER:
+      return { ...state, isOrderExport: true };
+    case OrderActions.EXPORT_ORDER_SUCCESS:
+      return { ...state, isOrderExport: false };
+    case OrderActions.EXPORT_ORDER_FAIL:
+      return { ...state, isOrderExport: true };
 
     case OrderActions.CLOSE_ORDER:
       return { ...state, isOrderClose: true };
@@ -153,9 +163,17 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
       console.log('new order', order);
       currentOrders.push(order);
       isChanged = true;
+    } else {
+      if (currentOrder.Comment != order.Comment) {
+        currentOrder.Comment = order.Comment;
+        isChanged = true;
+      }
+      if (currentOrder.IsExportRequested != order.IsExportRequested) {
+        currentOrder.IsExportRequested = order.IsExportRequested;
+        isChanged = true;
+      }
+      isChanged = _mergeOrder(order, currentOrder).r ? true : isChanged;
     }
-
-    isChanged = _mergeOrder(order, currentOrder).r ? true : isChanged;
   }
 
   // Удаляем то что не пришло с сервера

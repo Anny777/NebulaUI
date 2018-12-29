@@ -6,6 +6,7 @@ export interface IOrder {
   Table: number;
   CreatedDate: Date;
   Comment: string;
+  IsExportRequested: boolean;
 }
 
 

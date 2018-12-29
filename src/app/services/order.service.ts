@@ -61,4 +61,12 @@ export class OrderService {
   public close(table: number): Observable<any> {
     return this.http.post(environment.host + "Order/Close?tableNumber=" + table, {});
   }
+
+  public export(table: number): Observable<any>{
+    return this.http.post(environment.host + "Order/SetExportOrder?tableNumber=" + table, {});
+  }
+
+  public addComment(order: IOrder): Observable<IOrder>{
+    return this.http.post<IOrder>(environment.host + "Order/AddComment", order, {})
+  }
 }

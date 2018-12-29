@@ -33,15 +33,18 @@
       <td></td>
     </tr>
     <tr>
-      <td colspan="4">Комментарий к заказу: <textarea rows="5" style="width: 100%"></textarea></td>
+      <td colspan="4">Комментарий к заказу: <input matInput rows="5" style="width: 100%" type="text" (change)="setComment($event.target.value)" [value]="order.Comment"/></td>
     </tr>
     <tr>
       <td *ngIf="!isLoading" colspan="5">
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])">Добавить комментарий</button>
+        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])" (click)="addComment()">Добавить
+          комментарий</button>
       </td>
     </tr>
     <tr>
-      <td *ngIf="!isLoading">
+      <td *ngIf="!isLoading ">
+        <button style="margin-right:35px;" mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])"
+          (click)="export()">Выгрузить</button>
         <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть</button>
       </td>
       <td *ngIf="isLoading" colspan="3">

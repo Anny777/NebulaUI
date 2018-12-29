@@ -3,7 +3,6 @@ import { IOrder } from 'src/app/models/order';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/app.state';
 import * as OrderActions from '../../store/actions/orderActions';
-import * as DishActions from '../../store/actions/dishActions';
 import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
@@ -23,7 +22,8 @@ export class OrderComponent implements OnInit {
     Dishes: [],
     Table: 0,
     CreatedDate: new Date(),
-    Comment: ''
+    Comment: '',
+    IsExportRequested: false
   };
 
   order: IOrder;
@@ -96,6 +96,10 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
   }
 
+  export() {
+    this.store.dispatch(new OrderActions.ExportOrder(this.order.Table));
+  }
+
   setState(dish: IDish, state: DishState) {
     this.store.dispatch(new OrderActions.ChangeState({ dish: dish, state: state }))
   }
@@ -146,6 +150,23 @@ export class OrderComponent implements OnInit {
 
   public userIsInRole(roles: Array<string>) {
     return this.auth.userIsInRole(roles);
+  }
+
+  public setComment(comment) {
+    this.order.Comment = comment;
+  }
+
+  public addComment() {
+    this.store.dispatch(new OrderActions.AddComment(
+      {
+        Id: this.order.Id,
+        Dishes: this.order.Dishes,
+        Table: this.order.Table,
+        CreatedDate: this.order.CreatedDate,
+        Comment: this.order.Comment,
+        IsExportRequested: this.order.IsExportRequested
+      }
+    ));
   }
 
   public addDish(dish: IDish) {

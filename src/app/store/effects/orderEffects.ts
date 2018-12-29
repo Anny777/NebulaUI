@@ -46,6 +46,19 @@ export class orderEffects {
       ));
 
   @Effect()
+  exportOrder$ = this.actions$.ofType<OrderActions.ExportOrder>(OrderActions.EXPORT_ORDER)
+    .pipe(
+      switchMap(c => this.orderService.export(c.payload)
+        .pipe( 
+          map(r => new OrderActions.ExportOrderSuccess()),
+          catchError(error => of(new OrderActions.ExportOrderFail(error)))
+        )
+        .pipe(
+          tap(c => this.store.dispatch(new OrderActions.LoadOrders()))
+        )
+      ));
+
+  @Effect()
   closeOrder$ = this.actions$.ofType<OrderActions.CloseOrder>(OrderActions.CLOSE_ORDER)
     .pipe(
       switchMap(c => this.orderService.close(c.payload)
@@ -75,6 +88,16 @@ export class orderEffects {
         .pipe(
           map(o => new OrderActions.AddDishSuccess({ dish: c.payload[0], order: o })),
           catchError(r => of(new OrderActions.AddDishFail({ dish: c.payload[0], response: r.error })))
+        )
+      ));
+
+  @Effect()
+  addComment$ = this.actions$.ofType<OrderActions.AddComment>(OrderActions.ADD_COMMENT)
+    .pipe(
+      switchMap(c => this.orderService.addComment(c.payload)
+        .pipe(
+          map(o => new OrderActions.AddCommentSuccess(o)),
+          catchError(r => of(new OrderActions.AddCommentFail(r)))
         )
       ));
 

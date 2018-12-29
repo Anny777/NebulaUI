@@ -33,7 +33,8 @@ export class DishListComponent implements OnInit {
     Dishes: [],
     Table: this.numberTable,
     CreatedDate: new Date(),
-    Comment: ''
+    Comment: '',
+    IsExportRequested: false
   };
 
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {

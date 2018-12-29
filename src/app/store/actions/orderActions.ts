@@ -15,6 +15,10 @@ export const ADD_ORDER = '[Orders] Add';
 export const ADD_ORDER_SUCCESS = '[Orders] Add success';
 export const ADD_ORDER_FAIL = '[Orders] Add fail';
 
+export const EXPORT_ORDER = '[Orders] Export';
+export const EXPORT_ORDER_SUCCESS = '[Orders] Export success';
+export const EXPORT_ORDER_FAIL = '[Orders] Export fail';
+
 export const CLOSE_ORDER = '[Orders] Close';
 export const CLOSE_ORDER_SUCCESS = '[Orders] Close success';
 export const CLOSE_ORDER_FAIL = '[Orders] Close fail';
@@ -26,6 +30,10 @@ export const ADD_DISH_FAIL = '[Orders] Add dish fail';
 export const REMOVE_DISH = '[Orders] Remove dish';
 export const REMOVE_DISH_SUCCESS = '[Orders] Remove dish success';
 export const REMOVE_DISH_FAIL = '[Orders] Remove dish fail';
+
+export const ADD_COMMENT = '[Orders] Add comment';
+export const ADD_COMMENT_SUCCESS = '[Orders] Add comment success';
+export const ADD_COMMENT_FAIL = '[Orders] Add comment fail';
 
 export const CHANGE_STATE = '[Orders] Change dish State';
 export const CHANGE_STATE_SUCCESS = '[Orders] Change dish State Success';
@@ -69,6 +77,20 @@ export class AddOrderFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class ExportOrder implements Action{
+  readonly type = EXPORT_ORDER;
+  constructor(public payload: number){}
+}
+
+export class ExportOrderSuccess implements Action{
+  readonly type = EXPORT_ORDER_SUCCESS;
+}
+
+export class ExportOrderFail implements Action{
+  readonly type = EXPORT_ORDER_FAIL;
+  constructor(public payload: number){}
+}
+
 export class CloseOrder implements Action {
   readonly type = CLOSE_ORDER;
   constructor(public payload: number) { }
@@ -107,6 +129,21 @@ export class RemoveDishFail implements Action {
   constructor(public payload: { dish: IDish, response: any }) { };
 }
 
+export class AddComment implements Action{
+  readonly type = ADD_COMMENT;
+  constructor(public payload: IOrder){}
+}
+
+export class AddCommentSuccess implements Action{
+  readonly type = ADD_COMMENT_SUCCESS;
+  constructor(public payload: IOrder){}
+}
+
+export class AddCommentFail implements Action{
+  readonly type = ADD_COMMENT_FAIL;
+  constructor(public payload: any){}
+}
+
 export class ChangeState implements Action {
   readonly type = CHANGE_STATE;
   constructor(public payload: { dish: IDish, state: DishState }) { }
@@ -126,7 +163,9 @@ export type Actions =
   LoadOrders | LoadOrdersSuccess | LoadOrdersFail
   | GetOrder | GetOrderSuccess | GetOrderFail
   | AddOrder | AddOrderSuccess | AddOrderFail
+  | ExportOrder | ExportOrderSuccess | ExportOrderFail
   | CloseOrder | CloseOrderSuccess | CloseOrderFail
   | AddDish | AddDishSuccess | AddDishFail
   | RemoveDish | RemoveDishSuccess | RemoveDishFail
+  | AddComment | AddCommentSuccess | AddCommentFail
   | ChangeState | ChangeStateSuccess | ChangeStateFail;
