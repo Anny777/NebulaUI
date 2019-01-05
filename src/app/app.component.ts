@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
-import { OrderService } from './services/order.service';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { IAppState } from './store/app.state';
+import { tap } from 'rxjs/operators';
+import * as OrderActions from './store/actions/orderActions';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +12,15 @@ import { OrderService } from './services/order.service';
 })
 export class AppComponent implements OnInit {
   title = 'Nebula';
- 
-  constructor() { }
+  isSoundActivated$: Observable<boolean[]>;
+  constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
-    
+    this.isSoundActivated$ = this.store.select(c => c.orders.isSoundActivated).pipe(tap(c => console.log(c)));
   }
-  
+
+  onCompleted() {
+    this.store.dispatch(new OrderActions.CleanUpAudio())
+  }
 }
 

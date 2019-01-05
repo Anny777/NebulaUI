@@ -17,7 +17,6 @@
           </div>
         </td>
         <td><strong>{{dish.key.Price * dish.value.length}} р.</strong></td>
-        <td></td>
       </tr>
       <tr *ngIf="isStateLoading(dish.key.CookingDishId)">
         <td colspan="4">
@@ -29,23 +28,25 @@
       <td><strong>ИТОГО:</strong></td>
       <td></td>
       <td></td>
-      <td><strong>{{getTotal()}} руб. </strong></td>
-      <td></td>
+      <td style="width: 80px;"><strong>{{getTotal()}} руб. </strong></td>
     </tr>
-    <tr>
-      <td colspan="4">Комментарий к заказу: <input matInput rows="5" style="width: 100%" type="text" (change)="setComment($event.target.value)" [value]="order.Comment"/></td>
-    </tr>
-    <tr>
-      <td *ngIf="!isLoading" colspan="5">
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])" (click)="addComment()">Добавить
-          комментарий</button>
+    <tr *ngIf="!isLoading">
+      <td colspan="7">
+        <mat-form-field class="fieldComment">
+          <input matInput placeholder="Напишите комментарий к заказу" rows="5" style="width: 100%" type="text" (change)="setComment($event.target.value)"
+            [value]="order.Comment" />
+        </mat-form-field>
+        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])" (click)="addComment()">Сохранить</button>
       </td>
     </tr>
     <tr>
-      <td *ngIf="!isLoading ">
-        <button style="margin-right:35px;" mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])"
-          (click)="export()">Выгрузить</button>
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть</button>
+      <td *ngIf="!isLoading">
+        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="export()">Выгрузить
+          заказ</button>
+      </td>
+      <td>
+        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть
+          заказ</button>
       </td>
       <td *ngIf="isLoading" colspan="3">
         <mat-spinner [diameter]="50"></mat-spinner>

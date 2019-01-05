@@ -4,6 +4,7 @@ import { IDishLoading } from "src/app/models/dishLoading";
 import { IDish } from "src/app/models/dish";
 
 export interface IOrderState {
+  isSoundActivated: boolean[],
   orders: IOrder[],
   isOrdersLoading: boolean,
   isOrderAdd: boolean,
@@ -13,6 +14,7 @@ export interface IOrderState {
 }
 
 const initialState: IOrderState = {
+  isSoundActivated: [],
   orders: [],
   isOrdersLoading: false,
   isOrderAdd: false,
@@ -24,6 +26,11 @@ const initialState: IOrderState = {
 export function orderReducer(state: IOrderState = initialState, action: OrderActions.Actions): IOrderState {
 
   switch (action.type) {
+    case OrderActions.CLEAN_UP_AUDIO:
+      let t1 = Array.from(state.isSoundActivated).filter(f => f);
+      t1 = t1.slice(t1.length - 1);
+      console.log('t1', t1)
+      return { ...state, isSoundActivated: t1 };
     case OrderActions.LOAD_ORDERS:
       return { ...state, isOrdersLoading: true };
     case OrderActions.LOAD_ORDERS_SUCCESS:
@@ -205,14 +212,26 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
 
   if (isChanged) {
     console.log('state changed');
+
     return {
       ...state,
-      orders: orders
+      orders: orders,
+      isSoundActivated: _getAudios(state)
     }
   }
 
   console.log('not changed');
   return state;
+}
+
+function _getAudios(state: IOrderState) {
+  let audios = [true];
+  if (state.isSoundActivated.length < 500) {
+    audios = Array.from(state.isSoundActivated);
+    audios.push(true);
+  }
+
+  return audios;
 }
 
 function _mergeOrder(order: IOrder, currentOrder: IOrder): { o: IOrder, r: boolean } {

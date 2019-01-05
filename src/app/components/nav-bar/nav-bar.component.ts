@@ -12,6 +12,7 @@ export class NavBarComponent implements OnInit {
 
   role: boolean = false;
   user: string = "";
+  isVolumeOn: boolean = true;
   constructor(private auth: AuthService, private router: Router, private orderService: OrderService) { }
   private isAuthenticated: boolean = false;
 
@@ -29,6 +30,11 @@ export class NavBarComponent implements OnInit {
   }
   public logout() {
     this.auth.logout(() => this.router.navigate(['/login']));
+  }
+
+  toggleVolume(value: boolean)
+  {
+    this.isVolumeOn = value;
   }
 
   public userIsInRole(roles: Array<string>) {

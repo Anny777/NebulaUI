@@ -40,3 +40,8 @@ mat-spinner {
 .tdButt{
   width: 65%;
 }
+
+.fieldComment{
+  width: 100%;
+  background-color: whitesmoke;
+}

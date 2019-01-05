@@ -39,6 +39,12 @@ export const CHANGE_STATE = '[Orders] Change dish State';
 export const CHANGE_STATE_SUCCESS = '[Orders] Change dish State Success';
 export const CHANGE_STATE_FAIL = '[Orders] Change dish State Fail';
 
+export const CLEAN_UP_AUDIO = '[Orders] Clean up audio';
+
+export class CleanUpAudio implements Action {
+  readonly type = CLEAN_UP_AUDIO;
+}
+
 export class LoadOrders implements Action {
   readonly type = LOAD_ORDERS;
 }
@@ -168,4 +174,5 @@ export type Actions =
   | AddDish | AddDishSuccess | AddDishFail
   | RemoveDish | RemoveDishSuccess | RemoveDishFail
   | AddComment | AddCommentSuccess | AddCommentFail
-  | ChangeState | ChangeStateSuccess | ChangeStateFail;
+  | ChangeState | ChangeStateSuccess | ChangeStateFail 
+  | CleanUpAudio;
