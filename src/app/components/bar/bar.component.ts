@@ -20,7 +20,7 @@ export class BarComponent implements OnInit {
     this.orders$ = this.store.select(c => c.orders.orders.filter(order => {
       if (order.Dishes &&
         order.Dishes.length > 0 &&
-        order.Dishes.some(c => c.WorkshopType == WorkshopType.Bar &&
+        order.Dishes.some(c => c.WorkshopType == WorkshopType.Kitchen &&
           [DishState.InWork, DishState.CancellationRequested].some(s => s == c.State)
         )) {
         return true;

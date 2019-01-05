@@ -4,6 +4,7 @@
 body {
     margin: 0px;
     background-image: url('/assets/background4.png');
+    min-height: 650px;
 }
 
 .header{
