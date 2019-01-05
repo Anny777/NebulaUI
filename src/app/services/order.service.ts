@@ -67,6 +67,6 @@ export class OrderService {
   }
 
   public addComment(order: IOrder): Observable<IOrder>{
-    return this.http.post<IOrder>(environment.host + "Order/AddComment", order, {})
+    return this.http.post<IOrder>(environment.host + "Order/AddComment", order)
   }
 }

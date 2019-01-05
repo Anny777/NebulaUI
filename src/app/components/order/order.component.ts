@@ -152,8 +152,8 @@ export class OrderComponent implements OnInit {
     return this.auth.userIsInRole(roles);
   }
 
-  public setComment(comment) {
-    this.order.Comment = comment;
+  public setComment(e) {
+    this.order.Comment = e.target.value;
   }
 
   public addComment() {

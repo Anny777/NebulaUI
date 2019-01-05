@@ -30,23 +30,31 @@
       <td></td>
       <td style="width: 80px;"><strong>{{getTotal()}} руб. </strong></td>
     </tr>
+  </table>
+</div>
+
+<div>
+  <table class="striped">
     <tr *ngIf="!isLoading">
       <td colspan="7">
         <mat-form-field class="fieldComment">
-          <input matInput placeholder="Напишите комментарий к заказу" rows="5" style="width: 100%" type="text" (change)="setComment($event.target.value)"
-            [value]="order.Comment" />
+          <textarea matInput placeholder="Напишите комментарий к заказу" rows="5" style="width: 100%" type="text"
+            (change)="setComment($event)" [value]="order.Comment"></textarea>
         </mat-form-field>
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])" (click)="addComment()">Сохранить</button>
       </td>
     </tr>
     <tr>
       <td *ngIf="!isLoading">
+        <button mat-raised-button color="warn" (click)="addComment()">Сохранить</button>
+        &nbsp;
         <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="export()">Выгрузить
+          заказ</button>
+        &nbsp;
+        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть
           заказ</button>
       </td>
       <td>
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть
-          заказ</button>
+
       </td>
       <td *ngIf="isLoading" colspan="3">
         <mat-spinner [diameter]="50"></mat-spinner>
