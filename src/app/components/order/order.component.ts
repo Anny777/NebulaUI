@@ -30,6 +30,7 @@ export class OrderComponent implements OnInit {
 
   inWorkGroupped: any; // TODO: если увидел - типизируй!
   readyDishes: IDish[];
+  takenDishes: IDish[];
   cancellationDishes: IDish[];
   inWorkDishes: IDish[];
   deletedDishes: IDish[];
@@ -88,6 +89,7 @@ export class OrderComponent implements OnInit {
     this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
     this.inWorkDishes = this.order.Dishes.filter(d => d.State == DishState.InWork);
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
+    this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
 
     this.inWorkGroupped = this.groupById(this.order, d => d.State == DishState.InWork);
   }

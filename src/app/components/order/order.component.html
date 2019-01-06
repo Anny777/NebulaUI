@@ -47,14 +47,10 @@
       <td *ngIf="!isLoading">
         <button mat-raised-button color="warn" (click)="addComment()">Сохранить</button>
         &nbsp;
-        <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="export()">Выгрузить
-          заказ</button>
-        &nbsp;
         <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть
           заказ</button>
       </td>
       <td>
-
       </td>
       <td *ngIf="isLoading" colspan="3">
         <mat-spinner [diameter]="50"></mat-spinner>
@@ -140,4 +136,28 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div name="ready" [hidden]="!takenDishes || takenDishes.length <= 0" *ngIf="userIsInRole(['Admin','Bartender'])">
+  <h3 class="header">Забрано:</h3>
+  <table class="table-borderless">
+    <tbody *ngFor="let dish of takenDishes">
+      <tr [ngClass]="{'success': true}" [hidden]="isStateLoading(dish.CookingDishId)">
+        <td>{{dish.Name}}</td>
+        <td>
+        </td>
+      </tr>
+      <tr *ngIf="isStateLoading(dish.CookingDishId)">
+        <td colspan="2">
+          <div>
+            <mat-spinner [diameter]="40"></mat-spinner>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="padding:10px;">
+    <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="export()">Выгрузить
+      заказ</button>
+  </div>
 </div>

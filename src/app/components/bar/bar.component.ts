@@ -21,7 +21,7 @@ export class BarComponent implements OnInit {
       if (order.Dishes &&
         order.Dishes.length > 0 &&
         order.Dishes.some(c => c.WorkshopType == WorkshopType.Kitchen &&
-          [DishState.InWork, DishState.CancellationRequested].some(s => s == c.State)
+          [DishState.InWork, DishState.CancellationRequested, DishState.Taken].some(s => s == c.State)
         )) {
         return true;
       }
