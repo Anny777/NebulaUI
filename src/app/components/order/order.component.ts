@@ -8,6 +8,7 @@ import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 import { AuthService } from 'src/app/services/auth.service';
 import { IDishLoading } from 'src/app/models/dishLoading';
+import { WorkshopType } from 'src/app/models/workShopType';
 
 @Component({
   selector: 'app-order',
@@ -41,7 +42,10 @@ export class OrderComponent implements OnInit {
   isOrderLoading$: Observable<boolean>;
   dishLoading: IDishLoading[];
 
-  constructor(private store: Store<IAppState>, private auth: AuthService) {
+  constructor(
+    private store: Store<IAppState>,
+    private auth: AuthService
+  ) {
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
@@ -53,6 +57,20 @@ export class OrderComponent implements OnInit {
     this.order = this.initialOrder;
     this.order.Table = this.number;
     this.store.dispatch(new OrderActions.LoadOrders());
+  }
+
+  private _getUserWorkshopType() {
+    let workshopType = null;
+    if (this.auth && this.auth.userInfo && this.auth.userInfo.Roles) {
+      let roles = this.auth.userInfo.Roles;
+      if (roles.includes("Bartender")) {
+        workshopType = WorkshopType.Bar
+      } else if (roles.includes("Cook")) {
+        workshopType = WorkshopType.Kitchen
+      }
+    }
+
+    return workshopType;
   }
 
   private _mergeOrder(order: IOrder) {
@@ -67,7 +85,13 @@ export class OrderComponent implements OnInit {
       this.order.CreatedDate = order.CreatedDate;
 
       // Добавляем или обновляем статус
-      order.Dishes.forEach(dish => {
+      let orderDishes = order.Dishes;
+      let userWorkShopType = this._getUserWorkshopType();
+      if (userWorkShopType) {
+        orderDishes = orderDishes.filter(d => d.WorkshopType == userWorkShopType)
+      }
+
+      orderDishes.forEach(dish => {
         let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
         if (!currentDish) {
           this.order.Dishes.push(dish);
@@ -82,7 +106,7 @@ export class OrderComponent implements OnInit {
 
       // Удаляем ненужные
       this.order.Dishes = this.order.Dishes
-        .filter(c => order.Dishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
+        .filter(c => orderDishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
     }
 
     this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
@@ -91,7 +115,7 @@ export class OrderComponent implements OnInit {
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
     this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
 
-    this.inWorkGroupped = this.groupById(this.order, d => d.State == DishState.InWork);
+    this.inWorkGroupped = this.groupById(this.order, d => [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.State));
   }
 
   close() {
@@ -103,7 +127,11 @@ export class OrderComponent implements OnInit {
   }
 
   setState(dish: IDish, state: DishState) {
+    // if ((dish.State == DishState.InWork && state == DishState.CancellationRequested) || state != DishState.CancellationRequested) {
     this.store.dispatch(new OrderActions.ChangeState({ dish: dish, state: state }))
+    // } else {
+    //   alert("Блюдо нельзя удалить! Оно уже готово");
+    // }
   }
 
   isStateLoading(id: number) {
