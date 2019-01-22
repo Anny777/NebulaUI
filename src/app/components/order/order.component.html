@@ -1,6 +1,6 @@
 <h2 class="header">Стол № {{number}}</h2>
 
-<div name="order" *ngIf="userIsInRole(['Admin','Waiter','Bartender'])">
+<div name="order" *ngIf="userIsInRole(['Admin','Waiter'])">
   <h3 class="header">Заказ:</h3>
   <table class="striped">
     <tbody *ngFor="let dish of inWorkGroupped">
