@@ -108,14 +108,14 @@
   </table>
 </div>
 
-<div name="deleted" [hidden]="!deletedDishes || deletedDishes.length <= 0">
+<!-- <div name="deleted" [hidden]="!deletedDishes || deletedDishes.length <= 0">
   <h3 class="header">Отменены:</h3>
   <table class="table-borderless">
     <tr *ngFor="let dish of deletedDishes" [ngClass]="{'error': true}">
       <td>{{dish.Name}}</td>
     </tr>
   </table>
-</div>
+</div> -->
 
 <div name="ready" [hidden]="!readyDishes || readyDishes.length <= 0" *ngIf="userIsInRole(['Admin','Waiter'])">
   <h3 class="header">Готовые:</h3>
