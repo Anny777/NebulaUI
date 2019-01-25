@@ -49,6 +49,10 @@
         &nbsp;
         <button mat-raised-button color="warn" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="close()">Закрыть
           заказ</button>
+          <!-- <div style="padding:10px;"> -->
+            <button mat-raised-button color="warn" style="margin-left: 10px;" *ngIf="userIsInRole(['Admin','Bartender'])" (click)="export()">Выгрузить
+              заказ</button>
+          <!-- </div> -->
       </td>
       <td>
       </td>
@@ -156,8 +160,5 @@
       </tr>
     </tbody>
   </table>
-  <div style="padding:10px;">
-    <button mat-raised-button color="warn" (click)="export()">Выгрузить
-      заказ</button>
-  </div>
+
 </div>

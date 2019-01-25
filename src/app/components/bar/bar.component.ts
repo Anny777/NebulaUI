@@ -19,10 +19,12 @@ export class BarComponent implements OnInit {
   ngOnInit() {
     this.orders$ = this.store.select(c => c.orders.orders.filter(order => {
       if (order.Dishes &&
-        order.Dishes.length > 0 &&
-        order.Dishes.some(c => c.WorkshopType == WorkshopType.Bar &&
-          [DishState.InWork, DishState.CancellationRequested, DishState.Taken].some(s => s == c.State)
-        )) {
+        order.Dishes.length > 0
+        // &&
+        // order.Dishes.some(c => c.WorkshopType == WorkshopType.Bar &&
+        //   [DishState.InWork, DishState.CancellationRequested, DishState.Taken].some(s => s == c.State)
+        // )
+        ) {
         return true;
       }
     }));

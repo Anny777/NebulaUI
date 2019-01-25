@@ -111,11 +111,18 @@ export class OrderComponent implements OnInit {
 
     this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
     this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
-    this.inWorkDishes = this.order.Dishes.filter(d => d.State == DishState.InWork);
+    this.inWorkDishes = this.order.Dishes.filter(d => this._isInWorkDishes(d));
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
     this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
 
-    this.inWorkGroupped = this.groupById(this.order, d => [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.State));
+    this.inWorkGroupped = this.groupById(
+      this.order,
+      d => this._isInWorkDishes(d)
+    );
+  }
+
+  _isInWorkDishes(d: IDish): boolean {
+    return [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.State);
   }
 
   close() {
