@@ -40,9 +40,15 @@ export const CHANGE_STATE_SUCCESS = '[Orders] Change dish State Success';
 export const CHANGE_STATE_FAIL = '[Orders] Change dish State Fail';
 
 export const CLEAN_UP_AUDIO = '[Orders] Clean up audio';
+export const MUTE_AUDIO = '[Orders] Mute audio';
 
 export class CleanUpAudio implements Action {
   readonly type = CLEAN_UP_AUDIO;
+}
+
+export class MuteAudio implements Action {
+  readonly type = MUTE_AUDIO;
+  constructor(public payload: boolean) { }
 }
 
 export class LoadOrders implements Action {
@@ -83,18 +89,18 @@ export class AddOrderFail implements Action {
   constructor(public payload: any) { }
 }
 
-export class ExportOrder implements Action{
+export class ExportOrder implements Action {
   readonly type = EXPORT_ORDER;
-  constructor(public payload: number){}
+  constructor(public payload: number) { }
 }
 
-export class ExportOrderSuccess implements Action{
+export class ExportOrderSuccess implements Action {
   readonly type = EXPORT_ORDER_SUCCESS;
 }
 
-export class ExportOrderFail implements Action{
+export class ExportOrderFail implements Action {
   readonly type = EXPORT_ORDER_FAIL;
-  constructor(public payload: number){}
+  constructor(public payload: number) { }
 }
 
 export class CloseOrder implements Action {
@@ -135,19 +141,19 @@ export class RemoveDishFail implements Action {
   constructor(public payload: { dish: IDish, response: any }) { };
 }
 
-export class AddComment implements Action{
+export class AddComment implements Action {
   readonly type = ADD_COMMENT;
-  constructor(public payload: IOrder){}
+  constructor(public payload: IOrder) { }
 }
 
-export class AddCommentSuccess implements Action{
+export class AddCommentSuccess implements Action {
   readonly type = ADD_COMMENT_SUCCESS;
-  constructor(public payload: IOrder){}
+  constructor(public payload: IOrder) { }
 }
 
-export class AddCommentFail implements Action{
+export class AddCommentFail implements Action {
   readonly type = ADD_COMMENT_FAIL;
-  constructor(public payload: any){}
+  constructor(public payload: any) { }
 }
 
 export class ChangeState implements Action {
@@ -174,5 +180,5 @@ export type Actions =
   | AddDish | AddDishSuccess | AddDishFail
   | RemoveDish | RemoveDishSuccess | RemoveDishFail
   | AddComment | AddCommentSuccess | AddCommentFail
-  | ChangeState | ChangeStateSuccess | ChangeStateFail 
-  | CleanUpAudio;
+  | ChangeState | ChangeStateSuccess | ChangeStateFail
+  | CleanUpAudio | MuteAudio;

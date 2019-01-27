@@ -5,6 +5,7 @@ import { IDish } from "src/app/models/dish";
 
 export interface IOrderState {
   isSoundActivated: boolean[],
+  isSoundMuted: boolean,
   orders: IOrder[],
   isOrdersLoading: boolean,
   isOrderAdd: boolean,
@@ -15,6 +16,7 @@ export interface IOrderState {
 
 const initialState: IOrderState = {
   isSoundActivated: [],
+  isSoundMuted: false,
   orders: [],
   isOrdersLoading: false,
   isOrderAdd: false,
@@ -29,7 +31,6 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
     case OrderActions.CLEAN_UP_AUDIO:
       let t1 = Array.from(state.isSoundActivated).filter(f => f);
       t1 = t1.slice(t1.length - 1);
-      console.log('t1', t1)
       return { ...state, isSoundActivated: t1 };
     case OrderActions.LOAD_ORDERS:
       return { ...state, isOrdersLoading: true };
@@ -42,6 +43,9 @@ export function orderReducer(state: IOrderState = initialState, action: OrderAct
           return dishLoading;
         })
       }
+
+    case OrderActions.MUTE_AUDIO:
+      return { ...state, isSoundMuted: action.payload };
     case OrderActions.LOAD_ORDERS_FAIL:
       return { ...state, isOrdersLoading: true };
 

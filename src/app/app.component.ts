@@ -13,10 +13,13 @@ import * as OrderActions from './store/actions/orderActions';
 export class AppComponent implements OnInit {
   title = 'Nebula';
   isSoundActivated$: Observable<boolean[]>;
+  isSoundMuted$: Observable<boolean>;
   constructor(private store: Store<IAppState>) { }
 
   ngOnInit(): void {
     this.isSoundActivated$ = this.store.select(c => c.orders.isSoundActivated).pipe(tap(c => console.log(c)));
+    this.isSoundMuted$ = this.store.select(c => c.orders.isSoundMuted).pipe(tap(c => console.log(c)));
+
   }
 
   onCompleted() {
