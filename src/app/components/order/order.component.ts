@@ -35,6 +35,7 @@ export class OrderComponent implements OnInit {
   cancellationDishes: IDish[];
   inWorkDishes: IDish[];
   deletedDishes: IDish[];
+  orderingDishes: IDish[];
 
   isOrdersLoading$: Observable<boolean>;
   isOrderClose$: Observable<boolean>;
@@ -111,17 +112,18 @@ export class OrderComponent implements OnInit {
 
     this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
     this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
-    this.inWorkDishes = this.order.Dishes.filter(d => this._isInWorkDishes(d));
+    this.orderingDishes = this.order.Dishes.filter(d => this._orderingDishes(d));
+    this.inWorkDishes = this.order.Dishes.filter(d => d.State == DishState.InWork);
     this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
     this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
 
     this.inWorkGroupped = this.groupById(
       this.order,
-      d => this._isInWorkDishes(d)
+      d => this._orderingDishes(d)
     );
   }
 
-  _isInWorkDishes(d: IDish): boolean {
+  _orderingDishes(d: IDish): boolean {
     return [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.State);
   }
 
@@ -178,11 +180,11 @@ export class OrderComponent implements OnInit {
 
   // TODO to pipe
   public getTotal() {
-    if (!this.inWorkDishes) {
+    if (!this.orderingDishes) {
       return;
     }
 
-    return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
+    return this.orderingDishes.reduce((p, c) => c.Price + p, 0);
   }
 
   public userIsInRole(roles: Array<string>) {
