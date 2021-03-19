@@ -31,7 +31,7 @@ export class DishListComponent implements OnInit {
   initialOrder: IOrder = {
     Id: 0,
     Dishes: [],
-    Table: this.numberTable,
+    Table: 0,
     CreatedDate: new Date(),
     Comment: '',
     IsExportRequested: false
@@ -41,6 +41,7 @@ export class DishListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initialOrder.Table = this.numberTable;
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
     this.store.select(c => c.orders.orders.find(o => o.Table == this.numberTable)).subscribe(o => {
