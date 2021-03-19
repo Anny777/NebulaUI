@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Effect, Actions } from "@ngrx/effects";
+import { Effect, Actions, ofType } from "@ngrx/effects";
 import * as OrderActions from "../actions/orderActions";
 import * as TableActions from "../actions/tableActions";
 import { switchMap, map, catchError, tap } from "rxjs/operators";
@@ -19,8 +19,7 @@ export class orderEffects {
     private store: Store<IAppState>
   ) { }
   @Effect()
-  loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
-    .pipe(
+  loadOrders$ = this.actions$.pipe(ofType(OrderActions.LOAD_ORDERS),
       switchMap(c => this.orderService.getList()
         .pipe(
           map(orders => new OrderActions.LoadOrdersSuccess(orders)),
@@ -33,8 +32,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  addOrder$ = this.actions$.ofType<OrderActions.AddOrder>(OrderActions.ADD_ORDER)
-    .pipe(
+  addOrder$ = this.actions$.pipe(ofType<OrderActions.AddOrder>(OrderActions.ADD_ORDER),
       switchMap(c => this.orderService.create(c.payload)
         .pipe(
           map(o => new OrderActions.AddOrderSuccess(o)),
@@ -46,10 +44,9 @@ export class orderEffects {
       ));
 
   @Effect()
-  exportOrder$ = this.actions$.ofType<OrderActions.ExportOrder>(OrderActions.EXPORT_ORDER)
-    .pipe(
+  exportOrder$ = this.actions$.pipe(ofType<OrderActions.ExportOrder>(OrderActions.EXPORT_ORDER),
       switchMap(c => this.orderService.export(c.payload)
-        .pipe( 
+        .pipe(
           map(r => new OrderActions.ExportOrderSuccess()),
           catchError(error => of(new OrderActions.ExportOrderFail(error)))
         )
@@ -59,8 +56,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  closeOrder$ = this.actions$.ofType<OrderActions.CloseOrder>(OrderActions.CLOSE_ORDER)
-    .pipe(
+  closeOrder$ = this.actions$.pipe(ofType<OrderActions.CloseOrder>(OrderActions.CLOSE_ORDER),
       switchMap(c => this.orderService.close(c.payload)
         .pipe(
           map(r => new OrderActions.CloseOrderSuccess()),
@@ -72,8 +68,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  removeDish$ = this.actions$.ofType<OrderActions.RemoveDish>(OrderActions.REMOVE_DISH)
-    .pipe(
+  removeDish$ = this.actions$.pipe(ofType<OrderActions.RemoveDish>(OrderActions.REMOVE_DISH),
       switchMap(c => this.dishService.SetState(c.payload[0], DishState.CancellationRequested)
         .pipe(
           map(o => new OrderActions.RemoveDishSuccess({ dish: c.payload[0], order: o })),
@@ -82,8 +77,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  addDish$ = this.actions$.ofType<OrderActions.AddDish>(OrderActions.ADD_DISH)
-    .pipe(
+  addDish$ = this.actions$.pipe(ofType<OrderActions.AddDish>(OrderActions.ADD_DISH),
       switchMap(c => this.dishService.addDish(c.payload[0], c.payload[1])
         .pipe(
           map(o => new OrderActions.AddDishSuccess({ dish: c.payload[0], order: o })),
@@ -92,8 +86,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  addComment$ = this.actions$.ofType<OrderActions.AddComment>(OrderActions.ADD_COMMENT)
-    .pipe(
+  addComment$ = this.actions$.pipe(ofType<OrderActions.AddComment>(OrderActions.ADD_COMMENT),
       switchMap(c => this.orderService.addComment(c.payload)
         .pipe(
           map(o => new OrderActions.AddCommentSuccess(o)),
@@ -102,8 +95,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  getOrder$ = this.actions$.ofType<OrderActions.GetOrder>(OrderActions.GET_ORDER)
-    .pipe(
+  getOrder$ = this.actions$.pipe(ofType<OrderActions.GetOrder>(OrderActions.GET_ORDER),
       switchMap(c => this.orderService.get(c.payload)
         .pipe(
           map(order => new OrderActions.GetOrderSuccess(order)),
@@ -112,8 +104,7 @@ export class orderEffects {
       ));
 
   @Effect()
-  changeState$ = this.actions$.ofType<OrderActions.ChangeState>(OrderActions.CHANGE_STATE)
-    .pipe(
+  changeState$ = this.actions$.pipe(ofType<OrderActions.ChangeState>(OrderActions.CHANGE_STATE),
       switchMap(
         c => this.dishService.SetState(c.payload.dish, c.payload.state)
           .pipe(
