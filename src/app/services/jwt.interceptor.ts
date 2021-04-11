@@ -7,17 +7,17 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '../store/Auth/auth.Service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/do';
 
 @Injectable()
-export class Interceptor implements HttpInterceptor {
+export class JwtInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService, private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        Authorization: `${this.auth.token_type} ${this.auth.access_token}`
+        Authorization: `${this.auth.tokenType} ${this.auth.accessToken}`
       }
     });
 

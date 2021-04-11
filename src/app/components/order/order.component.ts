@@ -6,7 +6,7 @@ import * as OrderActions from '../../store/actions/orderActions';
 import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/store/Auth/auth.Service';
 import { IDishLoading } from 'src/app/models/dishLoading';
 import { WorkshopType } from 'src/app/models/workShopType';
 
@@ -20,7 +20,6 @@ export class OrderComponent implements OnInit {
 
   initialOrder: IOrder = {
     Id: 0,
-    Dishes: [],
     Table: 0,
     CreatedDate: new Date(),
     Comment: '',
@@ -60,65 +59,65 @@ export class OrderComponent implements OnInit {
   }
 
   private _getUserWorkshopType() {
-    let workshopType = null;
-    if (this.auth && this.auth.userInfo && this.auth.userInfo.Roles) {
-      let roles = this.auth.userInfo.Roles;
-      if (roles.includes("Bartender")) {
-        workshopType = WorkshopType.Bar
-      } else if (roles.includes("Cook")) {
-        workshopType = WorkshopType.Kitchen
-      }
-    }
+    // let workshopType = null;
+    // if (this.auth && this.auth.userInfo && this.auth.userInfo.Roles) {
+    //   let roles = this.auth.userInfo.Roles;
+    //   if (roles.includes("Bartender")) {
+    //     workshopType = WorkshopType.Bar
+    //   } else if (roles.includes("Cook")) {
+    //     workshopType = WorkshopType.Kitchen
+    //   }
+    // }
 
-    return workshopType;
+    // return workshopType;
   }
 
   private _mergeOrder(order: IOrder) {
-    console.log('merge order', order);
-    if (!order || !this.order) {
-      this.order = this.initialOrder;
-      this.order.Table = this.number;
-    } else {
-      this.order.Table = this.number;
-      this.order.Id = order.Id;
-      this.order.Comment = order.Comment;
-      this.order.CreatedDate = order.CreatedDate;
+    // console.log('merge order', order);
+    // if (!order || !this.order) {
+    //   this.order = this.initialOrder;
+    //   this.order.Table = this.number;
+    // } else {
+    //   this.order.Table = this.number;
+    //   this.order.Id = order.Id;
+    //   this.order.Comment = order.Comment;
+    //   this.order.CreatedDate = order.CreatedDate;
 
-      // Добавляем или обновляем статус
-      let orderDishes = order.Dishes;
-      let userWorkShopType = this._getUserWorkshopType();
-      if (userWorkShopType) {
-        orderDishes = orderDishes.filter(d => d.WorkshopType == userWorkShopType)
-      }
+    //   // Добавляем или обновляем статус
+    //   let orderDishes = order.Dishes;
+    //   let userWorkShopType = this._getUserWorkshopType();
+    //   if (userWorkShopType) {
+    //     orderDishes = orderDishes.filter(d => d.WorkshopType == userWorkShopType)
+    //   }
 
-      orderDishes.forEach(dish => {
-        let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
-        if (!currentDish) {
-          this.order.Dishes.push(dish);
-          return;
-        }
+    //   orderDishes.forEach(dish => {
+    //     let currentDish = this.order.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
+    //     if (!currentDish) {
+    //       this.order.Dishes.push(dish);
+    //       return;
+    //     }
 
-        if (dish.State != currentDish.State) {
-          currentDish.State = dish.State;
-          return;
-        }
-      });
+    //     if (dish.State != currentDish.State) {
+    //       currentDish.State = dish.State;
+    //       return;
+    //     }
+    //   });
 
-      // Удаляем ненужные
-      this.order.Dishes = this.order.Dishes
-        .filter(c => orderDishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
-    }
+    //   // Удаляем ненужные
+    //   this.order.Dishes = this.order.Dishes
+    //     .filter(c => orderDishes.some(d => d.CookingDishId == c.CookingDishId) || c.CookingDishId == 0);
+    // }
 
-    this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
-    this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
-    this.inWorkDishes = this.order.Dishes.filter(d => this._isInWorkDishes(d));
-    this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
-    this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
+    // this.readyDishes = this.order.Dishes.filter(d => d.State == DishState.Ready);
+    // this.cancellationDishes = this.order.Dishes.filter(d => d.State == DishState.CancellationRequested);
+    // this.inWorkDishes = this.order.Dishes.filter(d => this._isInWorkDishes(d));
+    // this.deletedDishes = this.order.Dishes.filter(d => d.State == DishState.Deleted);
+    // this.takenDishes = this.order.Dishes.filter(d => d.State == DishState.Taken);
 
-    this.inWorkGroupped = this.groupById(
-      this.order,
-      d => this._isInWorkDishes(d)
-    );
+    // this.inWorkGroupped = this.groupById(
+    //   this.order,
+    //   d => this._isInWorkDishes(d)
+    // );
   }
 
   _isInWorkDishes(d: IDish): boolean {
@@ -151,29 +150,29 @@ export class OrderComponent implements OnInit {
 
   // TODO to pipe
   public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {
-    //review!!!
-    if (!order) {
-      return;
-    }
+    // //review!!!
+    // if (!order) {
+    //   return;
+    // }
 
-    var result = [];
-    for (let index = 0; index < order.Dishes.length; index++) {
-      const element = order.Dishes[index];
+    // var result = [];
+    // for (let index = 0; index < order.Dishes.length; index++) {
+    //   const element = order.Dishes[index];
 
-      // Фильтруем по предикату
-      if (predicate && !predicate(element)) {
-        continue;
-      }
+    //   // Фильтруем по предикату
+    //   if (predicate && !predicate(element)) {
+    //     continue;
+    //   }
 
-      var io = result.map(c => c.key.Id).indexOf(element.Id);
-      if (~io) {
-        result[io].value.push(element);
-      } else {
-        result.push({ key: element, value: [element] });
-      }
-    }
-    console.log(result, result.sort((a, b) => a.key.Id - b.key.Id))
-    return result.sort(c => c.key.Id);
+    //   var io = result.map(c => c.key.Id).indexOf(element.Id);
+    //   if (~io) {
+    //     result[io].value.push(element);
+    //   } else {
+    //     result.push({ key: element, value: [element] });
+    //   }
+    // }
+    // console.log(result, result.sort((a, b) => a.key.Id - b.key.Id))
+    // return result.sort(c => c.key.Id);
   }
 
   // TODO to pipe
@@ -197,7 +196,6 @@ export class OrderComponent implements OnInit {
     this.store.dispatch(new OrderActions.AddComment(
       {
         Id: this.order.Id,
-        Dishes: this.order.Dishes,
         Table: this.order.Table,
         CreatedDate: this.order.CreatedDate,
         Comment: this.order.Comment,

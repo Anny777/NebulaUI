@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,31 +30,19 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { Interceptor } from './services/interceptor';
+import { JwtInterceptor } from './services/jwt.interceptor';
 import { StoreModule } from '@ngrx/store';
 import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
 import { dishReducer } from './store/reducers/dishReducer';
-import { tableReducer } from './store/reducers/tableReducer';
-import { userReducer } from './store/reducers/userReduser';
+// import { tableReducer } from './store/reducers/tableReducer';
+import { authReducer } from './store/Auth/auth.Reducer';
 import { OrderComponent } from './components/order/order.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-
-// определение маршрутов
-const appRoutes: Routes = [
-  { path: '', component: Hall1Component },
-  { path: 'hall-2', component: Hall2Component },
-  { path: 'kitchen', component: KitchenComponent },
-  { path: 'bar', component: BarComponent },
-  { path: 'admin', component: AdministrationComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'dishes', component: DishListComponent },
-  { path: 'forgot', component: ForgotComponent },
-  { path: 'order/:id', component: DishListComponent }
-];
+import { ROUTES } from './app.routes';
+import { AuthGuardService } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -81,10 +69,10 @@ const appRoutes: Routes = [
     StoreModule.forRoot({
       orders: orderReducer,
       dishes: dishReducer,
-      table: tableReducer,
-      user: userReducer
+      //table: tableReducer,
+      user: authReducer
     }),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(ROUTES),
     EffectsModule.forRoot(effects),
     BrowserAnimationsModule,
     MatButtonModule,
@@ -100,10 +88,10 @@ const appRoutes: Routes = [
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
-    useClass: Interceptor,
+    useClass: JwtInterceptor,
     multi: true
   },
-    TableService, OrderService],
+    TableService, OrderService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

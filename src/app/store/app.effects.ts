@@ -1,5 +1,5 @@
 import { orderEffects } from "./effects/orderEffects";
 import { dishEffects } from "./effects/dishEffects";
-import { userEffects } from "./effects/userEffects";
+import { authEffects } from "./Auth/auth.Effects";
 
-export const effects: any[] = [orderEffects, dishEffects, userEffects]
+export const effects: any[] = [orderEffects, dishEffects, authEffects]

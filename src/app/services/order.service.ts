@@ -10,7 +10,7 @@ import { IOrder } from "../models/order";
 import { environment } from "src/environments/environment";
 import { IDish } from "../models/dish";
 import { map } from "rxjs/operators";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../store/Auth/auth.Service";
 
 
 @Injectable({
@@ -47,7 +47,7 @@ export class OrderService {
   }
 
   public getList(): Observable<IOrder[]> {
-    return this.http.get<IOrder[]>(environment.host + "Order/List");
+    return this.http.get<IOrder[]>(environment.host + "Order");
   }
 
   public get(table: number): Observable<IOrder> {

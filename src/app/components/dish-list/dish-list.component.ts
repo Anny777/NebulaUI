@@ -30,7 +30,6 @@ export class DishListComponent implements OnInit {
 
   initialOrder: IOrder = {
     Id: 0,
-    Dishes: [],
     Table: 0,
     CreatedDate: new Date(),
     Comment: '',

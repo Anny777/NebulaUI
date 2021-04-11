@@ -198,16 +198,16 @@ function _mergeOrders(orders: IOrder[], state: IOrderState): IOrderState {
     var o = orders.find(c => c.Id == co.Id);
     if (!o) { return; }
 
-    co.Dishes = co.Dishes
-      .filter(cd => {
-        var r = o.Dishes.some(d => d.CookingDishId == cd.CookingDishId);
-        if (!r) {
-          isChanged = true;
-          console.log('dish removed', cd);
-        }
+    // co.Dishes = co.Dishes
+    //   .filter(cd => {
+    //     var r = o.Dishes.some(d => d.CookingDishId == cd.CookingDishId);
+    //     if (!r) {
+    //       isChanged = true;
+    //       console.log('dish removed', cd);
+    //     }
 
-        return r;
-      });
+    //     return r;
+    //   });
   });
 
   if (isChanged) {
@@ -235,31 +235,34 @@ function _getAudios(state: IOrderState) {
 }
 
 function _mergeOrder(order: IOrder, currentOrder: IOrder): { o: IOrder, r: boolean } {
-  var r = { o: currentOrder, r: false };
-  for (let dishIndex = 0; dishIndex < order.Dishes.length; dishIndex++) {
-    const dish = order.Dishes[dishIndex];
-    const currentDish = currentOrder.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
-    r.r = _mergeDishes(currentDish, dish, currentOrder).r ? true : r.r;
-    if (r.r) { console.log('order changed!') }
-  }
+  // var r = { o: currentOrder, r: false };
+  // for (let dishIndex = 0; dishIndex < order.Dishes.length; dishIndex++) {
+  //   const dish = order.Dishes[dishIndex];
+  //   const currentDish = currentOrder.Dishes.find(c => c.CookingDishId == dish.CookingDishId);
+  //   r.r = _mergeDishes(currentDish, dish, currentOrder).r ? true : r.r;
+  //   if (r.r) { console.log('order changed!') }
+  // }
 
-  return r;
+  // return r;
+
+  return null
 }
 
 function _mergeDishes(currentDish: IDish, dish: IDish, currentOrder: IOrder): { o: IOrder, r: boolean } {
-  var result = { o: currentOrder, r: false };
-  if (!currentDish) {
-    console.log('new dish', dish);
-    currentOrder.Dishes.push(dish);
-    result.r = true;
-  } else
-    if (dish && currentDish.State != dish.State) {
-      console.log('new dish state', dish);
-      currentDish.State = dish.State;
-      result.r = true;
-    }
+  // var result = { o: currentOrder, r: false };
+  // if (!currentDish) {
+  //   console.log('new dish', dish);
+  //   currentOrder.Dishes.push(dish);
+  //   result.r = true;
+  // } else
+  //   if (dish && currentDish.State != dish.State) {
+  //     console.log('new dish state', dish);
+  //     currentDish.State = dish.State;
+  //     result.r = true;
+  //   }
 
-  return result;
+  // return result;
+  return null;
 }
 
 export function toggleDishLoading(loadings: IDishLoading[], dish: IDish, flag: boolean): IDishLoading[] {

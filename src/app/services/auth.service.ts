@@ -30,6 +30,10 @@ export class AuthService {
     return concat(this.getToken(p), this.getUserInfo(this))
   }
 
+  public isAuthenticated1(): boolean {
+    return !!this.access_token;
+  }
+
   public logout(cb) {
     document.cookie = "access_token=; path=/; expires=" + new Date(0).toUTCString();
     document.cookie = "token_type=; path=/; expires=" + new Date(0).toUTCString();
@@ -77,7 +81,7 @@ export class AuthService {
       )
   }
 
-  public userIsInRole(roles: Array<string>) {
+  public isUserInRole(roles: Array<string>) {
     if (!this.userInfo) {
       return false;
     }

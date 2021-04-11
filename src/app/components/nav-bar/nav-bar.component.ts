@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/store/Auth/auth.Service';
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/services/order.service';
 
@@ -22,14 +22,14 @@ export class NavBarComponent implements OnInit {
       this.isAuthenticated = isAuth;
       if (isAuth) {
         this.orderService.init();
-        this.user = this.auth.userInfo.Email;
+        this.user = this.auth.userName;
       }
     });
-    this.auth.getUserInfo(this.auth).subscribe();
+    this.auth.userName;
 
   }
   public logout() {
-    this.auth.logout(() => this.router.navigate(['/login']));
+    this.auth.logout();
   }
 
   toggleVolume(value: boolean)

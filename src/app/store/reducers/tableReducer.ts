@@ -29,25 +29,25 @@ const initialState: ITableState = {
     ]
 };
 
-export function tableReducer(state: ITableState = initialState, action: TableActions.Actions): ITableState {
-  switch (action.type) {
-    case TableActions.UPDATE_TABLE:
-      var orders = action.payload;
-      var result = initialState.tables.copyWithin(0, 0);
-      result.forEach(table => {
-        table.busy = !!orders.find(c => c.Table == table.number);
-        try {
-          table.readyDishesCount = orders.filter(c => c.Table == table.number)
-            .reduce((p, c) =>
-              c.Dishes.filter(d => d.State == DishState.Ready).length + p, 0
-            );
-        } catch (error) {
-          table.readyDishesCount = 0;
-        }
-      });
+// export function tableReducer(state: ITableState = initialState, action: TableActions.Actions): ITableState {
+//   switch (action.type) {
+//     case TableActions.UPDATE_TABLE:
+//       var orders = action.payload;
+//       var result = initialState.tables.copyWithin(0, 0);
+//       result.forEach(table => {
+//         table.busy = !!orders.find(c => c.Table == table.number);
+//         try {
+//           table.readyDishesCount = orders.filter(c => c.Table == table.number)
+//             .reduce((p, c) =>
+//               c.Dishes.filter(d => d.State == DishState.Ready).length + p, 0
+//             );
+//         } catch (error) {
+//           table.readyDishesCount = 0;
+//         }
+//       });
 
-      return { ...state, tables: result };
-    default:
-      return state;
-  }
-}
+//       return { ...state, tables: result };
+//     default:
+//       return state;
+//   }
+// }
