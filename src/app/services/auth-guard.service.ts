@@ -1,22 +1,52 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-import { AuthService } from './auth.service';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { IAuthState } from '../store/Auth/auth.Reducer';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  constructor(public auth: AuthService, public router: Router) { }
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    if (!this.auth.isAuthenticated1()) {
-      this.router.navigate(['login']);
-      return false;
+  constructor(public router: Router, private store: Store<{ auth: IAuthState }>) { }
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    return this.store.select(s => s.auth)
+      .pipe(
+        tap(authState => {
+          if (!authState.accessToken) {
+            this.router.navigate(['login']);
+          }
+        }))
+      .pipe(
+        switchMap(s => this.userIsInRole(route.data?.roles)))
+      .pipe(
+        tap(isInRole => {
+          if (!isInRole) {
+            this.router.navigate(['login']);
+          }
+        })
+      );
+  }
+
+  public userIsInRole(roles: Array<string>): Observable<boolean> {
+    return this.store.select(s => s.auth.roles).pipe(
+      switchMap(userRoles => {
+        return this.checkRoles(userRoles, roles);
+      })
+    );
+  }
+
+  public checkRoles(userRoles: Array<string>, roles: Array<string>): Observable<boolean> {
+    if (!userRoles || userRoles.length < 1) {
+      return of(false);
     }
 
-    const expectedRole = route.data.roles;
-    if (!this.auth.isUserInRole(expectedRole)) {
-      this.router.navigate(['login']);
-      return false;
-    }
+    let isInRole: boolean = false;
+    roles.forEach(role => {
+      if (userRoles.indexOf(role) > -1) {
+        isInRole = true;
+      }
+    });
 
-    return true;
+    return of(isInRole);
   }
 }

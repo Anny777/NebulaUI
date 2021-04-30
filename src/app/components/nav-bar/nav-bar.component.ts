@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/store/Auth/auth.Service';
-import { Router } from '@angular/router';
-import { OrderService } from 'src/app/services/order.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { IAuthState } from 'src/app/store/Auth/auth.Reducer';
+import { logout, restoreSession } from 'src/app/store/Auth/auth.Actions';
+import { AuthGuardService } from 'src/app/services/auth-guard.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,36 +12,28 @@ import { OrderService } from 'src/app/services/order.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-
-  role: boolean = false;
-  user: string = "";
   isVolumeOn: boolean = true;
-  constructor(private auth: AuthService, private router: Router, private orderService: OrderService) { }
-  private isAuthenticated: boolean = false;
+  isAuthenticated$: Observable<boolean>;
+  userName$: Observable<string>;
+  isLoadingLogin$: Observable<boolean>;
+  constructor(private store: Store<{ auth: IAuthState }>, private guard: AuthGuardService) { }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.auth.isAuthenticated;
-    this.auth.authChanged.subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-      if (isAuth) {
-        this.orderService.init();
-        this.user = this.auth.userName;
-      }
-    });
-    this.auth.userName;
-
+    this.isAuthenticated$ = this.store.select((s) => !!s.auth.accessToken);
+    this.userName$ = this.store.select((s) => s.auth.userName);
+    this.isLoadingLogin$ = this.store.select((s) => s.auth.isLoadingLogin);
+    this.store.dispatch(restoreSession());
   }
+
   public logout() {
-    this.auth.logout();
+    this.store.dispatch(logout());
   }
 
-  toggleVolume(value: boolean)
-  {
+  toggleVolume(value: boolean) {
     this.isVolumeOn = value;
   }
 
-  public userIsInRole(roles: Array<string>) {
-    return this.auth.userIsInRole(roles);
+  public userIsInRole(roles: Array<string>): Observable<boolean> {
+    return this.guard.userIsInRole(roles);
   }
-
 }

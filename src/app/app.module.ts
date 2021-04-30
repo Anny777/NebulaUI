@@ -24,7 +24,7 @@ import { TableService } from './services/table.service';
 import { DishListComponent } from './components/dish-list/dish-list.component';
 import { OrderService } from './services/order.service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
@@ -43,6 +43,7 @@ import { OrderComponent } from './components/order/order.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ROUTES } from './app.routes';
 import { AuthGuardService } from './services/auth-guard.service';
+import { AuthRepository } from './store/Auth/auth.Repository';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { AuthGuardService } from './services/auth-guard.service';
       orders: orderReducer,
       dishes: dishReducer,
       //table: tableReducer,
-      user: authReducer
+      auth: authReducer
     }),
     RouterModule.forRoot(ROUTES),
     EffectsModule.forRoot(effects),
@@ -84,14 +85,19 @@ import { AuthGuardService } from './services/auth-guard.service';
     MatFormFieldModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: JwtInterceptor,
     multi: true
   },
-    TableService, OrderService, AuthGuardService],
+    TableService,
+    OrderService,
+    AuthGuardService,
+    AuthRepository
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

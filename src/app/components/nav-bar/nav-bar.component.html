@@ -1,7 +1,7 @@
 <nav>
   <ul>
     <!-- <li>
-      <mat-icon style="cursor:pointer; font-size: 55px;" 
+      <mat-icon style="cursor:pointer; font-size: 55px;"
         class="fullscreen material-icons 36dp">fullscreen</mat-icon>
     </li> -->
     <li><a onclick="document.documentElement.webkitRequestFullscreen()"><button mat-raised-button>
@@ -11,12 +11,21 @@
           <mat-icon *ngIf="!isVolumeOn">volume_up</mat-icon>
           <mat-icon *ngIf="isVolumeOn">volume_off</mat-icon>
         </button></a></li>
-    <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink=""><button mat-raised-button>Зал_1</button></a></li>
-    <li *ngIf="userIsInRole(['Admin','Waiter'])"><a routerLink="hall-2"><button mat-raised-button>Зал_2</button></a></li>
-    <li *ngIf="userIsInRole(['Admin','Cook'])"><a routerLink="kitchen"><button mat-raised-button>Кухня</button></a></li>
-    <li *ngIf="userIsInRole(['Admin','Bartender'])"><a routerLink="bar"> <button mat-raised-button>Бар</button></a></li>
-    <li *ngIf="userIsInRole(['Admin'])"><a routerLink="admin"> <button mat-raised-button>Администрирование</button></a></li>
-    <li *ngIf="!isAuthenticated"><a routerLink="login"><button mat-raised-button>Вход</button></a></li>
-    <li *ngIf="isAuthenticated"><a><button mat-raised-button (click)="logout()">{{user}} - Выйти</button></a></li>
+    <li *ngIf="userIsInRole(['Admin','Waiter']) | async"><a routerLink=""><button mat-raised-button>Зал_1</button></a>
+    </li>
+    <li *ngIf="userIsInRole(['Admin','Waiter']) | async"><a routerLink="hall-2"><button
+          mat-raised-button>Зал_2</button></a></li>
+    <li *ngIf="userIsInRole(['Admin','Cook']) | async"><a routerLink="kitchen"><button
+          mat-raised-button>Кухня</button></a></li>
+    <li *ngIf="userIsInRole(['Admin','Bartender']) | async"><a routerLink="bar"> <button
+          mat-raised-button>Бар</button></a></li>
+    <li *ngIf="userIsInRole(['Admin']) | async"><a routerLink="admin"> <button
+          mat-raised-button>Администрирование</button></a></li>
+    <li *ngIf="!isAuthenticated$ | async"><a routerLink="login"><button mat-raised-button>Вход</button></a></li>
+    <li *ngIf="isAuthenticated$ | async"><a><button mat-raised-button (click)="logout()">{{userName$ | async}} -
+          Выйти</button></a></li>
+    <li *ngIf="isLoadingLogin$ | async">
+      <mat-spinner diameter="64"></mat-spinner>
+    </li>
   </ul>
 </nav>

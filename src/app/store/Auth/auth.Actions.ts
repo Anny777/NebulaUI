@@ -1,9 +1,11 @@
 import { createAction, props } from "@ngrx/store";
 import { ILoginCommand } from 'src/app/commands/ILoginCommand';
-import { ILoginResult } from 'src/app/commands/ILoginResult';
+import { LoginResult } from 'src/app/commands/LoginResult';
 
-export const login = createAction('[User] Login', props<ILoginCommand>());
-export const loginSuccess = createAction('[User] Login success', props<ILoginResult>());
-export const loginFail = createAction('[User] Logout fail', props<any>());
+export const restoreSession = createAction('[Auth] Restore session');
 
-export const logout = createAction('[User] Logout');
+export const login = createAction('[Auth] Login', props<ILoginCommand>());
+export const loginSuccess = createAction('[Auth] Login success', props<LoginResult>());
+export const loginFail = createAction('[Auth] Logout fail', props<any>());
+
+export const logout = createAction('[Auth] Logout');

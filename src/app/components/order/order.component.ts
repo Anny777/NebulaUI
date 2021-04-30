@@ -184,10 +184,6 @@ export class OrderComponent implements OnInit {
     return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
   }
 
-  public userIsInRole(roles: Array<string>) {
-    return this.auth.userIsInRole(roles);
-  }
-
   public setComment(e) {
     this.order.Comment = e.target.value;
   }
