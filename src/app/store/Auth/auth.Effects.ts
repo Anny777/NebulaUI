@@ -6,23 +6,27 @@ import { of } from "rxjs";
 import { login, loginFail, loginSuccess, logout, restoreSession } from './auth.Actions';
 import { AuthRepository } from './auth.Repository';
 import { LoginResult } from 'src/app/commands/LoginResult';
+import { Router } from '@angular/router';
+import { AuthGuard } from './auth.Guard';
 
 @Injectable()
 export class authEffects {
-  constructor(private actions$: Actions, private authService: AuthService, private authRepository: AuthRepository) { }
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private authRepository: AuthRepository) { }
 
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
-      switchMap(
+      mergeMap(
         (c) => this.authService.login(c.username, c.password)
-          .pipe(
-            tap(a => this.authRepository.saveSession(a.access_token, a.token_type, a.getDecodedToken().exp)),
-          )
+          .pipe(tap(lr => this.authRepository.saveSession(lr.access_token, lr.token_type)))
           .pipe(
             map(user => loginSuccess(user)),
             catchError(error => of(loginFail(error)))
-          ))));
+          )
+      )));
 
   restoreSession$ = createEffect(() =>
     this.actions$.pipe(
@@ -36,7 +40,7 @@ export class authEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(logout),
-      switchMap((c) => of(this.authRepository.resetSession)
+      switchMap((c) => of(this.authRepository.resetSession())
         .pipe(
           map(user => loginSuccess(<LoginResult>{ access_token: '', token_type: '' })),
           catchError(error => of(loginFail(error)))

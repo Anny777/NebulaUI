@@ -3,10 +3,10 @@ import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { IAuthState } from '../store/Auth/auth.Reducer';
+import { IAuthState } from './auth.Reducer';
 
 @Injectable()
-export class AuthGuardService implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(public router: Router, private store: Store<{ auth: IAuthState }>) { }
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.store.select(s => s.auth)

@@ -1,16 +1,24 @@
 import { LoginResult } from 'src/app/commands/LoginResult';
+import jwt_decode from 'jwt-decode';
 
 export class AuthRepository {
   private accessTokenKey: string = "access_token";
   private tokenTypeKey: string = "token_type";
 
-  public saveSession(accessToken: string, tokenType: string, expires: string) {
+  public saveSession(accessToken: string, tokenType: string) {
+    let expires = new Date(0).toUTCString();
+    if(accessToken)
+    {
+      var decoded = jwt_decode<any>(accessToken);
+      expires = decoded.exp;
+    }
+
     document.cookie = `${this.accessTokenKey}=${accessToken}; path=/; expires=${expires}`;
     document.cookie = `${this.tokenTypeKey}=${tokenType}; path=/; expires=${expires}`;
   }
 
   public resetSession() {
-    this.saveSession('', '', new Date(0).toUTCString());
+    this.saveSession('', '');
   }
 
   public getSession(): LoginResult {

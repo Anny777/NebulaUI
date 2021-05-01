@@ -42,7 +42,7 @@ import { authReducer } from './store/Auth/auth.Reducer';
 import { OrderComponent } from './components/order/order.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ROUTES } from './app.routes';
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuard } from './store/auth/auth.Guard';
 import { AuthRepository } from './store/Auth/auth.Repository';
 
 @NgModule({
@@ -95,7 +95,7 @@ import { AuthRepository } from './store/Auth/auth.Repository';
   },
     TableService,
     OrderService,
-    AuthGuardService,
+    AuthGuard,
     AuthRepository
   ],
   bootstrap: [AppComponent]

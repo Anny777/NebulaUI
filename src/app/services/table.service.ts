@@ -26,7 +26,7 @@ export class TableService {
       { number: 23, style: 'tableBase square'     , busy: false, readyDishesCount: 0 }
     ];
 
-  getTable(number: number) {
+  public getTable(number: number) {
     return this.tables.find(c=>c.number == number);
   }
 }
