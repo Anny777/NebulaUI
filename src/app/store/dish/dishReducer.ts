@@ -1,4 +1,4 @@
-import * as DishActions from '../actions/dishActions'
+import * as DishActions from './dishActions'
 import { IDish } from "src/app/models/dish";
 
 export interface IDishState {

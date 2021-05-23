@@ -2,13 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IOrder } from 'src/app/models/order';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/app.state';
-import * as OrderActions from '../../store/actions/orderActions';
+import * as OrderActions from '../../store/order/order.Actions';
 import { Observable } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 import { AuthService } from 'src/app/store/Auth/auth.Service';
 import { IDishLoading } from 'src/app/models/dishLoading';
 import { WorkshopType } from 'src/app/models/workShopType';
+import { closeOrder } from '../../store/order/order.Actions';
 
 @Component({
   selector: 'app-order',
@@ -19,8 +20,8 @@ export class OrderComponent implements OnInit {
   @Input() number: number;
 
   initialOrder: IOrder = {
-    Id: 0,
-    Table: 0,
+    Id: '175a6b7b-9c76-4329-be85-52661098345c',
+    tableNumber: 0,
     CreatedDate: new Date(),
     Comment: '',
     IsExportRequested: false
@@ -48,14 +49,14 @@ export class OrderComponent implements OnInit {
     this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
     this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
     this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
-    this.store.select(c => c.orders.orders.find(order => order.Table == this.number)).subscribe(order => this._mergeOrder(order));
+    this.store.select(c => c.orders.orders.find(order => order.tableNumber == this.number)).subscribe(order => this._mergeOrder(order));
     this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
   }
 
   ngOnInit() {
     this.order = this.initialOrder;
-    this.order.Table = this.number;
-    this.store.dispatch(new OrderActions.LoadOrders());
+    this.order.tableNumber = this.number;
+    // this.store.dispatch(new OrderActions.LoadOrders());
   }
 
   private _getUserWorkshopType() {
@@ -125,16 +126,16 @@ export class OrderComponent implements OnInit {
   }
 
   close() {
-    this.store.dispatch(new OrderActions.CloseOrder(this.order.Table));
+    this.store.dispatch(closeOrder({ id: this.order.Id }));
   }
 
   export() {
-    this.store.dispatch(new OrderActions.ExportOrder(this.order.Table));
+    // this.store.dispatch(new OrderActions.ExportOrder(this.order.Table));
   }
 
   setState(dish: IDish, state: DishState) {
     // if ((dish.State == DishState.InWork && state == DishState.CancellationRequested) || state != DishState.CancellationRequested) {
-    this.store.dispatch(new OrderActions.ChangeState({ dish: dish, state: state }))
+    // this.store.dispatch(new OrderActions.ChangeState({ dish: dish, state: state }))
     // } else {
     //   alert("Блюдо нельзя удалить! Оно уже готово");
     // }
@@ -189,31 +190,31 @@ export class OrderComponent implements OnInit {
   }
 
   public addComment() {
-    this.store.dispatch(new OrderActions.AddComment(
-      {
-        Id: this.order.Id,
-        Table: this.order.Table,
-        CreatedDate: this.order.CreatedDate,
-        Comment: this.order.Comment,
-        IsExportRequested: this.order.IsExportRequested
-      }
-    ));
+    // this.store.dispatch(commentOrder(
+    //   {
+    //     Id: this.order.Id,
+    //     Table: this.order.Table,
+    //     CreatedDate: this.order.CreatedDate,
+    //     Comment: this.order.Comment,
+    //     IsExportRequested: this.order.IsExportRequested
+    //   }
+    // ));
   }
 
   public addDish(dish: IDish) {
-    this.store.dispatch(new OrderActions.AddDish(
-      [{
-        Id: dish.Id,
-        CookingDishId: 0,
-        Name: dish.Name,
-        Consist: dish.Consist,
-        Unit: dish.Unit,
-        State: DishState.InWork,
-        Price: dish.Price,
-        WorkshopType: dish.WorkshopType
-      },
-      this.order.Id
-      ]
-    ));
+    //   this.store.dispatch(new OrderActions.AddDish(
+    //     [{
+    //       Id: dish.Id,
+    //       CookingDishId: 0,
+    //       Name: dish.Name,
+    //       Consist: dish.Consist,
+    //       Unit: dish.Unit,
+    //       State: DishState.InWork,
+    //       Price: dish.Price,
+    //       WorkshopType: dish.WorkshopType
+    //     },
+    //     this.order.Id
+    //     ]
+    //   ));
   }
 }

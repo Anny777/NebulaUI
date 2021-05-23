@@ -4,8 +4,8 @@ import { IAppState } from '../../store/app.state';
 import { Store } from '@ngrx/store';
 import { tap, map } from 'rxjs/operators';
 import { IDish } from 'src/app/models/dish';
-import * as DishActions from '../../store/actions/dishActions';
-import * as OrderActions from '../../store/actions/orderActions';
+import * as DishActions from '../../store/dish/dishActions';
+import * as OrderActions from '../../store/order/order.Actions';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { IOrder } from 'src/app/models/order';
 
@@ -29,8 +29,8 @@ export class DishListComponent implements OnInit {
   order: IOrder;
 
   initialOrder: IOrder = {
-    Id: 0,
-    Table: 0,
+    Id: '',
+    tableNumber: 0,
     CreatedDate: new Date(),
     Comment: '',
     IsExportRequested: false
@@ -40,10 +40,10 @@ export class DishListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initialOrder.Table = this.numberTable;
+    this.initialOrder.tableNumber = this.numberTable;
     this.dishes$ = this.store.select(c => c.dishes.dishes);
     this.isListLoading$ = this.store.select(c => c.dishes.isListLoading);
-    this.store.select(c => c.orders.orders.find(o => o.Table == this.numberTable)).subscribe(o => {
+    this.store.select(c => c.orders.orders.find(o => o.tableNumber == this.numberTable)).subscribe(o => {
       this.order = o;
       if (!this.order) {
         this.isCreateOrder = true;
@@ -57,16 +57,16 @@ export class DishListComponent implements OnInit {
       .pipe(map(p => Number.parseInt(p.get('id'))))
       .subscribe(id => {
         this.numberTable = id;
-        this.initialOrder.Table = this.numberTable;
+        this.initialOrder.tableNumber = this.numberTable;
       });
   }
 
   addDish(dish: IDish) {
-    this.store.dispatch(new OrderActions.AddDish([dish, this.order.Id]));
+    // this.store.dispatch(new OrderActions.AddDish([dish, this.order.Id]));
   }
 
   createOrder() {
-    this.store.dispatch(new OrderActions.AddOrder(this.initialOrder));
+    // this.store.dispatch(new OrderActions.AddOrder(this.initialOrder));
   }
 }
 

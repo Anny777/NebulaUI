@@ -1,6 +1,6 @@
 export interface IOrder {
-  Id: number;
-  Table: number;
+  Id: string;
+  tableNumber: number;
   CreatedDate: Date;
   Comment: string;
   IsExportRequested: boolean;

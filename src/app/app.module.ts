@@ -22,7 +22,7 @@ import { AdministrationComponent } from './components/administration/administrat
 import { TableComponent } from './components/table/table.component';
 import { TableService } from './services/table.service';
 import { DishListComponent } from './components/dish-list/dish-list.component';
-import { OrderService } from './services/order.service';
+import { OrderService } from './store/order/order.Service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
@@ -32,11 +32,10 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { JwtInterceptor } from './services/jwt.interceptor';
 import { StoreModule } from '@ngrx/store';
-import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
-import { dishReducer } from './store/reducers/dishReducer';
+import { dishReducer } from './store/dish/dishReducer';
 // import { tableReducer } from './store/reducers/tableReducer';
 import { authReducer } from './store/Auth/auth.Reducer';
 import { OrderComponent } from './components/order/order.component';
@@ -44,6 +43,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ROUTES } from './app.routes';
 import { AuthGuard } from './store/auth/auth.Guard';
 import { AuthRepository } from './store/Auth/auth.Repository';
+import { orderReducer } from './store/order/order.Reducer';
 
 @NgModule({
   declarations: [

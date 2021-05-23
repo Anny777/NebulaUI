@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Effect, Actions, ofType, createEffect } from "@ngrx/effects";
-import * as DishActions from "../actions/dishActions";
+import * as DishActions from "./dishActions";
 import { switchMap, map, catchError, tap } from "rxjs/operators";
 import { of } from "rxjs";
-import { DishService } from "src/app/services/dish.service";
+import { DishService } from "src/app/store/dish/dish.service";
 
 @Injectable()
 export class dishEffects {
