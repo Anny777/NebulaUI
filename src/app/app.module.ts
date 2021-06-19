@@ -35,7 +35,7 @@ import { StoreModule } from '@ngrx/store';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
-import { dishReducer } from './store/dish/dishReducer';
+import { cookingDishReducer } from './store/cookingDish/cookingDish.Reducer';
 // import { tableReducer } from './store/reducers/tableReducer';
 import { authReducer } from './store/Auth/auth.Reducer';
 import { OrderComponent } from './components/order/order.component';
@@ -69,7 +69,7 @@ import { orderReducer } from './store/order/order.Reducer';
     HttpClientModule,
     StoreModule.forRoot({
       orders: orderReducer,
-      dishes: dishReducer,
+      dishes: cookingDishReducer,
       //table: tableReducer,
       auth: authReducer
     }),

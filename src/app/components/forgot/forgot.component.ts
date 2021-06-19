@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as OrderActions from '../../store/order/order.Actions';
 import { tap } from 'rxjs/operators';
 import { IDish } from 'src/app/models/dish';
+import { ICookingDish } from 'src/app/store/cookingDish/ICookingDish';
 
 @Component({
   selector: 'app-forgot',
@@ -15,7 +16,7 @@ import { IDish } from 'src/app/models/dish';
 export class ForgotComponent implements OnInit {
 orders$: Observable<IOrder[]>;
 isOrdersLoading$: Observable<boolean>;
-dishes$: Observable<IDish[]>;
+dishes$: Observable<ICookingDish[]>;
   constructor(private store: Store<IAppState>) {
   }
 
@@ -23,7 +24,7 @@ dishes$: Observable<IDish[]>;
     this.orders$ = this.store.select(c=>c.orders.orders).pipe(tap(orders => console.log(orders)));
     this.isOrdersLoading$ = this.store.select(c=>c.orders.isOrdersLoading).pipe(tap(isloading => console.log('isloading:',isloading)));
 
-    this.dishes$ = this.store.select(c => c.dishes.dishes);
+    // this.dishes$ = this.store.select(c => c.cookingDishes.cookingDishes);
     // this.store.dispatch(new DisheActions.LoadDishes()); // test
   }
  refresh(){

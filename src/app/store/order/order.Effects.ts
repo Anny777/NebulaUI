@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
-import { switchMap, map, catchError, tap } from "rxjs/operators";
+import { switchMap, map, catchError, tap, mergeMap } from "rxjs/operators";
 import { OrderService } from "src/app/store/order/order.Service";
 import { of } from "rxjs";
-import { DishService } from "src/app/store/dish/dish.service";
+import { CookingDishService } from "src/app/store/cookingDish/cookingDish.Service";
 import { Store } from "@ngrx/store";
 import { IAppState } from "../app.state";
 import {
@@ -23,20 +23,27 @@ import {
   loadOrdersFail,
   loadOrdersSuccess
 } from './order.Actions';
+import { combineLatest } from 'rxjs-compat/operator/combineLatest';
+import { flatten } from '@angular/compiler';
 
 @Injectable()
 export class orderEffects {
   constructor(
     private actions$: Actions,
-    private dishService: DishService,
     private orderService: OrderService,
-    private store: Store<IAppState>
+    private cookingDishService: CookingDishService
   ) { }
 
   loadOrders$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrders),
-      switchMap(c => this.orderService.list()
+      switchMap(action => this.orderService.list()
+        .pipe(
+          switchMap(orders =>
+            orders.map(order => this.cookingDishService.list(order.Id)
+              .pipe(map(cd => { orderId: order.Id, cookingDishes: cd }))
+            ))
+        )
         .pipe(
           map(orders => loadOrdersSuccess({ orders: orders })),
           catchError(error => of(loadOrdersFail(error)))
