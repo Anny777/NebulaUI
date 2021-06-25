@@ -22,8 +22,10 @@ export class TableComponent implements OnInit {
     this.store
       .select(s => s.orders)
       .subscribe(ordersState => {
-        this.table.busy = ordersState?.orders && ordersState.orders.some(o => o.tableNumber == this.table.number);
-        this.table.readyDishesCount = ordersState.orders.find(c => c.tableNumber == this.table.number)?.cookingDishes?.filter(c => c.dishState == 3).length;
+        const order = ordersState?.orders.find(o => o.tableNumber == this.table.number)
+        this.table.busy = !!order;
+        this.table.readyDishesCount = order?.readyDishesCount;
+        this.table.orderId = order?.id;
       });
   }
 }

@@ -1,12 +1,10 @@
-import { IDish } from "./dish";
-
 export interface IOrder {
-  Id: string;
+  id: string;
   tableNumber: number;
-  CreatedDate: Date;
-  Comment: string;
-  IsExportRequested: boolean;
-  cookingDishes: IDish[];
+  createdDate: Date;
+  comment: string;
+  isExportRequested: boolean;
+  readyDishesCount: number;
 }
 
 

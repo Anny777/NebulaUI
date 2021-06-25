@@ -1,63 +1,76 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { IOrder } from 'src/app/models/order';
 import { Store } from '@ngrx/store';
 import { IAppState } from 'src/app/store/app.state';
 import * as OrderActions from '../../store/order/order.Actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DishState } from 'src/app/models/dishState';
 import { IDish } from 'src/app/models/dish';
 import { AuthService } from 'src/app/store/Auth/auth.Service';
 import { IDishLoading } from 'src/app/models/dishLoading';
 import { WorkshopType } from 'src/app/models/workShopType';
 import { closeOrder } from '../../store/order/order.Actions';
+import { loadCookingDishes } from 'src/app/store/cookingDish/cookingDish.Actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
-export class OrderComponent implements OnInit {
-  @Input() number: number;
+export class OrderComponent implements OnInit, OnDestroy {
+  // @Input() orderId: string;
+  id: string;
+  private subscription: Subscription;
+  // initialOrder: IOrder = {
+  //   Id: '175a6b7b-9c76-4329-be85-52661098345c',
+  //   tableNumber: 0,
+  //   CreatedDate: new Date(),
+  //   Comment: '',
+  //   IsExportRequested: false,
+  //   readyDishesCount: 0,
+  // };
 
-  initialOrder: IOrder = {
-    Id: '175a6b7b-9c76-4329-be85-52661098345c',
-    tableNumber: 0,
-    CreatedDate: new Date(),
-    Comment: '',
-    IsExportRequested: false,
-    cookingDishes: [],
-  };
+  // order: IOrder;
 
-  order: IOrder;
+  // inWorkGroupped: any; // TODO: если увидел - типизируй!
+  // readyDishes: IDish[];
+  // takenDishes: IDish[];
+  // cancellationDishes: IDish[];
+  // inWorkDishes: IDish[];
+  // deletedDishes: IDish[];
 
-  inWorkGroupped: any; // TODO: если увидел - типизируй!
-  readyDishes: IDish[];
-  takenDishes: IDish[];
-  cancellationDishes: IDish[];
-  inWorkDishes: IDish[];
-  deletedDishes: IDish[];
-
-  isOrdersLoading$: Observable<boolean>;
-  isOrderClose$: Observable<boolean>;
-  isOrderAdd$: Observable<boolean>;
-  isOrderLoading$: Observable<boolean>;
-  dishLoading: IDishLoading[];
+  isCookingDishesLoading$: Observable<boolean>;
+  // isOrderClose$: Observable<boolean>;
+  // isOrderAdd$: Observable<boolean>;
+  // isOrderLoading$: Observable<boolean>;
+  // dishLoading: IDishLoading[];
 
   constructor(
     private store: Store<IAppState>,
-    private auth: AuthService
+    private auth: AuthService,
+    private activateRoute: ActivatedRoute
   ) {
-    this.isOrdersLoading$ = this.store.select(c => c.orders.isOrdersLoading);
-    this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
-    this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
-    this.store.select(c => c.orders.orders.find(order => order.tableNumber == this.number)).subscribe(order => this._mergeOrder(order));
-    this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
+    this.isCookingDishesLoading$ = this.store.select(c => c.cookingDishes.isLoading);
+    this.subscription = activateRoute.params.subscribe(params => this.id = params['id']);
+    // this.isOrderClose$ = this.store.select(c => c.orders.isOrderClose);
+    // this.isOrderAdd$ = this.store.select(c => c.orders.isOrderAdd);
+    // this.store.select(c => c.orders.orders.find(order => order.tableNumber == this.number)).subscribe(order => this._mergeOrder(order));
+    // this.store.select(c => c.orders.dishLoading).subscribe(dishLoading => this.dishLoading = dishLoading);
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnInit() {
-    this.order = this.initialOrder;
-    this.order.tableNumber = this.number;
+    // this.order = this.initialOrder;
+    // this.order.tableNumber = this.number;
     // this.store.dispatch(new OrderActions.LoadOrders());
+    this.store.dispatch(loadCookingDishes({ orderId: this.id }));
+  }
+
+  private userIsInRole(roles: string[]): boolean {
+    return true;
   }
 
   private _getUserWorkshopType() {
@@ -127,7 +140,7 @@ export class OrderComponent implements OnInit {
   }
 
   close() {
-    this.store.dispatch(closeOrder({ id: this.order.Id }));
+    // this.store.dispatch(closeOrder({ id: this.order.Id }));
   }
 
   export() {
@@ -142,13 +155,13 @@ export class OrderComponent implements OnInit {
     // }
   }
 
-  isStateLoading(id: number) {
-    try {
-      return this.dishLoading.find(c => c.dish.CookingDishId == id).isLoading;
-    } catch (error) {
-      return false;
-    }
-  }
+  // isStateLoading(id: number) {
+  //   try {
+  //     return this.dishLoading.find(c => c.dish.CookingDishId == id).isLoading;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }
 
   // TODO to pipe
   public groupById(order: IOrder, predicate: (c: IDish) => boolean): any {
@@ -179,15 +192,15 @@ export class OrderComponent implements OnInit {
 
   // TODO to pipe
   public getTotal() {
-    if (!this.inWorkDishes) {
-      return;
-    }
+    // if (!this.inWorkDishes) {
+    //   return;
+    // }
 
-    return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
+    // return this.inWorkDishes.reduce((p, c) => c.Price + p, 0);
   }
 
   public setComment(e) {
-    this.order.Comment = e.target.value;
+    // this.order.Comment = e.target.value;
   }
 
   public addComment() {

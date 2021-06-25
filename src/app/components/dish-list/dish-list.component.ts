@@ -29,12 +29,12 @@ export class DishListComponent implements OnInit {
   order: IOrder;
 
   initialOrder: IOrder = {
-    Id: '',
+    id: '',
     tableNumber: 0,
-    CreatedDate: new Date(),
-    Comment: '',
-    IsExportRequested: false,
-    cookingDishes: [],
+    createdDate: new Date(),
+    comment: '',
+    isExportRequested: false,
+    readyDishesCount: 0,
   };
 
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {

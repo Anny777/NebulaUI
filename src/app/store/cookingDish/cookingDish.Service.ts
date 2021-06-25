@@ -15,7 +15,7 @@ export class CookingDishService {
   constructor(private http: HttpClient) { }
 
   public list(orderId: string): Observable<ICookingDish[]> {
-    return this.http.get<ICookingDish[]>(`${this.dishPath}/List?orderId=${orderId}`);
+    return this.http.get<ICookingDish[]>(`${this.dishPath}?orderId=${orderId}`);
   }
 
   public addDish(orderId: string, dishId: string): Observable<HttpResponse<any>> {

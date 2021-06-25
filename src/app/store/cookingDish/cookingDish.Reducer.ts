@@ -14,16 +14,16 @@ const initialState: ICookingDishState = {
 
 const _reducer = createReducer(
   initialState,
-  on(loadCookingDishes, (state) => ({ ...state, isOrdersLoading: true })),
+  on(loadCookingDishes, (state) => ({ ...state, isLoading: true })),
   on(loadCookingDishesSuccess, (state, action) => ({
     ...state,
-    isOrdersLoading: false,
+    isLoading: false,
     cookingDishesByOrder: [
       ...state.cookingDishesByOrder.filter(cdbo => cdbo.orderId == action.orderId),
       { orderId: action.orderId, cookingDishes: action.cookingDishes }
     ]
   })),
-  on(loadCookingDishesFail, (state, action) => ({ ...state, isOrdersLoading: false }))
+  on(loadCookingDishesFail, (state, action) => ({ ...state, isLoading: false }))
 );
 
 export function cookingDishReducer(state: ICookingDishState, action: Action): ICookingDishState {
