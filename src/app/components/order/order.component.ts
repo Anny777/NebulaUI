@@ -24,7 +24,8 @@ export class OrderComponent implements OnInit {
     tableNumber: 0,
     CreatedDate: new Date(),
     Comment: '',
-    IsExportRequested: false
+    IsExportRequested: false,
+    cookingDishes: [],
   };
 
   order: IOrder;
@@ -122,7 +123,7 @@ export class OrderComponent implements OnInit {
   }
 
   _isInWorkDishes(d: IDish): boolean {
-    return [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.State);
+    return [DishState.InWork, DishState.Ready, DishState.Taken].includes(d.dishState);
   }
 
   close() {
