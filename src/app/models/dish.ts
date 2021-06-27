@@ -7,7 +7,7 @@ export interface IDish {
   Name: string;
   Consist: string;
   Unit: string;
-  State: DishState;
+  dishState: DishState;
   Price: number;
   WorkshopType: WorkshopType;
 }

@@ -1,11 +1,9 @@
-import { IOrderState } from "./reducers/orderReducer";
-import { IDishState } from "./reducers/dishReducer";
-import { ITableState } from "./reducers/tableReducer";
-import { IUserState } from "./reducers/userReduser";
+import { IOrderState } from "./order/order.Reducer";
+import { ICookingDishState } from "./cookingDish/cookingDish.Reducer";
+import { IAuthState } from "./Auth/auth.Reducer";
 
 export interface IAppState{
   readonly orders: IOrderState,
-  readonly dishes: IDishState,
-  readonly table: ITableState,
-  readonly user: IUserState
+  readonly cookingDishes: ICookingDishState,
+  readonly user: IAuthState
 }

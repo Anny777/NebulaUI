@@ -1,9 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatInput, MatIconModule, MatProgressSpinnerModule, MatFormFieldModule, MatBadgeModule } from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { Hall1Component } from './components/hall1/hall1.component';
@@ -16,39 +22,28 @@ import { AdministrationComponent } from './components/administration/administrat
 import { TableComponent } from './components/table/table.component';
 import { TableService } from './services/table.service';
 import { DishListComponent } from './components/dish-list/dish-list.component';
-import { OrderService } from './services/order.service';
+import { OrderService } from './store/order/order.Service';
 import { FilterPipeComponent } from './filter-pipe/filter-pipe.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { GroupByPipe } from './filter-pipe/groupBy-pipe';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { Interceptor } from './services/interceptor';
+import { JwtInterceptor } from './services/jwt.interceptor';
 import { StoreModule } from '@ngrx/store';
-import { orderReducer } from './store/reducers/orderReducer';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/app.effects';
-import { dishReducer } from './store/reducers/dishReducer';
-import { tableReducer } from './store/reducers/tableReducer';
-import { userReducer } from './store/reducers/userReduser';
+import { cookingDishReducer } from './store/cookingDish/cookingDish.Reducer';
+// import { tableReducer } from './store/reducers/tableReducer';
+import { authReducer } from './store/Auth/auth.Reducer';
 import { OrderComponent } from './components/order/order.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-
-// определение маршрутов
-const appRoutes: Routes = [
-  { path: '', component: Hall1Component },
-  { path: 'hall-2', component: Hall2Component },
-  { path: 'kitchen', component: KitchenComponent },
-  { path: 'bar', component: BarComponent },
-  { path: 'admin', component: AdministrationComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'dishes', component: DishListComponent },
-  { path: 'forgot', component: ForgotComponent },
-  { path: 'order/:id', component: DishListComponent }
-];
+import { ROUTES } from './app.routes';
+import { AuthGuard } from './store/auth/auth.Guard';
+import { AuthRepository } from './store/Auth/auth.Repository';
+import { orderReducer } from './store/order/order.Reducer';
 
 @NgModule({
   declarations: [
@@ -74,11 +69,11 @@ const appRoutes: Routes = [
     HttpClientModule,
     StoreModule.forRoot({
       orders: orderReducer,
-      dishes: dishReducer,
-      table: tableReducer,
-      user: userReducer
+      dishes: cookingDishReducer,
+      //table: tableReducer,
+      auth: authReducer
     }),
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(ROUTES),
     EffectsModule.forRoot(effects),
     BrowserAnimationsModule,
     MatButtonModule,
@@ -90,14 +85,19 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
-    useClass: Interceptor,
+    useClass: JwtInterceptor,
     multi: true
   },
-    TableService, OrderService],
+    TableService,
+    OrderService,
+    AuthGuard,
+    AuthRepository
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

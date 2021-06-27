@@ -1,49 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
-import { OrderService } from 'src/app/services/order.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IAppState } from 'src/app/store/app.state';
-import * as OrderActions from '../../store/actions/orderActions';
-import { tap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { IAuthState } from 'src/app/store/Auth/auth.Reducer';
+import { logout, restoreSession } from 'src/app/store/Auth/auth.Actions';
+import { AuthGuard } from 'src/app/store/auth/auth.Guard';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent implements OnInit {
-
-  role: boolean = false;
-  user: string = "";
-  isVolumeOn: boolean = false;
-  constructor(private auth: AuthService, private router: Router, private orderService: OrderService, private store: Store<IAppState>) { }
-  private isAuthenticated: boolean = false;
+export class NavBarComponent implements OnInit, OnDestroy {
+  isVolumeOn: boolean = true;
+  isAuthenticated$: Observable<boolean>;
+  userName$: Observable<string>;
+  redirectSubscription$: Subscription;
+  isLoadingLogin$: Observable<boolean>;
+  constructor(
+    private store: Store<{ auth: IAuthState }>,
+    private router: Router,
+    private guard: AuthGuard) { }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.auth.isAuthenticated;
-    this.auth.authChanged.subscribe(isAuth => {
-      this.isAuthenticated = isAuth;
-      if (isAuth) {
-        this.orderService.init();
-        this.user = this.auth.userInfo.Email;
+    this.isAuthenticated$ = this.store.select((s) => !!s.auth.accessToken);
+    this.userName$ = this.store.select((s) => s.auth.userName);
+    this.isLoadingLogin$ = this.store.select((s) => s.auth.isLoadingLogin);
+    this.store.dispatch(restoreSession());
+    this.redirectSubscription$ = this.store.select(s => s.auth).subscribe(authState => {
+      if (authState.accessToken) {
+        if (authState.roles.indexOf("Cook") > -1) {
+          this.router.navigate(['/kitchen']);
+        }
+
+        else if (authState.roles.indexOf("Bartender") > -1) {
+          this.router.navigate(['/bar']);
+        }
+
+        else
+          this.router.navigate(['/']);
       }
     });
-    this.auth.getUserInfo(this.auth).subscribe();
-
   }
+
+  ngOnDestroy(): void {
+    this.redirectSubscription$.unsubscribe();
+  }
+
   public logout() {
-    this.auth.logout(() => this.router.navigate(['/login']));
+    this.store.dispatch(logout());
   }
 
   toggleVolume(value: boolean) {
-    console.log(value);
     this.isVolumeOn = value;
-    this.store.dispatch(new OrderActions.MuteAudio(value));
   }
 
-  public userIsInRole(roles: Array<string>) {
-    return this.auth.userIsInRole(roles);
+  public userIsInRole(roles: Array<string>): Observable<boolean> {
+    return this.guard.userIsInRole(roles);
   }
-
 }
